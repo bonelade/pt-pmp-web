@@ -192,6 +192,38 @@ p:last-child {
   border-radius: 2px;
 }
 
+/* === Decorative Ornaments === */
+.lower-ornament {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.08;
+  /* Very subtle opacity */
+}
+
+.lower-ornament path {
+  fill: none;
+  stroke: var(--color-gold-light);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.ornament-left {
+  top: 10%;
+  left: -10%;
+  width: 50%;
+  height: 80%;
+  animation: ornament-breath 16s infinite alternate ease-in-out;
+}
+
+.ornament-right {
+  bottom: 10%;
+  right: -5%;
+  width: 60%;
+  height: 90%;
+  animation: ornament-breath 20s infinite alternate-reverse ease-in-out;
+}
+
 /* === Backgrounds === */
 .bg-dark {
   background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
