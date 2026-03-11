@@ -108,18 +108,25 @@
     }
 
     @media (max-width: 900px) {
-      .challenge-grid {
-        grid-template-columns: 1fr;
-      }
+      .challenge-grid { grid-template-columns: 1fr; }
+      .solution-grid { grid-template-columns: 1fr; }
+      .quality-metrics { grid-template-columns: 1fr; padding: 32px; }
+    }
 
-      .solution-grid {
-        grid-template-columns: 1fr;
-      }
+    @media (max-width: 768px) {
+      .challenge-card { padding: 24px 20px; }
+      .challenge-card .challenge-icon { font-size: 1.8rem; }
+      .solution-card { padding: 24px 20px; gap: 14px; }
+      .solution-icon { width: 44px; height: 44px; min-width: 44px; font-size: 1.2rem; }
+      .quality-metrics { padding: 24px 16px; gap: 20px; }
+      .metric-value { font-size: clamp(2rem, 5vw, 3rem); }
+      .metric-label { font-size: 0.75rem; }
+    }
 
-      .quality-metrics {
-        grid-template-columns: 1fr;
-        padding: 32px;
-      }
+    @media (max-width: 480px) {
+      .challenge-card { padding: 18px 14px; }
+      .solution-card { padding: 18px 14px; }
+      .quality-metrics { padding: 20px 12px; }
     }
   </style>
 </head>

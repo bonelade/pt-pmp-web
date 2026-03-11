@@ -396,13 +396,24 @@
     }
 
     @media (max-width: 900px) {
-      .harga-intro {
-        grid-template-columns: 1fr;
-      }
+      .harga-intro { grid-template-columns: 1fr; gap: 28px; margin-bottom: 36px; }
+      .grade-cards { grid-template-columns: 1fr; gap: 16px; margin-bottom: 36px; }
+    }
 
-      .grade-cards {
-        grid-template-columns: 1fr;
-      }
+    @media (max-width: 768px) {
+      .param-box { padding: 20px 16px; }
+      .grade-price-card { padding: 28px 20px 24px; }
+      .grade-badge { width: 56px; height: 56px; font-size: 1.5rem; }
+      .harga-tabel thead th { padding: 10px 8px; font-size: 0.7rem; }
+      .harga-tabel tbody td { padding: 10px 8px; font-size: 0.78rem; }
+      .harga-tabel .sub-header td { padding: 8px; font-size: 0.68rem; }
+    }
+
+    @media (max-width: 480px) {
+      .harga-tabel { font-size: 0.72rem; min-width: 600px; }
+      .harga-tabel thead th, .harga-tabel tbody td { padding: 8px 6px; }
+      .grade-price-card { padding: 24px 16px 20px; }
+      .param-box { padding: 16px 12px; }
     }
   </style>
 </head>

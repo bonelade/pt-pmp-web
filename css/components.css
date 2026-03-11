@@ -647,4 +647,40 @@
     display: block;
     margin: 8px 0;
   }
+
+  /* News cards mobile */
+  .news-card-img {
+    height: 160px;
+  }
+
+  .news-card-body {
+    padding: 16px;
+  }
+
+  .news-card-body h3 {
+    font-size: 1rem;
+  }
+
+  .news-card-body p {
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .news-card-img {
+    height: 140px;
+  }
+
+  .news-card-body {
+    padding: 14px;
+  }
+
+  .process-icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .stakeholder-card {
+    padding: 16px;
+  }
 }

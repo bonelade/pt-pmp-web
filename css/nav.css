@@ -384,3 +384,39 @@
   transform: translateY(-50%) translateX(-100%);
   pointer-events: none;
 }
+
+/* === Mobile Nav === */
+@media (max-width: 768px) {
+  .nav-logo .logo-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .nav-logo .logo-name {
+    font-size: 0.8rem;
+  }
+
+  .nav-logo .logo-sub {
+    font-size: 0.52rem;
+  }
+
+  .nav-logo {
+    gap: 8px;
+  }
+
+  #lang-toggle {
+    padding: 4px 10px;
+    font-size: 0.68rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-logo .logo-text-wrap {
+    display: none;
+  }
+
+  .nav-logo .logo-icon {
+    width: 36px;
+    height: 36px;
+  }
+}
