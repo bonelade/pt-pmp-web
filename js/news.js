@@ -1,12 +1,8 @@
 /* ========================================
-   News / Articles - Supabase (JSONB) + localStorage fallback
-   Stores all articles as a single JSONB row (id='main')
-   to avoid column-type issues with thumbnail storage.
+   News / Articles - Supabase ONLY (JSONB)
+   Table: news_data (id TEXT PK, data JSONB, updated_at)
    ======================================== */
 
-const NEWS_KEY = 'pmp_news';
-
-// Seed articles
 const SEED_ARTICLES = [
   {
     id: 'seed-001',
@@ -48,10 +44,6 @@ function _newsSupa() {
   return (typeof getSupabase === 'function') ? getSupabase() : null;
 }
 
-// ============================
-// Load: Supabase (news_data JSONB) → localStorage → seed
-// Uses table 'news_data' with single row id='main', column 'data' (JSONB)
-// ============================
 function loadNews(callback) {
   if (_newsReady) {
     if (callback) callback(_newsCache);
@@ -64,56 +56,36 @@ function loadNews(callback) {
   var timer = setInterval(function () {
     attempts++;
     var sb = _newsSupa();
-    if (sb || attempts >= 30) {
+    if (sb || attempts >= 50) {
       clearInterval(timer);
       if (sb) {
         sb.from('news_data').select('*').eq('id', 'main').single()
           .then(function (res) {
             if (res.data && res.data.data && Array.isArray(res.data.data)) {
-              console.log('[NewsDB] Loaded from Supabase JSONB:', res.data.data.length, 'articles');
+              console.log('[NewsDB] Loaded from Supabase:', res.data.data.length, 'articles');
               _newsCache = res.data.data;
-              _newsReady = true;
-              // Sync to localStorage
-              try { localStorage.setItem(NEWS_KEY, JSON.stringify(_newsCache)); } catch(e) {}
-              _fireNewsCallbacks();
-            } else if (res.error && res.error.code !== 'PGRST116') {
-              // PGRST116 = no rows — that's OK, we seed
-              console.warn('[NewsDB] Supabase error:', res.error.message);
-              _loadNewsLocal();
             } else {
-              // No data — seed
-              console.log('[NewsDB] No data in Supabase, seeding...');
+              console.log('[NewsDB] No data, seeding defaults');
               _newsCache = SEED_ARTICLES;
-              _newsReady = true;
-              _fireNewsCallbacks();
               _syncToSupabase(_newsCache);
             }
+            _newsReady = true;
+            _fireNewsCallbacks();
           })
           .catch(function (err) {
-            console.warn('[NewsDB] Supabase fetch failed:', err);
-            _loadNewsLocal();
+            console.error('[NewsDB] Load failed:', err);
+            _newsCache = SEED_ARTICLES;
+            _newsReady = true;
+            _fireNewsCallbacks();
           });
       } else {
-        _loadNewsLocal();
+        console.warn('[NewsDB] Supabase not available, using defaults');
+        _newsCache = SEED_ARTICLES;
+        _newsReady = true;
+        _fireNewsCallbacks();
       }
     }
   }, 100);
-}
-
-function _loadNewsLocal() {
-  try {
-    var data = localStorage.getItem(NEWS_KEY);
-    if (data) {
-      _newsCache = JSON.parse(data);
-    } else {
-      _newsCache = SEED_ARTICLES;
-      localStorage.setItem(NEWS_KEY, JSON.stringify(SEED_ARTICLES));
-    }
-  } catch (e) {
-    _newsCache = SEED_ARTICLES;
-  }
-  _newsReady = true;
-  _fireNewsCallbacks();
 }
 
 function _fireNewsCallbacks() {
@@ -122,60 +94,50 @@ function _fireNewsCallbacks() {
   cbs.forEach(function (cb) { cb(_newsCache); });
 }
 
-// Save entire articles array to Supabase as JSONB
 function _syncToSupabase(articles) {
   var sb = _newsSupa();
-  if (!sb) return;
+  if (!sb) { console.error('[NewsDB] Cannot sync: Supabase not available'); return; }
   sb.from('news_data').upsert({
     id: 'main',
     data: articles,
     updated_at: new Date().toISOString()
   }).then(function (res) {
     if (res.error) {
-      console.error('[NewsDB] Supabase sync FAILED:', res.error.message);
+      console.error('[NewsDB] Sync FAILED:', res.error.message);
     } else {
-      console.log('[NewsDB] Synced to Supabase OK,', articles.length, 'articles');
+      console.log('[NewsDB] Synced OK,', articles.length, 'articles');
     }
   });
 }
 
 function getArticles() {
-  if (_newsCache) return _newsCache;
-  try {
-    var data = localStorage.getItem(NEWS_KEY);
-    if (data) return JSON.parse(data);
-  } catch (e) {}
-  return SEED_ARTICLES;
+  return _newsCache || SEED_ARTICLES;
 }
 
 function saveArticles(articles) {
   _newsCache = articles;
-  localStorage.setItem(NEWS_KEY, JSON.stringify(articles));
   _syncToSupabase(articles);
 }
 
 function getArticleById(id) {
-  return getArticles().find(a => a.id === id) || null;
+  return getArticles().find(function (a) { return a.id === id; }) || null;
 }
 
 function deleteArticle(id) {
-  const articles = getArticles().filter(a => a.id !== id);
+  var articles = getArticles().filter(function (a) { return a.id !== id; });
   _newsCache = articles;
-  localStorage.setItem(NEWS_KEY, JSON.stringify(articles));
   _syncToSupabase(articles);
 }
 
 function upsertArticle(article) {
-  const articles = getArticles();
-  const idx = articles.findIndex(a => a.id === article.id);
-  if (idx >= 0) {
-    articles[idx] = article;
-  } else {
-    articles.unshift(article);
+  var articles = getArticles().slice();
+  var idx = -1;
+  for (var i = 0; i < articles.length; i++) {
+    if (articles[i].id === article.id) { idx = i; break; }
   }
+  if (idx >= 0) { articles[idx] = article; } else { articles.unshift(article); }
   _newsCache = articles;
-  localStorage.setItem(NEWS_KEY, JSON.stringify(articles));
-  console.log('[NewsDB] Upserting article:', article.id, 'thumbnail length:', (article.thumbnail || '').length);
+  console.log('[NewsDB] Saving article:', article.id, 'thumbnail:', (article.thumbnail || '').length > 0 ? 'YES (' + (article.thumbnail || '').length + ' chars)' : 'none');
   _syncToSupabase(articles);
 }
 
@@ -183,18 +145,17 @@ function generateId() {
   return 'art-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6);
 }
 
-// Render helpers
 function formatDate(dateStr, lang) {
   if (!dateStr) return '';
-  const d = new Date(dateStr);
+  var d = new Date(dateStr);
   if (isNaN(d.getTime())) return dateStr;
-  const opts = { year: 'numeric', month: 'long', day: 'numeric' };
-  const locale = lang === 'en' ? 'en-US' : 'id-ID';
+  var opts = { year: 'numeric', month: 'long', day: 'numeric' };
+  var locale = lang === 'en' ? 'en-US' : 'id-ID';
   return d.toLocaleDateString(locale, opts);
 }
 
 function getCategoryLabel(cat, lang) {
-  const labels = {
+  var labels = {
     id: { company: 'Kabar Perusahaan', market: 'Pasar', sustainability: 'Keberlanjutan', government: 'Pemerintahan' },
     en: { company: 'Company News', market: 'Market', sustainability: 'Sustainability', government: 'Government' }
   };
@@ -209,54 +170,50 @@ function getArticleBody(article, lang) {
   return lang === 'en' ? (article.body_en || article.body_id) : (article.body_id || article.body_en);
 }
 
-function getArticleExcerpt(article, lang, maxLen = 120) {
-  const body = getArticleBody(article, lang);
-  const text = body.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+function getArticleExcerpt(article, lang, maxLen) {
+  maxLen = maxLen || 120;
+  var body = getArticleBody(article, lang);
+  var text = body.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
   return text.length > maxLen ? text.slice(0, maxLen) + '...' : text;
 }
 
 function renderNewsCards(container, articles, lang, readMoreText) {
   if (!container) return;
-  if (!articles || articles.length === 0) {
-    container.innerHTML = '';
-    return;
-  }
-  container.innerHTML = articles.map(article => `
-    <div class="news-card animate-on-scroll">
-      <div class="news-card-img">
-        ${article.thumbnail
-          ? `<img src="${article.thumbnail}" alt="${getArticleTitle(article, lang)}" loading="lazy">`
-          : '<span>🌽</span>'}
-      </div>
-      <div class="news-card-body">
-        <div class="news-card-meta">
-          <span class="badge badge-gold">${getCategoryLabel(article.category, lang)}</span>
-          <span>📅 ${formatDate(article.date, lang)}</span>
-        </div>
-        <h3>${getArticleTitle(article, lang)}</h3>
-        <p>${getArticleExcerpt(article, lang)}</p>
-        <a href="news-detail.html?id=${article.id}" class="btn-link">${readMoreText || 'Read More →'}</a>
-      </div>
-    </div>
-  `).join('');
+  if (!articles || articles.length === 0) { container.innerHTML = ''; return; }
+  container.innerHTML = articles.map(function (article) {
+    return '<div class="news-card animate-on-scroll">' +
+      '<div class="news-card-img">' +
+        (article.thumbnail
+          ? '<img src="' + article.thumbnail + '" alt="' + getArticleTitle(article, lang) + '" loading="lazy">'
+          : '<span>\uD83C\uDF3D</span>') +
+      '</div>' +
+      '<div class="news-card-body">' +
+        '<div class="news-card-meta">' +
+          '<span class="badge badge-gold">' + getCategoryLabel(article.category, lang) + '</span>' +
+          '<span>\uD83D\uDCC5 ' + formatDate(article.date, lang) + '</span>' +
+        '</div>' +
+        '<h3>' + getArticleTitle(article, lang) + '</h3>' +
+        '<p>' + getArticleExcerpt(article, lang) + '</p>' +
+        '<a href="news-detail.html?id=' + article.id + '" class="btn-link">' + (readMoreText || 'Read More \u2192') + '</a>' +
+      '</div>' +
+    '</div>';
+  }).join('');
 }
 
-// Auto-load
 loadNews();
 
-// Export
 window.NewsDB = {
-  loadNews,
-  getArticles,
-  saveArticles,
-  getArticleById,
-  deleteArticle,
-  upsertArticle,
-  generateId,
-  formatDate,
-  getCategoryLabel,
-  getArticleTitle,
-  getArticleBody,
-  getArticleExcerpt,
-  renderNewsCards
+  loadNews: loadNews,
+  getArticles: getArticles,
+  saveArticles: saveArticles,
+  getArticleById: getArticleById,
+  deleteArticle: deleteArticle,
+  upsertArticle: upsertArticle,
+  generateId: generateId,
+  formatDate: formatDate,
+  getCategoryLabel: getCategoryLabel,
+  getArticleTitle: getArticleTitle,
+  getArticleBody: getArticleBody,
+  getArticleExcerpt: getArticleExcerpt,
+  renderNewsCards: renderNewsCards
 };

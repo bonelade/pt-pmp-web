@@ -1,15 +1,14 @@
 /* ========================================
    PT PMP - Gallery / Photo Management
-   Primary: Supabase (shared cloud database)
-   Fallback: data/photos.json (static)
+   Supabase ONLY — no localStorage, no JSON fallback
+   Table: photos (individual rows per photo)
+   Storage: Supabase Storage bucket 'gallery'
    ======================================== */
 
-var GALLERY_JSON_URL = 'data/photos.json';
 var _galleryCache = null;
 var _galleryReady = false;
 var _galleryCallbacks = [];
 
-// Album categories organized by page
 var GALLERY_ALBUMS = {
   home_hero:        { label: 'Hero Background',        page: 'Beranda',        desc: 'Foto latar belakang hero di halaman utama' },
   home_about:       { label: 'Foto Tentang Kami',       page: 'Beranda',        desc: 'Foto di section Tentang Kami halaman utama (foto peresmian, dsb)' },
@@ -38,37 +37,29 @@ function getAlbumsByPage() {
   return pages;
 }
 
-// ============================
-// Supabase Helpers
-// ============================
 function _supa() {
   return (typeof getSupabase === 'function') ? getSupabase() : null;
 }
 
-// Wait for Supabase CDN to load (max 3 seconds, then fallback)
 function _waitForSupabase(callback) {
   if (window.supabase && typeof getSupabase === 'function') {
     callback(_supa());
     return;
   }
   var attempts = 0;
-  var maxAttempts = 30; // 30 x 100ms = 3 seconds
   var timer = setInterval(function () {
     attempts++;
     if (window.supabase && typeof getSupabase === 'function') {
       clearInterval(timer);
       callback(_supa());
-    } else if (attempts >= maxAttempts) {
+    } else if (attempts >= 50) {
       clearInterval(timer);
-      console.warn('Supabase CDN not loaded after 3s, using JSON fallback');
+      console.warn('[GalleryDB] Supabase not loaded after 5s');
       callback(null);
     }
   }, 100);
 }
 
-// ============================
-// Load: Supabase first → fallback to photos.json
-// ============================
 function loadGalleryData(callback) {
   if (_galleryReady) {
     if (callback) callback(_galleryCache);
@@ -79,57 +70,34 @@ function loadGalleryData(callback) {
 
   _waitForSupabase(function (sb) {
     if (sb) {
-      // Try Supabase first
       sb.from('photos').select('*').order('order', { ascending: true })
         .then(function (res) {
           if (res.data && res.data.length > 0) {
+            console.log('[GalleryDB] Loaded', res.data.length, 'photos from Supabase');
             _galleryCache = res.data;
-            _galleryReady = true;
-            _fireCallbacks();
           } else if (res.error) {
-            console.warn('Supabase query error:', res.error.message);
-            _loadFromJSON();
+            console.error('[GalleryDB] Load error:', res.error.message);
+            _galleryCache = [];
           } else {
-            // Supabase empty — try JSON fallback then seed Supabase
-            _loadFromJSON(function (photos) {
-              if (photos.length > 0 && sb) {
-                sb.from('photos').upsert(photos).then(function () {
-                  console.log('Supabase seeded with photos.json data');
-                });
-              }
-            });
+            console.log('[GalleryDB] No photos in Supabase');
+            _galleryCache = [];
           }
+          _galleryReady = true;
+          _fireCallbacks();
         })
         .catch(function (err) {
-          console.warn('Supabase fetch failed, using JSON fallback:', err);
-          _loadFromJSON();
+          console.error('[GalleryDB] Load failed:', err);
+          _galleryCache = [];
+          _galleryReady = true;
+          _fireCallbacks();
         });
     } else {
-      // No Supabase client available — use JSON
-      _loadFromJSON();
+      console.warn('[GalleryDB] No Supabase, empty gallery');
+      _galleryCache = [];
+      _galleryReady = true;
+      _fireCallbacks();
     }
   });
-}
-
-function _loadFromJSON(onDone) {
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', GALLERY_JSON_URL, true);
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState !== 4) return;
-    if (xhr.status === 200 || xhr.status === 0) {
-      try {
-        _galleryCache = JSON.parse(xhr.responseText);
-      } catch (e) {
-        _galleryCache = [];
-      }
-    } else {
-      _galleryCache = [];
-    }
-    _galleryReady = true;
-    _fireCallbacks();
-    if (onDone) onDone(_galleryCache);
-  };
-  xhr.send();
 }
 
 function _fireCallbacks() {
@@ -138,9 +106,6 @@ function _fireCallbacks() {
   cbs.forEach(function (cb) { cb(_galleryCache); });
 }
 
-// ============================
-// Read API (from cache)
-// ============================
 function getGallery() {
   return _galleryCache || [];
 }
@@ -159,11 +124,7 @@ function getPhotosByPage(pageName) {
     .sort(function (a, b) { return (a.order || 0) - (b.order || 0); });
 }
 
-// ============================
-// Write API (cache + Supabase)
-// ============================
 function upsertPhoto(photo, callback) {
-  // Update local cache immediately
   var photos = getGallery().slice();
   var idx = -1;
   for (var i = 0; i < photos.length; i++) {
@@ -172,10 +133,9 @@ function upsertPhoto(photo, callback) {
   if (idx >= 0) photos[idx] = photo; else photos.push(photo);
   _galleryCache = photos;
 
-  // Write to Supabase
   var sb = _supa();
   if (sb) {
-    var row = {
+    sb.from('photos').upsert({
       id: photo.id,
       album: photo.album,
       caption_id: photo.caption_id || '',
@@ -184,47 +144,38 @@ function upsertPhoto(photo, callback) {
       order: photo.order || 0,
       type: photo.type || null,
       updated_at: new Date().toISOString()
-    };
-    sb.from('photos').upsert(row).then(function (res) {
+    }).then(function (res) {
       if (res.error) {
-        console.error('Supabase upsert error:', res.error);
+        console.error('[GalleryDB] Upsert error:', res.error.message);
         if (callback) callback({ error: res.error.message });
       } else {
+        console.log('[GalleryDB] Photo saved:', photo.id);
         if (callback) callback({ success: true });
       }
     });
   } else {
-    if (callback) callback({ success: true });
+    if (callback) callback({ error: 'Supabase not available' });
   }
-  return { success: true };
 }
 
 function deletePhoto(id, callback) {
-  // Get photo info before deleting (to clean up storage)
   var photo = null;
   var photos = getGallery();
   for (var i = 0; i < photos.length; i++) {
     if (photos[i].id === id) { photo = photos[i]; break; }
   }
-
-  // Remove from cache
   _galleryCache = photos.filter(function (p) { return p.id !== id; });
 
   var sb = _supa();
   if (sb) {
-    // Delete from Supabase database
     sb.from('photos').delete().eq('id', id).then(function (res) {
-      if (res.error) console.error('Supabase delete error:', res.error);
+      if (res.error) console.error('[GalleryDB] Delete error:', res.error.message);
       if (callback) callback();
     });
-
-    // If src is a Supabase Storage URL, also delete the file
     if (photo && photo.src && photo.src.indexOf('/storage/v1/object/public/gallery/') !== -1) {
       var filePath = photo.src.split('/storage/v1/object/public/gallery/')[1];
       if (filePath) {
-        sb.storage.from('gallery').remove([decodeURIComponent(filePath)]).then(function (res) {
-          if (res.error) console.warn('Storage cleanup error:', res.error);
-        });
+        sb.storage.from('gallery').remove([decodeURIComponent(filePath)]);
       }
     }
   } else {
@@ -244,51 +195,33 @@ function saveGallery(photos, callback) {
         type: p.type || null, updated_at: new Date().toISOString()
       };
     })).then(function (res) {
-      if (res.error) console.error('Supabase saveGallery error:', res.error);
+      if (res.error) console.error('[GalleryDB] SaveGallery error:', res.error.message);
       if (callback) callback({ success: !res.error });
     });
   } else {
-    if (callback) callback({ success: true });
+    if (callback) callback({ error: 'Supabase not available' });
   }
-  return { success: true };
 }
 
-// ============================
-// Upload to Supabase Storage
-// ============================
 function uploadToStorage(file, album, callback) {
   var sb = _supa();
-  if (!sb) {
-    callback({ error: 'Supabase not available' });
-    return;
-  }
+  if (!sb) { callback({ error: 'Supabase not available' }); return; }
 
   var ext = file.name ? file.name.split('.').pop().toLowerCase() : 'jpg';
   var fileName = album + '/' + Date.now() + '-' + Math.random().toString(36).substr(2, 5) + '.' + ext;
 
   sb.storage.from('gallery').upload(fileName, file, {
-    cacheControl: '3600',
-    upsert: false,
-    contentType: file.type || 'image/jpeg'
+    cacheControl: '3600', upsert: false, contentType: file.type || 'image/jpeg'
   }).then(function (res) {
-    if (res.error) {
-      callback({ error: res.error.message });
-    } else {
-      var publicUrl = getStoragePublicUrl(fileName);
-      callback({ success: true, url: publicUrl, path: fileName });
-    }
+    if (res.error) { callback({ error: res.error.message }); }
+    else { callback({ success: true, url: getStoragePublicUrl(fileName), path: fileName }); }
   });
 }
 
-// Upload from base64/dataURL
 function uploadBase64ToStorage(dataUrl, album, callback) {
   var sb = _supa();
-  if (!sb) {
-    callback({ error: 'Supabase not available' });
-    return;
-  }
+  if (!sb) { callback({ error: 'Supabase not available' }); return; }
 
-  // Convert data URL to Blob
   var parts = dataUrl.split(',');
   var mime = parts[0].match(/:(.*?);/)[1];
   var ext = mime.split('/')[1] === 'jpeg' ? 'jpg' : mime.split('/')[1];
@@ -300,22 +233,13 @@ function uploadBase64ToStorage(dataUrl, album, callback) {
   var fileName = album + '/' + Date.now() + '-' + Math.random().toString(36).substr(2, 5) + '.' + ext;
 
   sb.storage.from('gallery').upload(fileName, blob, {
-    cacheControl: '3600',
-    upsert: false,
-    contentType: mime
+    cacheControl: '3600', upsert: false, contentType: mime
   }).then(function (res) {
-    if (res.error) {
-      callback({ error: res.error.message });
-    } else {
-      var publicUrl = getStoragePublicUrl(fileName);
-      callback({ success: true, url: publicUrl, path: fileName });
-    }
+    if (res.error) { callback({ error: res.error.message }); }
+    else { callback({ success: true, url: getStoragePublicUrl(fileName), path: fileName }); }
   });
 }
 
-// ============================
-// Utilities
-// ============================
 function generatePhotoId() {
   return 'photo-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
 }
@@ -329,7 +253,6 @@ function resetToJSON() {
   _galleryReady = false;
   var sb = _supa();
   if (sb) {
-    // Delete all from Supabase, then reload from JSON
     sb.from('photos').delete().neq('id', '').then(function () {
       loadGalleryData();
     });
@@ -340,17 +263,15 @@ function getStorageEstimate(callback) {
   var sb = _supa();
   if (sb) {
     sb.storage.from('gallery').list('', { limit: 1000 }).then(function (res) {
-      var fileCount = (res.data || []).length;
-      callback({ used: 0, quota: 1073741824, photos: getGallery().length, files: fileCount, source: 'supabase' });
+      callback({ used: 0, quota: 1073741824, photos: getGallery().length, files: (res.data || []).length, source: 'supabase' });
     }).catch(function () {
       callback({ used: 0, quota: 0, photos: getGallery().length, source: 'unknown' });
     });
   } else {
-    callback({ used: 0, quota: 0, photos: getGallery().length, source: 'json' });
+    callback({ used: 0, quota: 0, photos: getGallery().length, source: 'none' });
   }
 }
 
-// Auto-load on script init
 loadGalleryData();
 
 window.GalleryDB = {

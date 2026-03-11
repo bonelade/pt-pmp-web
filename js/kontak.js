@@ -1,10 +1,9 @@
 /* ========================================
-   PT PMP - Social & Contact Links - Supabase + localStorage fallback
+   PT PMP - Social & Contact Links - Supabase ONLY (JSONB)
+   Table: kontak (id TEXT PK, data JSONB, updated_at)
    ======================================== */
 
-const KONTAK_KEY = 'pmp_kontak';
-
-const KONTAK_DEFAULT = {
+var KONTAK_DEFAULT = {
   whatsapp: '',
   whatsapp_label: 'WhatsApp PT PMP',
   instagram: '',
@@ -33,68 +32,51 @@ function loadKontak(callback) {
   var timer = setInterval(function () {
     attempts++;
     var sb = _kontakSupa();
-    if (sb || attempts >= 30) {
+    if (sb || attempts >= 50) {
       clearInterval(timer);
       if (sb) {
         sb.from('kontak').select('*').eq('id', 'main').single()
           .then(function (res) {
             if (res.data && res.data.data) {
-              _kontakCache = { ...KONTAK_DEFAULT, ...res.data.data };
-              _kontakReady = true;
-              if (callback) callback(_kontakCache);
+              _kontakCache = Object.assign({}, KONTAK_DEFAULT, res.data.data);
             } else {
-              // No data — use default and seed
-              _kontakCache = { ...KONTAK_DEFAULT };
-              _kontakReady = true;
-              if (callback) callback(_kontakCache);
+              _kontakCache = Object.assign({}, KONTAK_DEFAULT);
               sb.from('kontak').upsert({ id: 'main', data: _kontakCache });
             }
+            _kontakReady = true;
+            if (callback) callback(_kontakCache);
           })
-          .catch(function () { _loadKontakLocal(callback); });
+          .catch(function () {
+            _kontakCache = Object.assign({}, KONTAK_DEFAULT);
+            _kontakReady = true;
+            if (callback) callback(_kontakCache);
+          });
       } else {
-        _loadKontakLocal(callback);
+        _kontakCache = Object.assign({}, KONTAK_DEFAULT);
+        _kontakReady = true;
+        if (callback) callback(_kontakCache);
       }
     }
   }, 100);
 }
 
-function _loadKontakLocal(callback) {
-  try {
-    var data = localStorage.getItem(KONTAK_KEY);
-    if (data) {
-      _kontakCache = { ...KONTAK_DEFAULT, ...JSON.parse(data) };
-    } else {
-      _kontakCache = { ...KONTAK_DEFAULT };
-      localStorage.setItem(KONTAK_KEY, JSON.stringify(_kontakCache));
-    }
-  } catch (e) {
-    _kontakCache = { ...KONTAK_DEFAULT };
-  }
-  _kontakReady = true;
-  if (callback) callback(_kontakCache);
-}
-
 function getKontak() {
-  if (_kontakCache) return _kontakCache;
-  // Sync fallback
-  try {
-    var data = localStorage.getItem(KONTAK_KEY);
-    if (data) return { ...KONTAK_DEFAULT, ...JSON.parse(data) };
-  } catch (e) {}
-  return { ...KONTAK_DEFAULT };
+  return _kontakCache || Object.assign({}, KONTAK_DEFAULT);
 }
 
 function saveKontak(data) {
   data.last_updated = new Date().toISOString();
   _kontakCache = data;
-  localStorage.setItem(KONTAK_KEY, JSON.stringify(data));
   var sb = _kontakSupa();
   if (sb) {
-    sb.from('kontak').upsert({ id: 'main', data: data, updated_at: new Date().toISOString() });
+    sb.from('kontak').upsert({ id: 'main', data: data, updated_at: new Date().toISOString() })
+      .then(function (res) {
+        if (res.error) console.error('[KontakDB] Save failed:', res.error.message);
+        else console.log('[KontakDB] Saved OK');
+      });
   }
 }
 
-// Auto-load
 loadKontak();
 
-window.KontakDB = { getKontak, saveKontak, loadKontak };
+window.KontakDB = { getKontak: getKontak, saveKontak: saveKontak, loadKontak: loadKontak };
