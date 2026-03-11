@@ -861,12 +861,8 @@
 
   <!-- Services Section -->
   <section class="section bg-light" style="position: relative; overflow: hidden;">
-    <!-- Dark Green Ornaments -->
-    <svg class="lower-ornament ornament-green ornament-left" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice"
-      xmlns="http://www.w3.org/2000/svg">
-      <path d="M-100,400 Q150,200 400,400 T900,400" />
-      <path d="M-50,500 Q200,300 500,500 T950,500" style="opacity: 0.6;" />
-    </svg>
+    <!-- Dynamic Ornaments -->
+    <div id="services-ornaments" class="section-ornaments"></div>
     <div class="container" style="position: relative; z-index: 1;">
       <div class="section-header animate-on-scroll">
         <span class="label" data-i18n="home_svc_label">Layanan Kami</span>
@@ -909,12 +905,8 @@
 
   <!-- Advantages Section -->
   <section class="section bg-white" style="position: relative; overflow: hidden;">
-    <!-- Dark Green Ornaments -->
-    <svg class="lower-ornament ornament-green ornament-right" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice"
-      xmlns="http://www.w3.org/2000/svg">
-      <path d="M900,400 Q650,200 400,400 T-100,400" />
-      <path d="M850,500 Q600,300 300,500 T-150,500" style="opacity: 0.6;" />
-    </svg>
+    <!-- Dynamic Ornaments -->
+    <div id="adv-ornaments" class="section-ornaments"></div>
     <div class="container" style="position: relative; z-index: 1;">
       <div class="section-header animate-on-scroll">
         <span class="label" data-i18n="home_adv_label">Keunggulan Kami</span>
@@ -994,17 +986,8 @@
 
   <!-- CTA Section -->
   <section class="section bg-dark" style="position: relative; overflow: hidden;">
-    <!-- Decorative Ornaments -->
-    <svg class="lower-ornament ornament-left" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice"
-      xmlns="http://www.w3.org/2000/svg">
-      <path d="M-100,500 C150,550 250,200 450,300 C650,400 750,150 900,100" />
-      <path d="M-50,600 C200,650 300,300 500,400 C700,500 800,250 950,200" style="opacity: 0.6;" />
-    </svg>
-    <svg class="lower-ornament ornament-right" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice"
-      xmlns="http://www.w3.org/2000/svg">
-      <path d="M900,500 C650,550 550,200 350,300 C150,400 50,150 -100,100" />
-      <path d="M850,600 C600,650 500,300 300,400 C100,500 0,250 -150,200" style="opacity: 0.6;" />
-    </svg>
+    <!-- Dynamic Ornaments -->
+    <div id="cta-ornaments" class="section-ornaments"></div>
 
     <div class="container text-center" style="position: relative; z-index: 1;">
       <div class="animate-on-scroll cta-section-inner" style="margin:0 auto;">
@@ -1033,16 +1016,8 @@
   <!-- Social CTA Section -->
   <section class="section"
     style="background:linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%); padding:60px 0; position: relative; overflow: hidden;">
-    <!-- Decorative Ornaments -->
-    <svg class="lower-ornament ornament-left" style="opacity: 0.05;" viewBox="0 0 800 600"
-      preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-      <path d="M-100,200 C150,100 250,500 450,400 C650,300 750,550 900,500" />
-      <path d="M-50,300 C200,200 300,600 500,500 C700,400 800,650 950,600" style="opacity: 0.6;" />
-    </svg>
-    <svg class="lower-ornament ornament-right" style="opacity: 0.04;" viewBox="0 0 800 600"
-      preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-      <path d="M900,200 C650,100 550,500 350,400 C150,300 50,550 -100,500" />
-    </svg>
+    <!-- Dynamic Ornaments -->
+    <div id="social-ornaments" class="section-ornaments"></div>
 
     <div class="container" style="position: relative; z-index: 1;">
       <div class="animate-on-scroll" style="text-align:center; max-width:640px; margin:0 auto;">
@@ -1090,17 +1065,8 @@
 
   <!-- Footer -->
   <footer style="position: relative; overflow: hidden;">
-    <!-- Decorative Ornaments -->
-    <svg class="lower-ornament ornament-left" style="opacity: 0.03;" viewBox="0 0 800 600"
-      preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-      <path d="M-100,600 L200,300 L500,500 L900,200" style="stroke-linejoin: round; stroke-linecap: round;" />
-      <path d="M-50,700 L250,400 L550,600 L950,300"
-        style="opacity: 0.4; stroke-linejoin: round; stroke-linecap: round;" />
-    </svg>
-    <svg class="lower-ornament ornament-right" style="opacity: 0.04;" viewBox="0 0 800 600"
-      preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-      <path d="M900,600 L600,300 L300,500 L-100,200" style="stroke-linejoin: round; stroke-linecap: round;" />
-    </svg>
+    <!-- Dynamic Ornaments -->
+    <div id="footer-ornaments" class="section-ornaments"></div>
 
     <div class="container" style="position: relative; z-index: 1;">
       <div class="footer-grid">
@@ -1390,6 +1356,59 @@
       }
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initKontakUI);
       else initKontakUI();
+    })();
+  </script>
+  <script>
+    // Inject Dynamic Lower Ornaments
+    (function () {
+      var shapes = {
+        leaf: '<path d="M4 20C4 20 4 11 12 3C20 3 20 3 20 3C20 3 20 11 12 19C4 19 4 20 4 20Z" stroke="currentColor" stroke-width="1.5" fill="none"/>',
+        ring: '<circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.5" fill="none"/>',
+        diamond: '<path d="M12 2 L15 9 L22 12 L15 15 L12 22 L9 15 L2 12 L9 9 Z" fill="currentColor"/>',
+        square: '<rect x="6" y="6" width="12" height="12" stroke="currentColor" stroke-width="1.5" fill="none" transform="rotate(45 12 12)"/>',
+        dot: '<circle cx="12" cy="12" r="3" fill="currentColor"/>',
+        plus: '<path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>'
+      };
+
+      var configs = [
+        { id: 'services-ornaments', colorClass: 'shape-green', mix: [shapes.leaf, shapes.dot, shapes.ring], count: 12 },
+        { id: 'adv-ornaments', colorClass: 'shape-green', mix: [shapes.square, shapes.plus, shapes.dot], count: 10 },
+        { id: 'cta-ornaments', colorClass: 'shape-gold', mix: [shapes.diamond, shapes.ring, shapes.plus], count: 8 },
+        { id: 'social-ornaments', colorClass: 'shape-white', mix: [shapes.leaf, shapes.dot, shapes.diamond], count: 12 },
+        { id: 'footer-ornaments', colorClass: 'shape-gold', mix: [shapes.square, shapes.dot, shapes.ring], count: 15 }
+      ];
+
+      var animClasses = ['shape-float', 'shape-rotate', 'shape-pulse', ''];
+
+      function initLowerOrnaments() {
+        configs.forEach(function (cfg) {
+          var cont = document.getElementById(cfg.id);
+          if (!cont) return;
+          for (var i = 0; i < cfg.count; i++) {
+            var el = document.createElement('div');
+            var anim = animClasses[Math.floor(Math.random() * animClasses.length)];
+            el.className = 'lower-shape ' + cfg.colorClass + ' ' + anim;
+
+            // Randomize size between 14px and 40px
+            var size = Math.random() * 26 + 14;
+            el.style.cssText = [
+              'width:' + size + 'px',
+              'height:' + size + 'px',
+              'left:' + (Math.random() * 96 + 2) + '%',
+              'top:' + (Math.random() * 90 + 5) + '%',
+              'animation-duration:' + (Math.random() * 5 + 4) + 's',
+              'animation-delay:' + (Math.random() * 3) + 's'
+            ].join(';');
+
+            var shapeSvg = cfg.mix[Math.floor(Math.random() * cfg.mix.length)];
+            el.innerHTML = '<svg viewBox="0 0 24 24" width="100%" height="100%">' + shapeSvg + '</svg>';
+            cont.appendChild(el);
+          }
+        });
+      }
+
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initLowerOrnaments);
+      else initLowerOrnaments();
     })();
   </script>
   <script>

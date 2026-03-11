@@ -192,45 +192,39 @@ p:last-child {
   border-radius: 2px;
 }
 
-/* === Decorative Ornaments === */
-.lower-ornament {
+/* === Decorative Diverse Section Ornaments === */
+.section-ornaments {
   position: absolute;
+  inset: 0;
+  overflow: hidden;
   pointer-events: none;
   z-index: 0;
+}
+
+.lower-shape {
+  position: absolute;
+  z-index: 0;
+}
+
+/* Shape Color Variations */
+.shape-gold {
+  color: var(--color-gold);
   opacity: 0.08;
-  /* Very subtle opacity */
 }
 
-.lower-ornament path {
-  fill: none;
-  stroke: var(--color-gold-light);
-  stroke-width: 1.5;
-  vector-effect: non-scaling-stroke;
-}
-
-.ornament-green {
+.shape-green {
+  color: var(--color-primary);
   opacity: 0.04;
 }
 
-.ornament-green path {
-  stroke: var(--color-primary);
-  stroke-width: 1.2;
+.shape-green-dark {
+  color: var(--color-primary-dark);
+  opacity: 0.05;
 }
 
-.ornament-left {
-  top: 10%;
-  left: -10%;
-  width: 50%;
-  height: 80%;
-  animation: ornament-breath 16s infinite alternate ease-in-out;
-}
-
-.ornament-right {
-  bottom: 10%;
-  right: -5%;
-  width: 60%;
-  height: 90%;
-  animation: ornament-breath 20s infinite alternate-reverse ease-in-out;
+.shape-white {
+  color: rgba(255, 255, 255, 1);
+  opacity: 0.03;
 }
 
 /* === Diverse Animated & Static SVG Shapes === */
