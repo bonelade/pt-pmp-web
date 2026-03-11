@@ -1,5 +1,7 @@
 /* ========================================
-   News / Articles - Supabase + localStorage fallback
+   News / Articles - Supabase (JSONB) + localStorage fallback
+   Stores all articles as a single JSONB row (id='main')
+   to avoid column-type issues with thumbnail storage.
    ======================================== */
 
 const NEWS_KEY = 'pmp_news';
@@ -46,6 +48,10 @@ function _newsSupa() {
   return (typeof getSupabase === 'function') ? getSupabase() : null;
 }
 
+// ============================
+// Load: Supabase (news_data JSONB) → localStorage → seed
+// Uses table 'news_data' with single row id='main', column 'data' (JSONB)
+// ============================
 function loadNews(callback) {
   if (_newsReady) {
     if (callback) callback(_newsCache);
@@ -54,7 +60,6 @@ function loadNews(callback) {
   if (callback) _newsCallbacks.push(callback);
   if (_newsCallbacks.length > 1) return;
 
-  // Wait for Supabase
   var attempts = 0;
   var timer = setInterval(function () {
     attempts++;
@@ -62,28 +67,32 @@ function loadNews(callback) {
     if (sb || attempts >= 30) {
       clearInterval(timer);
       if (sb) {
-        sb.from('articles').select('*').order('date', { ascending: false })
+        sb.from('news_data').select('*').eq('id', 'main').single()
           .then(function (res) {
-            if (res.data && res.data.length > 0) {
-              console.log('[NewsDB] Loaded from Supabase:', res.data.length, 'articles. First thumbnail:', res.data[0].thumbnail ? res.data[0].thumbnail.substring(0, 80) + '...' : '(empty)');
-              _newsCache = res.data;
+            if (res.data && res.data.data && Array.isArray(res.data.data)) {
+              console.log('[NewsDB] Loaded from Supabase JSONB:', res.data.data.length, 'articles');
+              _newsCache = res.data.data;
               _newsReady = true;
+              // Sync to localStorage
+              try { localStorage.setItem(NEWS_KEY, JSON.stringify(_newsCache)); } catch(e) {}
               _fireNewsCallbacks();
-            } else if (res.error) {
-              console.warn('Supabase articles error:', res.error.message);
+            } else if (res.error && res.error.code !== 'PGRST116') {
+              // PGRST116 = no rows — that's OK, we seed
+              console.warn('[NewsDB] Supabase error:', res.error.message);
               _loadNewsLocal();
             } else {
-              // Empty — seed from defaults
+              // No data — seed
+              console.log('[NewsDB] No data in Supabase, seeding...');
               _newsCache = SEED_ARTICLES;
               _newsReady = true;
               _fireNewsCallbacks();
-              // Seed to Supabase
-              sb.from('articles').upsert(SEED_ARTICLES).then(function () {
-                console.log('Articles seeded to Supabase');
-              });
+              _syncToSupabase(_newsCache);
             }
           })
-          .catch(function () { _loadNewsLocal(); });
+          .catch(function (err) {
+            console.warn('[NewsDB] Supabase fetch failed:', err);
+            _loadNewsLocal();
+          });
       } else {
         _loadNewsLocal();
       }
@@ -113,9 +122,25 @@ function _fireNewsCallbacks() {
   cbs.forEach(function (cb) { cb(_newsCache); });
 }
 
+// Save entire articles array to Supabase as JSONB
+function _syncToSupabase(articles) {
+  var sb = _newsSupa();
+  if (!sb) return;
+  sb.from('news_data').upsert({
+    id: 'main',
+    data: articles,
+    updated_at: new Date().toISOString()
+  }).then(function (res) {
+    if (res.error) {
+      console.error('[NewsDB] Supabase sync FAILED:', res.error.message);
+    } else {
+      console.log('[NewsDB] Synced to Supabase OK,', articles.length, 'articles');
+    }
+  });
+}
+
 function getArticles() {
   if (_newsCache) return _newsCache;
-  // Sync fallback for code that calls getArticles() before loadNews completes
   try {
     var data = localStorage.getItem(NEWS_KEY);
     if (data) return JSON.parse(data);
@@ -126,13 +151,7 @@ function getArticles() {
 function saveArticles(articles) {
   _newsCache = articles;
   localStorage.setItem(NEWS_KEY, JSON.stringify(articles));
-  var sb = _newsSupa();
-  if (sb) {
-    // Sync to Supabase: delete all then upsert
-    sb.from('articles').delete().neq('id', '').then(function () {
-      sb.from('articles').upsert(articles);
-    });
-  }
+  _syncToSupabase(articles);
 }
 
 function getArticleById(id) {
@@ -143,10 +162,7 @@ function deleteArticle(id) {
   const articles = getArticles().filter(a => a.id !== id);
   _newsCache = articles;
   localStorage.setItem(NEWS_KEY, JSON.stringify(articles));
-  var sb = _newsSupa();
-  if (sb) {
-    sb.from('articles').delete().eq('id', id);
-  }
+  _syncToSupabase(articles);
 }
 
 function upsertArticle(article) {
@@ -159,27 +175,8 @@ function upsertArticle(article) {
   }
   _newsCache = articles;
   localStorage.setItem(NEWS_KEY, JSON.stringify(articles));
-  var sb = _newsSupa();
-  if (sb) {
-    var row = {
-      id: article.id,
-      title_id: article.title_id || '',
-      title_en: article.title_en || '',
-      body_id: article.body_id || '',
-      body_en: article.body_en || '',
-      date: article.date || '',
-      category: article.category || '',
-      thumbnail: article.thumbnail || ''
-    };
-    console.log('[NewsDB] Upserting article:', article.id, 'thumbnail length:', (article.thumbnail || '').length, 'thumbnail preview:', (article.thumbnail || '').substring(0, 80));
-    sb.from('articles').upsert(row).then(function(res) {
-      if (res.error) {
-        console.error('[NewsDB] Supabase upsert FAILED:', res.error.message, res.error);
-      } else {
-        console.log('[NewsDB] Article saved OK:', article.id);
-      }
-    });
-  }
+  console.log('[NewsDB] Upserting article:', article.id, 'thumbnail length:', (article.thumbnail || '').length);
+  _syncToSupabase(articles);
 }
 
 function generateId() {
