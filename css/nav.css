@@ -1,0 +1,327 @@
+/* ========================================
+   Navigation Styles
+   ======================================== */
+
+#main-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(10, 29, 21, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: background 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease;
+  padding: 0;
+}
+#main-header.scrolled {
+  background: rgba(10, 29, 21, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 2px 32px rgba(0,0,0,0.35);
+  border-bottom: 1px solid rgba(201,147,42,0.15);
+}
+#main-header.solid {
+  background: rgba(10, 29, 21, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(201,147,42,0.12);
+}
+
+#main-header nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--nav-height);
+  gap: 16px;
+}
+
+/* Logo */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.nav-logo .logo-icon {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(201,147,42,0.35);
+}
+.nav-logo .logo-text-wrap { line-height: 1.1; }
+.nav-logo .logo-name {
+  font-family: var(--font-heading);
+  font-size: 0.93rem;
+  font-weight: 800;
+  color: var(--color-white);
+  display: block;
+  letter-spacing: 0.01em;
+}
+.nav-logo .logo-name em {
+  color: var(--color-red);
+  font-style: normal;
+}
+.nav-logo .logo-sub {
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  display: block;
+  margin-top: 1px;
+}
+
+/* Nav Controls */
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Language Toggle */
+#lang-toggle {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 20px;
+  padding: 6px 15px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: var(--font-body);
+}
+#lang-toggle:hover {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: white;
+  box-shadow: 0 4px 14px rgba(201,147,42,0.35);
+}
+#lang-toggle .lang-active { color: var(--color-gold-light); }
+
+/* Hamburger */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.08);
+  border-radius: 8px;
+  transition: var(--transition);
+  border: 1px solid rgba(255,255,255,0.18);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.hamburger:hover { background: rgba(255,255,255,0.15); }
+.hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--color-white);
+  border-radius: 2px;
+  transition: var(--transition);
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ========================================
+   Sliding Nav Panel
+   ======================================== */
+
+/* Overlay */
+#nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 1099;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  backdrop-filter: blur(2px);
+}
+#nav-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Panel */
+#nav-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 280px;
+  background: rgba(8, 24, 16, 0.98);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  z-index: 1100;
+  transform: translateX(-100%);
+  visibility: hidden;
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), visibility 0.35s;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(201,147,42,0.18);
+  box-shadow: none;
+}
+#nav-panel.open {
+  transform: translateX(0);
+  visibility: visible;
+  box-shadow: 6px 0 40px rgba(0,0,0,0.4);
+}
+
+/* Panel Header */
+.nav-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  flex-shrink: 0;
+}
+.nav-panel-logo-icon {
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light));
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(201,147,42,0.35);
+}
+#nav-panel-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.7);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+#nav-panel-close:hover {
+  background: rgba(255,255,255,0.15);
+  color: white;
+}
+
+/* Nav Links inside panel */
+.nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  overflow-y: auto;
+}
+.nav-links a {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+  transition: color 0.25s, background 0.25s;
+  border-radius: 8px;
+  text-decoration: none;
+  white-space: nowrap;
+  gap: 10px;
+}
+.nav-links a:hover {
+  color: var(--color-gold-light);
+  background: rgba(201,147,42,0.12);
+}
+.nav-links a.active {
+  color: var(--color-gold-light);
+  background: rgba(201,147,42,0.14);
+}
+.nav-links a.nav-harga {
+  color: var(--color-gold-light);
+}
+.nav-links a.nav-harga:hover {
+  background: rgba(201,147,42,0.18);
+}
+
+/* Left edge nav trigger button */
+#nav-edge-hint {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  z-index: 1098;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 14px 6px 14px 4px;
+  background: linear-gradient(135deg, rgba(10,29,21,0.9), rgba(10,29,21,0.75));
+  border-radius: 0 12px 12px 0;
+  border: 1px solid rgba(201,147,42,0.25);
+  border-left: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), background 0.3s, box-shadow 0.3s;
+  box-shadow: 2px 4px 16px rgba(0,0,0,0.25);
+}
+#nav-edge-hint .hint-arrows {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: center;
+}
+#nav-edge-hint .hint-arrows span {
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 5px solid var(--color-gold);
+  opacity: 0.5;
+  transition: opacity 0.3s, transform 0.3s;
+}
+#nav-edge-hint .hint-arrows span:nth-child(2) {
+  opacity: 0.75;
+  border-left-width: 6px;
+  border-top-width: 5px;
+  border-bottom-width: 5px;
+}
+#nav-edge-hint .hint-arrows span:nth-child(3) {
+  opacity: 0.5;
+}
+#nav-edge-hint:hover {
+  background: linear-gradient(135deg, rgba(10,29,21,0.95), rgba(26,71,49,0.9));
+  box-shadow: 3px 6px 24px rgba(201,147,42,0.25);
+  transform: translateY(-50%) translateX(3px);
+}
+#nav-edge-hint:hover .hint-arrows span {
+  opacity: 1;
+  border-left-color: var(--color-gold-light);
+}
+#nav-edge-hint:hover .hint-arrows span:nth-child(1) { transform: translateX(2px); }
+#nav-edge-hint:hover .hint-arrows span:nth-child(2) { transform: translateX(4px); }
+#nav-edge-hint:hover .hint-arrows span:nth-child(3) { transform: translateX(2px); }
+#nav-edge-hint.hidden {
+  transform: translateY(-50%) translateX(-100%);
+  pointer-events: none;
+}

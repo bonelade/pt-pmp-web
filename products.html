@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="id" data-lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produk & Jasa - PT Pangan Merah Putih</title>
+  <script>(function(){var l=localStorage.getItem('pmp_lang')||'id';document.documentElement.setAttribute('lang',l);document.documentElement.setAttribute('data-lang',l);})()</script>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .product-card {
+      background: var(--color-white);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      transition: var(--transition);
+      display: grid;
+      grid-template-columns: 200px 1fr;
+    }
+    .product-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+    .product-card-visual {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      opacity: 0.9;
+    }
+    .product-card-body { padding: 36px 32px; }
+    .product-card-body h3 { font-size: 1.5rem; margin-bottom: 12px; }
+    .product-specs {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .spec-tag {
+      background: var(--color-light);
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .spec-tag::before { content: '✓'; color: var(--color-gold); font-weight: 700; }
+
+    /* Process Flow */
+    .flow-wrap {
+      overflow-x: auto;
+      padding: 20px 0;
+    }
+    .flow-steps {
+      display: flex;
+      align-items: center;
+      min-width: 800px;
+      gap: 0;
+    }
+    .flow-step {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .flow-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 36px;
+      width: 50%;
+      height: 2px;
+      background: var(--color-gold);
+    }
+    .flow-step:not(:first-child)::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 36px;
+      width: 50%;
+      height: 2px;
+      background: var(--color-gold);
+    }
+    .flow-icon {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      color: var(--color-white);
+      font-size: 1.8rem;
+      display: flex; align-items: center; justify-content: center;
+      border: 3px solid var(--color-gold);
+      position: relative;
+      z-index: 1;
+      margin-bottom: 16px;
+    }
+    .flow-step h4 { font-size: 0.88rem; text-align: center; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.75rem; text-align: center; color: var(--color-text-muted); max-width: 100px; margin: 0; }
+
+    @media (max-width: 900px) {
+      .product-card { grid-template-columns: 1fr; }
+      .product-card-visual { min-height: 160px; }
+    }
+  </style>
+</head>
+<body>
+
+<header id="main-header">
+  <nav class="container">
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon" id="logo-icon-svg" style="font-size:0"></div>
+      <div class="logo-text-wrap">
+        <span class="logo-name">PT PANGAN <em>MERAH</em> PUTIH</span>
+        <span class="logo-sub">Bengkayang, Kalimantan Barat</span>
+      </div>
+    </a>
+    <div class="nav-controls">
+      <button id="lang-toggle" onclick="toggleLanguage()">ID | EN</button>
+    </div>
+  </nav>
+</header>
+
+<!-- Sliding Nav Panel -->
+<div id="nav-overlay"></div>
+<div id="nav-panel">
+  <div class="nav-panel-header">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-panel-logo-icon">🌽</div>
+      <div class="logo-text-wrap">
+        <span class="logo-name">PT PANGAN <em>MERAH</em> PUTIH</span>
+        <span class="logo-sub">Bengkayang, Kalimantan Barat</span>
+      </div>
+    </a>
+    <button id="nav-panel-close" aria-label="Tutup">✕</button>
+  </div>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="index.html" data-i18n="nav_home">Beranda</a></li>
+    <li><a href="about.html" data-i18n="nav_about">Tentang Kami</a></li>
+    <li><a href="sustainability.html" data-i18n="nav_sustainability">Keberlanjutan</a></li>
+    <li><a href="products.html" data-i18n="nav_products">Produk & Jasa</a></li>
+    <li><a href="community.html" data-i18n="nav_community">Komunitas</a></li>
+    <li><a href="news.html" data-i18n="nav_news">Berita</a></li>
+    <li><a href="harga-jagung.html" class="nav-harga">Harga</a></li>
+  </ul>
+</div>
+
+<section class="page-hero">
+  <div class="container page-hero-content">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a><span>/</span>
+      <span data-i18n="prod_hero_bc">Produk & Jasa</span>
+    </div>
+    <h1 data-i18n="prod_hero_title">Produk & Jasa</h1>
+  </div>
+</section>
+
+<!-- Services -->
+<section class="section bg-white">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <span class="label" data-i18n="prod_svc_label">Layanan Utama</span>
+      <h2 data-i18n="prod_svc_title">Apa yang Kami Tawarkan</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:28px;">
+      <!-- Card 1 -->
+      <div class="product-card animate-on-scroll">
+        <div class="product-card-visual">🌽</div>
+        <div class="product-card-body">
+          <span class="badge badge-gold" style="margin-bottom:12px;">01</span>
+          <h3 data-i18n="prod1_title">Pengeringan Jagung</h3>
+          <p data-i18n="prod1_text">Menggunakan vertical dryer berkapasitas 300 ton/hari untuk menurunkan kadar air jagung.</p>
+          <div class="product-specs">
+            <span class="spec-tag" data-i18n="prod1_spec1">Kapasitas: 15–300 ton/hari</span>
+            <span class="spec-tag" data-i18n="prod1_spec2">Teknologi: Vertical Dryer</span>
+            <span class="spec-tag" data-i18n="prod1_spec3">Output: 14% Kadar Air</span>
+          </div>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="product-card animate-on-scroll">
+        <div class="product-card-visual">🏭</div>
+        <div class="product-card-body">
+          <span class="badge badge-gold" style="margin-bottom:12px;">02</span>
+          <h3 data-i18n="prod2_title">Penyimpanan Jagung</h3>
+          <p data-i18n="prod2_text">Fasilitas gudang dan silo dengan kapasitas hingga 1.000 ton, dilengkapi sistem QC.</p>
+          <div class="product-specs">
+            <span class="spec-tag" data-i18n="prod2_spec1">Kapasitas: Hingga 1.000 ton</span>
+            <span class="spec-tag" data-i18n="prod2_spec2">Monitoring: QC rutin</span>
+            <span class="spec-tag" data-i18n="prod2_spec3">Layanan: Sewa gudang tersedia</span>
+          </div>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="product-card animate-on-scroll">
+        <div class="product-card-visual">🚛</div>
+        <div class="product-card-body">
+          <span class="badge badge-gold" style="margin-bottom:12px;">03</span>
+          <h3 data-i18n="prod3_title">Distribusi Jagung</h3>
+          <p data-i18n="prod3_text">Distribusi jagung kering berkualitas ke Bulog, feedmill swasta, dan mitra dagang.</p>
+          <div class="product-specs">
+            <span class="spec-tag" data-i18n="prod3_spec1">Pasar: Bulog & Feedmill Swasta</span>
+            <span class="spec-tag" data-i18n="prod3_spec2">Area: Kalimantan Barat</span>
+            <span class="spec-tag" data-i18n="prod3_spec3">Potensi: Ekspor ke Malaysia</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Revenue Streams -->
+<section class="section bg-light">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <span class="label" data-i18n="prod_rev_label">Model Pendapatan</span>
+      <h2 data-i18n="prod_rev_title">Aliran Pendapatan Kami</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="grid grid-3">
+      <div class="revenue-card animate-on-scroll">
+        <div class="icon-box icon-box-gold" style="margin-bottom:16px;">📊</div>
+        <h3 data-i18n="rev1_title">Trading Margin</h3>
+        <ul>
+          <li data-i18n="rev1_1">Beli jagung pipil basah dari petani (KA 25–35%)</li>
+          <li data-i18n="rev1_2">Proses pengeringan menjadi standar 14% KA</li>
+          <li data-i18n="rev1_3">Jual ke Bulog / feedmill dengan harga lebih tinggi</li>
+        </ul>
+      </div>
+      <div class="revenue-card animate-on-scroll animate-delay-1">
+        <div class="icon-box icon-box-gold" style="margin-bottom:16px;">🔧</div>
+        <h3 data-i18n="rev2_title">Fee Jasa Pengeringan</h3>
+        <ul>
+          <li data-i18n="rev2_1">Petani / mitra koperasi membawa jagung basah</li>
+          <li data-i18n="rev2_2">PT PMP mengenakan biaya jasa pengeringan</li>
+          <li data-i18n="rev2_3">Tanpa membeli jagung – pure service fee</li>
+        </ul>
+      </div>
+      <div class="revenue-card animate-on-scroll animate-delay-2">
+        <div class="icon-box icon-box-gold" style="margin-bottom:16px;">🏬</div>
+        <h3 data-i18n="rev3_title">Biaya Sewa Gudang</h3>
+        <ul>
+          <li data-i18n="rev3_1">Penyewaan ruang penyimpanan di gudang/silo</li>
+          <li data-i18n="rev3_2">Tersedia untuk petani, koperasi, atau mitra dagang</li>
+          <li data-i18n="rev3_3">Sistem tarif harian atau bulanan</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Process Flow -->
+<section class="section bg-white">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <span class="label" data-i18n="prod_process_label">Alur Proses</span>
+      <h2 data-i18n="prod_process_title">Proses Operasional</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="flow-wrap animate-on-scroll">
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-icon">📥</div>
+          <h4 data-i18n="proc1">Penerimaan</h4>
+          <p data-i18n="proc1_sub">Jagung masuk dari petani/pengepul</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-icon">⚖️</div>
+          <h4 data-i18n="proc2">Penimbangan</h4>
+          <p data-i18n="proc2_sub">Pengukuran berat & kadar air awal</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-icon">🔥</div>
+          <h4 data-i18n="proc3">Pengeringan</h4>
+          <p data-i18n="proc3_sub">Vertical dryer 300 ton/hari</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-icon">🔬</div>
+          <h4 data-i18n="proc4">Quality Control</h4>
+          <p data-i18n="proc4_sub">Cek KA, kebersihan, aflatoksin</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-icon">🏗️</div>
+          <h4 data-i18n="proc5">Penyimpanan</h4>
+          <p data-i18n="proc5_sub">Gudang kapasitas 1.000 ton</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-icon">🚛</div>
+          <h4 data-i18n="proc6">Distribusi</h4>
+          <p data-i18n="proc6_sub">Ke Bulog, feedmill, ekspor</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section bg-dark">
+  <div class="container text-center">
+    <div class="animate-on-scroll">
+      <h2 style="color:var(--color-white); margin-bottom:16px;" data-i18n="home_adv_title">Mengapa Memilih PT PMP?</h2>
+      <p style="max-width:500px; margin:0 auto 32px;" data-i18n="adv3_text">Sistem QC internal: kadar air 14%, bebas aflatoksin (&lt;50ppb), bersih, sesuai standar Bulog.</p>
+      <a href="community.html" class="btn btn-primary btn-lg" data-i18n="comm_market_label">Analisis Pasar</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo-text">PT PANGAN <span>MERAH</span> PUTIH</div>
+        <p data-i18n="footer_tagline">Pusat pengeringan dan distribusi jagung pakan terkemuka di Kalimantan Barat.</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_nav">Navigasi</h4>
+        <ul>
+          <li><a href="index.html" data-i18n="nav_home">Beranda</a></li>
+          <li><a href="about.html" data-i18n="nav_about">Tentang Kami</a></li>
+          <li><a href="sustainability.html" data-i18n="nav_sustainability">Keberlanjutan</a></li>
+          <li><a href="products.html" data-i18n="nav_products">Produk & Jasa</a></li>
+          <li><a href="community.html" data-i18n="nav_community">Komunitas</a></li>
+          <li><a href="news.html" data-i18n="nav_news">Berita</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_contact">Kontak</h4>
+        <div class="footer-contact-item"><span class="footer-icon" id="footer-icon-map" style="font-size:0"></span><span data-i18n="footer_address">Bengkayang, Kalimantan Barat, Indonesia</span></div>
+        <div id="footer-social-links" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:16px;"></div>
+      </div>
+      <div class="footer-col"><h4>Admin</h4><ul><li><a href="admin.html">Admin Panel</a></li></ul></div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© <span class="year-current"></span> PT Pangan Merah Putih. <span data-i18n="footer_rights">Seluruh hak cipta dilindungi.</span></span>
+      <a href="#" id="back-to-top" style="color:var(--color-gold); opacity:0; transition:opacity 0.3s;" data-i18n="footer_back_top">Kembali ke Atas ↑</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/icons.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/kontak.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/main.js"></script>
+<!-- Floating WhatsApp Button -->
+<div id="float-wa" style="display:none; position:fixed; bottom:28px; right:28px; z-index:999;">
+  <a id="float-wa-link" href="#" target="_blank" rel="noopener"
+    style="display:flex; align-items:center; gap:10px; background:#25d366; color:white; padding:14px 20px; border-radius:50px; box-shadow:0 4px 20px rgba(37,211,102,0.4); font-weight:700; font-size:0.9rem; text-decoration:none; transition:transform 0.2s,box-shadow 0.2s;"
+    onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(37,211,102,0.5)'"
+    onmouseout="this.style.transform='';this.style.boxShadow='0 4px 20px rgba(37,211,102,0.4)'">
+    <span id="float-wa-icon" style="width:22px;height:22px;display:inline-flex;flex-shrink:0;"></span>
+    <span id="float-wa-label">WhatsApp</span>
+  </a>
+</div>
+<script>
+  (function(){
+    function initKontakUI() {
+      if (!window.KontakDB) return;
+      var k = window.KontakDB.getKontak();
+      // Floating WA
+      if (k.whatsapp) {
+        var btn = document.getElementById('float-wa');
+        var link = document.getElementById('float-wa-link');
+        var lbl = document.getElementById('float-wa-label');
+        if (btn) btn.style.display = 'block';
+        if (link) link.href = 'https://wa.me/62' + k.whatsapp;
+        if (lbl) lbl.textContent = k.whatsapp_label || 'WhatsApp';
+      }
+      // Footer social icons
+      var socialContainer = document.getElementById('footer-social-links');
+      if (socialContainer) {
+        var links = [];
+        var ic2 = window.Icons || {};
+        if (k.whatsapp) links.push({ href: 'https://wa.me/62' + k.whatsapp, icon: ic2.whatsapp||'', label: 'WA', color: '#25d366' });
+        if (k.instagram) links.push({ href: 'https://instagram.com/' + k.instagram, icon: ic2.instagram||'', label: 'IG', color: '#e1306c' });
+        if (k.facebook) {
+          var fbHref = k.facebook.startsWith('http') ? k.facebook : 'https://facebook.com/' + k.facebook;
+          links.push({ href: fbHref, icon: ic2.facebook||'', label: 'FB', color: '#1877f2' });
+        }
+        if (k.email) links.push({ href: 'mailto:' + k.email, icon: ic2.email||'', label: 'Email', color: '#c9932a' });
+        if (links.length > 0) {
+          socialContainer.innerHTML = links.map(l =>
+            '<a href="' + l.href + '" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:' + l.color + ';color:white;padding:7px 13px;border-radius:20px;font-size:0.78rem;font-weight:700;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'"><span style="width:14px;height:14px;display:inline-flex;flex-shrink:0;">' + l.icon + '</span>' + l.label + '</a>'
+          ).join('');
+        }
+      }
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initKontakUI);
+    else initKontakUI();
+  })();
+</script>
+<script>
+  (function(){
+    function injectIcons() {
+      var ic = window.Icons; if (!ic) return;
+      function set(id, svg, w) { var el = document.getElementById(id); if (!el) return; el.innerHTML = svg; var s = el.querySelector('svg'); if (s) { s.style.width = w||'100%'; s.style.height = w||'100%'; } }
+      set('logo-icon-svg', ic.grain, '24px');
+      set('footer-icon-map', ic.mapPin, '16px');
+      set('footer-icon-building', ic.building, '16px');
+      set('float-wa-icon', ic.whatsapp, '22px');
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', injectIcons);
+    else injectIcons();
+  })();
+</script>
+</body>
+</html>

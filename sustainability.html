@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="id" data-lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keberlanjutan - PT Pangan Merah Putih</title>
+  <script>(function(){var l=localStorage.getItem('pmp_lang')||'id';document.documentElement.setAttribute('lang',l);document.documentElement.setAttribute('data-lang',l);})()</script>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .challenge-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .challenge-card {
+      background: var(--color-white);
+      border-radius: var(--radius-card);
+      padding: 32px 28px;
+      border-left: 4px solid var(--color-red);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .challenge-card:hover { box-shadow: var(--shadow-card); transform: translateY(-3px); }
+    .challenge-card .challenge-icon { font-size: 2.4rem; margin-bottom: 16px; display: block; }
+    .challenge-card h3 { color: var(--color-primary); margin-bottom: 10px; }
+
+    .solution-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+    .solution-card {
+      background: var(--color-white);
+      border-radius: var(--radius-card);
+      padding: 32px 28px;
+      border-left: 4px solid var(--color-gold);
+      box-shadow: var(--shadow-sm);
+      display: flex; gap: 20px; align-items: flex-start;
+      transition: var(--transition);
+    }
+    .solution-card:hover { box-shadow: var(--shadow-card); transform: translateY(-3px); }
+    .solution-icon {
+      width: 56px; height: 56px; min-width: 56px;
+      background: #fef3e2;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+    }
+    .solution-card h3 { margin-bottom: 8px; font-size: 1.1rem; }
+
+    .quality-metrics {
+      background: var(--color-primary);
+      border-radius: var(--radius-card);
+      padding: 48px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      text-align: center;
+    }
+    .metric-item {}
+    .metric-value {
+      font-family: var(--font-heading);
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--color-gold);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .metric-label { color: rgba(255,255,255,0.7); font-size: 0.85rem; }
+
+    @media (max-width: 900px) {
+      .challenge-grid { grid-template-columns: 1fr; }
+      .solution-grid { grid-template-columns: 1fr; }
+      .quality-metrics { grid-template-columns: 1fr; padding: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<header id="main-header">
+  <nav class="container">
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon" id="logo-icon-svg" style="font-size:0"></div>
+      <div class="logo-text-wrap">
+        <span class="logo-name">PT PANGAN <em>MERAH</em> PUTIH</span>
+        <span class="logo-sub">Bengkayang, Kalimantan Barat</span>
+      </div>
+    </a>
+    <div class="nav-controls">
+      <button id="lang-toggle" onclick="toggleLanguage()">ID | EN</button>
+    </div>
+  </nav>
+</header>
+
+<!-- Sliding Nav Panel -->
+<div id="nav-overlay"></div>
+<div id="nav-panel">
+  <div class="nav-panel-header">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-panel-logo-icon">🌽</div>
+      <div class="logo-text-wrap">
+        <span class="logo-name">PT PANGAN <em>MERAH</em> PUTIH</span>
+        <span class="logo-sub">Bengkayang, Kalimantan Barat</span>
+      </div>
+    </a>
+    <button id="nav-panel-close" aria-label="Tutup">✕</button>
+  </div>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="index.html" data-i18n="nav_home">Beranda</a></li>
+    <li><a href="about.html" data-i18n="nav_about">Tentang Kami</a></li>
+    <li><a href="sustainability.html" data-i18n="nav_sustainability">Keberlanjutan</a></li>
+    <li><a href="products.html" data-i18n="nav_products">Produk & Jasa</a></li>
+    <li><a href="community.html" data-i18n="nav_community">Komunitas</a></li>
+    <li><a href="news.html" data-i18n="nav_news">Berita</a></li>
+    <li><a href="harga-jagung.html" class="nav-harga">Harga</a></li>
+  </ul>
+</div>
+
+<section class="page-hero">
+  <div class="container page-hero-content">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a><span>/</span>
+      <span data-i18n="sust_hero_bc">Keberlanjutan</span>
+    </div>
+    <h1 data-i18n="sust_hero_title">Keberlanjutan</h1>
+  </div>
+</section>
+
+<!-- Background -->
+<section class="section bg-white">
+  <div class="container">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;">
+      <div class="animate-on-scroll">
+        <div class="section-header" style="text-align:left; margin-bottom:32px;">
+          <span class="label" data-i18n="sust_bg_label">Latar Belakang</span>
+          <h2 data-i18n="sust_bg_title">Mengapa PT PMP Hadir?</h2>
+          <div class="section-divider" style="margin:16px 0 0;"></div>
+        </div>
+        <p data-i18n="sust_bg_text">Kebutuhan jagung nasional Indonesia sangat besar dan terus berkembang. Pada tahun 2023, kebutuhan jagung nasional diperkirakan mencapai 16,98 juta ton, yang didominasi untuk pakan ternak.</p>
+        <p>Angka ini mencakup kebutuhan industri pakan (sekitar 15 juta ton), industri non-pakan, serta pangan, dengan proyeksi ketersediaan total sekitar 17,3 juta ton pada tahun 2024.</p>
+        <div style="margin-top:32px; padding:24px; background:var(--color-light); border-radius:var(--radius-card); border-left:4px solid var(--color-gold);">
+          <p style="margin:0; font-weight:500; color:var(--color-text); font-size:0.95rem;">
+            💡 PT PMP menangkap peluang sebagai solusi rantai pasok antara <strong>hulu (petani)</strong> dan <strong>hilir (produsen pasar)</strong>, sekaligus turut serta membantu program Ketahanan Pangan Presiden Prabowo Subianto.
+          </p>
+        </div>
+      </div>
+      <div class="animate-on-scroll animate-delay-1">
+        <div class="quality-metrics">
+          <div class="metric-item">
+            <div class="metric-value">14%</div>
+            <div class="metric-label">Standar Kadar Air Output</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">&lt;50</div>
+            <div class="metric-label">ppb Aflatoksin Maksimum</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">17M+</div>
+            <div class="metric-label">Ton Kebutuhan Nasional/Tahun</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Challenges -->
+<section class="section bg-light">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <span class="label" data-i18n="sust_challenge_label">Tantangan Industri</span>
+      <h2 data-i18n="sust_challenge_title">Masalah yang Kami Selesaikan</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="challenge-grid">
+      <div class="challenge-card animate-on-scroll">
+        <span class="challenge-icon">💧</span>
+        <h3 data-i18n="sust_c1_title">Kadar Air Tinggi</h3>
+        <p data-i18n="sust_c1_text">Produksi jagung lokal sering memiliki kadar air tinggi (20–35%), tidak sesuai standar industri yang membutuhkan kadar air 14%.</p>
+      </div>
+      <div class="challenge-card animate-on-scroll animate-delay-1">
+        <span class="challenge-icon">🔗</span>
+        <h3 data-i18n="sust_c2_title">Rantai Pasok Tidak Efisien</h3>
+        <p data-i18n="sust_c2_text">Industri pakan kesulitan mendapat jagung kering yang stabil dalam jumlah besar dan kontinyu.</p>
+      </div>
+      <div class="challenge-card animate-on-scroll animate-delay-2">
+        <span class="challenge-icon">📉</span>
+        <h3 data-i18n="sust_c3_title">Kerugian Petani</h3>
+        <p data-i18n="sust_c3_text">Petani menderita kerugian akibat jagung tidak laku atau dijual murah karena kadar air tinggi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Solutions -->
+<section class="section bg-white">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <span class="label" data-i18n="sust_solution_label">Solusi PT PMP</span>
+      <h2 data-i18n="sust_solution_title">Peran Kami dalam Ketahanan Pangan</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="solution-grid">
+      <div class="solution-card animate-on-scroll">
+        <div class="solution-icon">🏛️</div>
+        <div>
+          <h3 data-i18n="sust_s1_title">Mendukung Program Pemerintah</h3>
+          <p data-i18n="sust_s1_text">PT PMP turut serta membantu program Ketahanan Pangan Presiden Prabowo Subianto dengan memasok Cadangan Jagung Pemerintah melalui Bulog.</p>
+        </div>
+      </div>
+      <div class="solution-card animate-on-scroll animate-delay-1">
+        <div class="solution-icon">✅</div>
+        <div>
+          <h3 data-i18n="sust_s2_title">Standar Kualitas Nasional</h3>
+          <p data-i18n="sust_s2_text">Jagung yang kami hasilkan memenuhi standar nasional: kadar air 14%, bersih, bebas jamur, dan aflatoksin &lt;50ppb.</p>
+        </div>
+      </div>
+      <div class="solution-card animate-on-scroll animate-delay-2">
+        <div class="solution-icon">🤝</div>
+        <div>
+          <h3 data-i18n="sust_s3_title">Pemberdayaan Petani</h3>
+          <p data-i18n="sust_s3_text">Skema kemitraan yang memberikan harga fair kepada petani dan membantu mengurangi kerugian pasca panen.</p>
+        </div>
+      </div>
+      <div class="solution-card animate-on-scroll animate-delay-3">
+        <div class="solution-icon">🌿</div>
+        <div>
+          <h3 data-i18n="sust_s4_title">Teknologi Ramah Lingkungan</h3>
+          <p data-i18n="sust_s4_text">Penggunaan vertical dryer modern yang lebih efisien secara energi dibanding metode pengeringan tradisional.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Supply Chain Visual -->
+<section class="section bg-dark">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <span class="label" style="background:var(--color-gold);">Skema Bisnis</span>
+      <h2 style="color:var(--color-white);">Rantai Pasok Jagung</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="stakeholder-flow animate-on-scroll">
+      <div class="stakeholder-box">
+        <div class="sbox-icon">👨‍🌾</div>
+        <h3 data-i18n="stake_farmer">Petani</h3>
+        <p data-i18n="stake_farmer_text">Panen jagung basah, jual ke PT PMP atau pengepul</p>
+      </div>
+      <div class="stakeholder-arrow">→</div>
+      <div class="stakeholder-box center">
+        <div class="sbox-icon">🏭</div>
+        <h3 data-i18n="stake_pmp">PT PMP</h3>
+        <p data-i18n="stake_pmp_text">Pengeringan, penyimpanan, distribusi</p>
+      </div>
+      <div class="stakeholder-arrow">→</div>
+      <div class="stakeholder-box">
+        <div class="sbox-icon">🏪</div>
+        <h3 data-i18n="stake_buyer">Pembeli</h3>
+        <p data-i18n="stake_buyer_text">Bulog, Feedmill Swasta, Pasar Ekspor</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo-text">PT PANGAN <span>MERAH</span> PUTIH</div>
+        <p data-i18n="footer_tagline">Pusat pengeringan dan distribusi jagung pakan terkemuka di Kalimantan Barat.</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_nav">Navigasi</h4>
+        <ul>
+          <li><a href="index.html" data-i18n="nav_home">Beranda</a></li>
+          <li><a href="about.html" data-i18n="nav_about">Tentang Kami</a></li>
+          <li><a href="sustainability.html" data-i18n="nav_sustainability">Keberlanjutan</a></li>
+          <li><a href="products.html" data-i18n="nav_products">Produk & Jasa</a></li>
+          <li><a href="community.html" data-i18n="nav_community">Komunitas</a></li>
+          <li><a href="news.html" data-i18n="nav_news">Berita</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_contact">Kontak</h4>
+        <div class="footer-contact-item"><span class="footer-icon" id="footer-icon-map" style="font-size:0"></span><span data-i18n="footer_address">Bengkayang, Kalimantan Barat, Indonesia</span></div>
+        <div id="footer-social-links" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:16px;"></div>
+      </div>
+      <div class="footer-col"><h4>Admin</h4><ul><li><a href="admin.html">Admin Panel</a></li></ul></div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© <span class="year-current"></span> PT Pangan Merah Putih. <span data-i18n="footer_rights">Seluruh hak cipta dilindungi.</span></span>
+      <a href="#" id="back-to-top" style="color:var(--color-gold); opacity:0; transition:opacity 0.3s;" data-i18n="footer_back_top">Kembali ke Atas ↑</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/icons.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/kontak.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/main.js"></script>
+<!-- Floating WhatsApp Button -->
+<div id="float-wa" style="display:none; position:fixed; bottom:28px; right:28px; z-index:999;">
+  <a id="float-wa-link" href="#" target="_blank" rel="noopener"
+    style="display:flex; align-items:center; gap:10px; background:#25d366; color:white; padding:14px 20px; border-radius:50px; box-shadow:0 4px 20px rgba(37,211,102,0.4); font-weight:700; font-size:0.9rem; text-decoration:none; transition:transform 0.2s,box-shadow 0.2s;"
+    onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(37,211,102,0.5)'"
+    onmouseout="this.style.transform='';this.style.boxShadow='0 4px 20px rgba(37,211,102,0.4)'">
+    <span id="float-wa-icon" style="width:22px;height:22px;display:inline-flex;flex-shrink:0;"></span>
+    <span id="float-wa-label">WhatsApp</span>
+  </a>
+</div>
+<script>
+  (function(){
+    function initKontakUI() {
+      if (!window.KontakDB) return;
+      var k = window.KontakDB.getKontak();
+      // Floating WA
+      if (k.whatsapp) {
+        var btn = document.getElementById('float-wa');
+        var link = document.getElementById('float-wa-link');
+        var lbl = document.getElementById('float-wa-label');
+        if (btn) btn.style.display = 'block';
+        if (link) link.href = 'https://wa.me/62' + k.whatsapp;
+        if (lbl) lbl.textContent = k.whatsapp_label || 'WhatsApp';
+      }
+      // Footer social icons
+      var socialContainer = document.getElementById('footer-social-links');
+      if (socialContainer) {
+        var links = [];
+        var ic2 = window.Icons || {};
+        if (k.whatsapp) links.push({ href: 'https://wa.me/62' + k.whatsapp, icon: ic2.whatsapp||'', label: 'WA', color: '#25d366' });
+        if (k.instagram) links.push({ href: 'https://instagram.com/' + k.instagram, icon: ic2.instagram||'', label: 'IG', color: '#e1306c' });
+        if (k.facebook) {
+          var fbHref = k.facebook.startsWith('http') ? k.facebook : 'https://facebook.com/' + k.facebook;
+          links.push({ href: fbHref, icon: ic2.facebook||'', label: 'FB', color: '#1877f2' });
+        }
+        if (k.email) links.push({ href: 'mailto:' + k.email, icon: ic2.email||'', label: 'Email', color: '#c9932a' });
+        if (links.length > 0) {
+          socialContainer.innerHTML = links.map(l =>
+            '<a href="' + l.href + '" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:' + l.color + ';color:white;padding:7px 13px;border-radius:20px;font-size:0.78rem;font-weight:700;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'"><span style="width:14px;height:14px;display:inline-flex;flex-shrink:0;">' + l.icon + '</span>' + l.label + '</a>'
+          ).join('');
+        }
+      }
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initKontakUI);
+    else initKontakUI();
+  })();
+</script>
+<script>
+  (function(){
+    function injectIcons() {
+      var ic = window.Icons; if (!ic) return;
+      function set(id, svg, w) { var el = document.getElementById(id); if (!el) return; el.innerHTML = svg; var s = el.querySelector('svg'); if (s) { s.style.width = w||'100%'; s.style.height = w||'100%'; } }
+      set('logo-icon-svg', ic.grain, '24px');
+      set('footer-icon-map', ic.mapPin, '16px');
+      set('footer-icon-building', ic.building, '16px');
+      set('float-wa-icon', ic.whatsapp, '22px');
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', injectIcons);
+    else injectIcons();
+  })();
+</script>
+</body>
+</html>

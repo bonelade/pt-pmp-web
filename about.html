@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="id" data-lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tentang Kami - PT Pangan Merah Putih</title>
+  <script>(function(){var l=localStorage.getItem('pmp_lang')||'id';document.documentElement.setAttribute('lang',l);document.documentElement.setAttribute('data-lang',l);})()</script>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    /* Profile */
+    .profile-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .info-list { list-style: none; padding: 0; }
+    .info-list li {
+      display: flex;
+      gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .info-list li:last-child { border-bottom: none; }
+    .info-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-muted);
+      min-width: 130px;
+    }
+    .info-value { font-weight: 600; color: var(--color-text); }
+
+    /* Vision Mission */
+    .vm-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    .vm-card {
+      border-radius: var(--radius-card);
+      padding: 40px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+    .vm-card.vision { background: var(--color-primary); }
+    .vm-card.mission { background: var(--color-gold); }
+    .vm-card::before {
+      content: '';
+      position: absolute;
+      bottom: -30px; right: -30px;
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+    .vm-card .vm-icon {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .vm-card h3 { color: var(--color-white); margin-bottom: 16px; font-size: 1.6rem; }
+    .vm-card p { color: rgba(255,255,255,0.88); font-size: 1rem; line-height: 1.7; margin: 0; }
+    .vm-card ul { list-style: none; padding: 0; }
+    .vm-card ul li {
+      display: flex; align-items: flex-start; gap: 10px;
+      color: rgba(255,255,255,0.88);
+      font-size: 0.92rem;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .vm-card ul li::before {
+      content: '✦';
+      color: rgba(255,255,255,0.7);
+      flex-shrink: 0;
+      font-size: 0.7rem;
+      margin-top: 4px;
+    }
+
+    /* Org Chart */
+    .org-wrap {
+      overflow-x: auto;
+      padding: 20px 0;
+    }
+    .org-tree {
+      min-width: 900px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+    .org-row { display: flex; justify-content: center; gap: 16px; position: relative; }
+    .org-row + .org-row { margin-top: 40px; }
+    .org-connector {
+      position: relative;
+    }
+    .org-connector::before {
+      content: '';
+      position: absolute;
+      top: -32px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 32px;
+      background: var(--color-gold);
+    }
+    .org-col { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .org-h-line {
+      height: 2px;
+      background: var(--color-gold);
+      align-self: center;
+      flex: 1;
+    }
+    .org-children {
+      display: flex;
+      gap: 24px;
+      position: relative;
+      padding-top: 40px;
+    }
+    .org-children::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: calc(50% - 1px);
+      width: 2px;
+      height: 40px;
+      background: var(--color-gold);
+    }
+    .org-children::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 24px; right: 24px;
+      height: 2px;
+      background: var(--color-gold);
+    }
+    .org-child {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+    }
+    .org-child::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 40px;
+      background: var(--color-gold);
+    }
+    .org-grandchildren {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+      padding-top: 16px;
+      position: relative;
+    }
+    .org-grandchildren::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 16px;
+      background: var(--color-gold);
+    }
+
+    @media (max-width: 768px) {
+      .profile-split { grid-template-columns: 1fr; }
+      .vm-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header id="main-header">
+  <nav class="container">
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon" id="logo-icon-svg" style="font-size:0"></div>
+      <div class="logo-text-wrap">
+        <span class="logo-name">PT PANGAN <em>MERAH</em> PUTIH</span>
+        <span class="logo-sub">Bengkayang, Kalimantan Barat</span>
+      </div>
+    </a>
+    <div class="nav-controls">
+      <button id="lang-toggle" onclick="toggleLanguage()">ID | EN</button>
+    </div>
+  </nav>
+</header>
+
+<!-- Sliding Nav Panel -->
+<div id="nav-overlay"></div>
+<div id="nav-panel">
+  <div class="nav-panel-header">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-panel-logo-icon">🌽</div>
+      <div class="logo-text-wrap">
+        <span class="logo-name">PT PANGAN <em>MERAH</em> PUTIH</span>
+        <span class="logo-sub">Bengkayang, Kalimantan Barat</span>
+      </div>
+    </a>
+    <button id="nav-panel-close" aria-label="Tutup">✕</button>
+  </div>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="index.html" data-i18n="nav_home">Beranda</a></li>
+    <li><a href="about.html" data-i18n="nav_about">Tentang Kami</a></li>
+    <li><a href="sustainability.html" data-i18n="nav_sustainability">Keberlanjutan</a></li>
+    <li><a href="products.html" data-i18n="nav_products">Produk & Jasa</a></li>
+    <li><a href="community.html" data-i18n="nav_community">Komunitas</a></li>
+    <li><a href="news.html" data-i18n="nav_news">Berita</a></li>
+    <li><a href="harga-jagung.html" class="nav-harga">Harga</a></li>
+  </ul>
+</div>
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="container page-hero-content">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span>/</span>
+      <span data-i18n="about_hero_bc">Tentang Kami</span>
+    </div>
+    <h1 data-i18n="about_hero_title">Tentang PT PMP</h1>
+  </div>
+</section>
+
+<!-- Profile -->
+<section class="section bg-white">
+  <div class="container">
+    <div class="profile-split">
+      <div class="animate-on-scroll">
+        <div class="section-header" style="text-align:left; margin-bottom:32px;">
+          <span class="label" data-i18n="about_profile_label">Profil Perusahaan</span>
+          <h2 data-i18n="about_profile_title">PT Pangan Merah Putih</h2>
+          <div class="section-divider" style="margin:16px 0 0;"></div>
+        </div>
+        <p data-i18n="about_profile_text">PT Pangan Merah Putih adalah perusahaan agribisnis yang bergerak di bidang pengeringan, penyimpanan, dan distribusi jagung pakan.</p>
+        <ul class="info-list" style="margin-top:24px;">
+          <li>
+            <span class="info-label" data-i18n="about_info1_label">Diresmikan</span>
+            <span class="info-value" data-i18n="about_info1_val">5 Juni 2025</span>
+          </li>
+          <li>
+            <span class="info-label" data-i18n="about_info2_label">Diresmikan Oleh</span>
+            <span class="info-value" data-i18n="about_info2_val">Presiden RI Prabowo Subianto</span>
+          </li>
+          <li>
+            <span class="info-label" data-i18n="about_info3_label">Bidang Usaha</span>
+            <span class="info-value" data-i18n="about_info3_val">Pengeringan, Penyimpanan & Distribusi Jagung</span>
+          </li>
+          <li>
+            <span class="info-label" data-i18n="about_info4_label">Lokasi</span>
+            <span class="info-value" data-i18n="about_info4_val">Bengkayang, Kalimantan Barat</span>
+          </li>
+        </ul>
+      </div>
+      <div class="animate-on-scroll animate-delay-1">
+        <!-- Stats -->
+        <div style="background: var(--color-primary); border-radius: var(--radius-card); padding: 36px; color: white;">
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 24px; text-align: center;">
+            <div style="padding:20px; background:rgba(255,255,255,0.08); border-radius:8px;">
+              <div style="font-family:var(--font-heading); font-size:2.2rem; font-weight:800; color:var(--color-gold); line-height:1;">300</div>
+              <div style="font-size:0.78rem; color:rgba(255,255,255,0.65); text-transform:uppercase; letter-spacing:0.06em; margin-top:6px;">Ton/Hari Dryer</div>
+            </div>
+            <div style="padding:20px; background:rgba(255,255,255,0.08); border-radius:8px;">
+              <div style="font-family:var(--font-heading); font-size:2.2rem; font-weight:800; color:var(--color-gold); line-height:1;">1.000</div>
+              <div style="font-size:0.78rem; color:rgba(255,255,255,0.65); text-transform:uppercase; letter-spacing:0.06em; margin-top:6px;">Ton Gudang</div>
+            </div>
+            <div style="padding:20px; background:rgba(255,255,255,0.08); border-radius:8px;">
+              <div style="font-family:var(--font-heading); font-size:2.2rem; font-weight:800; color:var(--color-gold); line-height:1;">14%</div>
+              <div style="font-size:0.78rem; color:rgba(255,255,255,0.65); text-transform:uppercase; letter-spacing:0.06em; margin-top:6px;">Kadar Air Output</div>
+            </div>
+            <div style="padding:20px; background:rgba(255,255,255,0.08); border-radius:8px;">
+              <div style="font-family:var(--font-heading); font-size:2.2rem; font-weight:800; color:var(--color-gold); line-height:1;">2025</div>
+              <div style="font-size:0.78rem; color:rgba(255,255,255,0.65); text-transform:uppercase; letter-spacing:0.06em; margin-top:6px;">Tahun Berdiri</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Vision & Mission -->
+<section class="section bg-light">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <span class="label" data-i18n="about_vision_label">Visi & Misi</span>
+      <h2>Visi &amp; Misi</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="vm-grid">
+      <div class="vm-card vision animate-on-scroll">
+        <span class="vm-icon">🎯</span>
+        <h3 data-i18n="about_vision_title">Visi Kami</h3>
+        <p data-i18n="about_vision_text">Menjadi pusat pengeringan & distribusi jagung pakan terbesar di Kalimantan untuk kesejahteraan petani di Indonesia.</p>
+      </div>
+      <div class="vm-card mission animate-on-scroll animate-delay-1">
+        <span class="vm-icon">🚀</span>
+        <h3 data-i18n="about_mission_title">Misi Kami</h3>
+        <ul>
+          <li data-i18n="about_m1">Meningkatkan kesejahteraan petani</li>
+          <li data-i18n="about_m2">Menyediakan jagung berkualitas sesuai standar industri</li>
+          <li data-i18n="about_m3">Membangun rantai pasok pangan yang efisien</li>
+          <li data-i18n="about_m4">Menekan biaya operasional petani</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Org Chart -->
+<section class="section bg-white">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <span class="label" data-i18n="about_org_label">Struktur Organisasi</span>
+      <h2 data-i18n="about_org_title">Tim Kami</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="org-wrap animate-on-scroll">
+      <!-- Simplified visual org chart using flex/grid -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:0; min-width:760px;">
+        <!-- Director -->
+        <div class="org-node" style="background:var(--color-primary); min-width:220px; padding:14px 24px;">
+          <span class="role">DIREKTUR</span>
+          <span class="name">Doringo Dorado Tanod</span>
+        </div>
+        <!-- Connector -->
+        <div style="width:2px; height:32px; background:var(--color-gold);"></div>
+        <!-- Level 2: Humas + Kepala Pabrik -->
+        <div style="display:flex; align-items:flex-start; gap:0; position:relative; width:100%; max-width:800px; justify-content:center;">
+          <!-- Humas -->
+          <div style="display:flex; flex-direction:column; align-items:center; flex:1;">
+            <div style="width:2px; height:24px; background:var(--color-gold);"></div>
+            <div class="org-node teal" style="min-width:180px;">
+              <span class="role">HUMAS</span>
+              <span class="name">Rachmat Budiawan S</span>
+            </div>
+          </div>
+          <!-- Kepala Pabrik -->
+          <div style="display:flex; flex-direction:column; align-items:center; flex:1;">
+            <div style="width:2px; height:24px; background:var(--color-gold);"></div>
+            <div class="org-node teal" style="min-width:220px;">
+              <span class="role">KEPALA PABRIK</span>
+              <span class="name">Muhamad Ryan Pratama</span>
+            </div>
+            <!-- Kepala Operasional -->
+            <div style="width:2px; height:24px; background:var(--color-gold);"></div>
+            <div class="org-node teal" style="min-width:220px;">
+              <span class="role">KEPALA OPERASIONAL</span>
+              <span class="name">Ingdwi Lara Sakti</span>
+            </div>
+            <!-- Bottom level -->
+            <div style="width:2px; height:24px; background:var(--color-gold);"></div>
+            <div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
+              <!-- Security -->
+              <div style="display:flex;flex-direction:column;align-items:center;">
+                <div style="width:2px;height:16px;background:var(--color-gold);"></div>
+                <div class="org-node small" style="min-width:140px; padding:10px 14px; text-align:left;">
+                  <span class="role">KEAMANAN</span>
+                  <span class="name" style="font-size:0.75rem; line-height:1.6; display:block;">Julian Gerry<br>Arianto<br>Tri Ramadhani<br>Antonius Yogi</span>
+                </div>
+              </div>
+              <!-- CS -->
+              <div style="display:flex;flex-direction:column;align-items:center;">
+                <div style="width:2px;height:16px;background:var(--color-gold);"></div>
+                <div class="org-node small" style="min-width:140px; padding:10px 14px;">
+                  <span class="role">CLEANING SVC</span>
+                  <span class="name" style="font-size:0.75rem;">Wahyu Pebrian</span>
+                </div>
+              </div>
+              <!-- SPV Gudang -->
+              <div style="display:flex;flex-direction:column;align-items:center;">
+                <div style="width:2px;height:16px;background:var(--color-gold);"></div>
+                <div class="org-node teal" style="min-width:130px; padding:10px 14px;">
+                  <span class="role">SPV GUDANG</span>
+                  <span class="name" style="font-size:0.8rem;">Amir</span>
+                </div>
+                <div style="width:2px;height:16px;background:var(--color-gold);"></div>
+                <div class="org-node small" style="min-width:130px; padding:8px 12px;">
+                  <span class="role">STAFF MESIN</span>
+                  <span class="name" style="font-size:0.72rem; line-height:1.6; display:block;">Julnio Wahyudi<br>Endi Kostiman<br>Preja Banyu Riski</span>
+                </div>
+              </div>
+              <!-- SPV Lab -->
+              <div style="display:flex;flex-direction:column;align-items:center;">
+                <div style="width:2px;height:16px;background:var(--color-gold);"></div>
+                <div class="org-node teal" style="min-width:150px; padding:10px 14px;">
+                  <span class="role">SPV LABORATORIUM</span>
+                  <span class="name" style="font-size:0.8rem;">Mayang Prita</span>
+                </div>
+              </div>
+              <!-- SPV Timbangan -->
+              <div style="display:flex;flex-direction:column;align-items:center;">
+                <div style="width:2px;height:16px;background:var(--color-gold);"></div>
+                <div class="org-node teal" style="min-width:140px; padding:10px 14px;">
+                  <span class="role">SPV TIMBANGAN</span>
+                  <span class="name" style="font-size:0.8rem;">Meysi Putri</span>
+                </div>
+                <div style="width:2px;height:16px;background:var(--color-gold);"></div>
+                <div class="org-node small" style="min-width:140px; padding:8px 12px;">
+                  <span class="role">STAFF TIMBANGAN</span>
+                  <span class="name" style="font-size:0.75rem;">Anggi Anggraini</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Gallery Section -->
+<section class="section bg-light" id="gallery-section" style="display:none;">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <span class="label">Galeri Foto</span>
+      <h2>Fasilitas & Kegiatan</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="gallery-grid" id="gallery-display"></div>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close" onclick="closeLightbox()">✕</span>
+  <img class="lightbox-img" id="lightbox-img" src="" alt="">
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo-text">PT PANGAN <span>MERAH</span> PUTIH</div>
+        <p data-i18n="footer_tagline">Pusat pengeringan dan distribusi jagung pakan terkemuka di Kalimantan Barat.</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_nav">Navigasi</h4>
+        <ul>
+          <li><a href="index.html" data-i18n="nav_home">Beranda</a></li>
+          <li><a href="about.html" data-i18n="nav_about">Tentang Kami</a></li>
+          <li><a href="sustainability.html" data-i18n="nav_sustainability">Keberlanjutan</a></li>
+          <li><a href="products.html" data-i18n="nav_products">Produk & Jasa</a></li>
+          <li><a href="community.html" data-i18n="nav_community">Komunitas</a></li>
+          <li><a href="news.html" data-i18n="nav_news">Berita</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_contact">Kontak</h4>
+        <div class="footer-contact-item"><span class="footer-icon" id="footer-icon-map" style="font-size:0"></span><span data-i18n="footer_address">Bengkayang, Kalimantan Barat, Indonesia</span></div>
+        <div id="footer-social-links" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:16px;"></div>
+      </div>
+      <div class="footer-col">
+        <h4>Admin</h4>
+        <ul><li><a href="admin.html">Admin Panel</a></li></ul>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© <span class="year-current"></span> PT Pangan Merah Putih. <span data-i18n="footer_rights">Seluruh hak cipta dilindungi.</span></span>
+      <a href="#" id="back-to-top" style="color:var(--color-gold); opacity:0; transition:opacity 0.3s;" data-i18n="footer_back_top">Kembali ke Atas ↑</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/icons.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/gallery.js"></script>
+<script src="js/kontak.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/main.js"></script>
+<!-- Floating WhatsApp Button -->
+<div id="float-wa" style="display:none; position:fixed; bottom:28px; right:28px; z-index:999;">
+  <a id="float-wa-link" href="#" target="_blank" rel="noopener"
+    style="display:flex; align-items:center; gap:10px; background:#25d366; color:white; padding:14px 20px; border-radius:50px; box-shadow:0 4px 20px rgba(37,211,102,0.4); font-weight:700; font-size:0.9rem; text-decoration:none; transition:transform 0.2s,box-shadow 0.2s;"
+    onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(37,211,102,0.5)'"
+    onmouseout="this.style.transform='';this.style.boxShadow='0 4px 20px rgba(37,211,102,0.4)'">
+    <span id="float-wa-icon" style="width:22px;height:22px;display:inline-flex;flex-shrink:0;"></span>
+    <span id="float-wa-label">WhatsApp</span>
+  </a>
+</div>
+<script>
+  (function(){
+    function initKontakUI() {
+      if (!window.KontakDB) return;
+      var k = window.KontakDB.getKontak();
+      // Floating WA
+      if (k.whatsapp) {
+        var btn = document.getElementById('float-wa');
+        var link = document.getElementById('float-wa-link');
+        var lbl = document.getElementById('float-wa-label');
+        if (btn) btn.style.display = 'block';
+        if (link) link.href = 'https://wa.me/62' + k.whatsapp;
+        if (lbl) lbl.textContent = k.whatsapp_label || 'WhatsApp';
+      }
+      // Footer social icons
+      var socialContainer = document.getElementById('footer-social-links');
+      if (socialContainer) {
+        var links = [];
+        var ic2 = window.Icons || {};
+        if (k.whatsapp) links.push({ href: 'https://wa.me/62' + k.whatsapp, icon: ic2.whatsapp||'', label: 'WA', color: '#25d366' });
+        if (k.instagram) links.push({ href: 'https://instagram.com/' + k.instagram, icon: ic2.instagram||'', label: 'IG', color: '#e1306c' });
+        if (k.facebook) {
+          var fbHref = k.facebook.startsWith('http') ? k.facebook : 'https://facebook.com/' + k.facebook;
+          links.push({ href: fbHref, icon: ic2.facebook||'', label: 'FB', color: '#1877f2' });
+        }
+        if (k.email) links.push({ href: 'mailto:' + k.email, icon: ic2.email||'', label: 'Email', color: '#c9932a' });
+        if (links.length > 0) {
+          socialContainer.innerHTML = links.map(l =>
+            '<a href="' + l.href + '" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:' + l.color + ';color:white;padding:7px 13px;border-radius:20px;font-size:0.78rem;font-weight:700;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'"><span style="width:14px;height:14px;display:inline-flex;flex-shrink:0;">' + l.icon + '</span>' + l.label + '</a>'
+          ).join('');
+        }
+      }
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initKontakUI);
+    else initKontakUI();
+  })();
+</script>
+<script>
+  (function(){
+    function renderGallery() {
+      if (!window.GalleryDB) return;
+      var photos = window.GalleryDB.getGallery().filter(function(p){ return p.album === 'facility' || p.album === 'team' || p.album === 'activity'; });
+      if (photos.length === 0) return;
+      var section = document.getElementById('gallery-section');
+      var grid = document.getElementById('gallery-display');
+      if (section) section.style.display = 'block';
+      if (grid) grid.innerHTML = photos.map(function(p){
+        return '<div class="gallery-item animate-on-scroll" onclick="openLightbox(\'' + p.src.replace(/'/g,"&#39;") + '\',\'' + (p.caption_id||'').replace(/'/g,"&#39;") + '\')">' +
+          '<img src="' + p.src + '" alt="' + (p.caption_id||'') + '" loading="lazy">' +
+          '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + (p.caption_id||'') + '</div></div>' +
+          '</div>';
+      }).join('');
+    }
+    window.openLightbox = function(src, caption) {
+      var lb = document.getElementById('lightbox');
+      var img = document.getElementById('lightbox-img');
+      if (img) img.src = src;
+      if (lb) lb.classList.add('open');
+    };
+    window.closeLightbox = function() {
+      var lb = document.getElementById('lightbox');
+      if (lb) lb.classList.remove('open');
+    };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', renderGallery);
+    else renderGallery();
+  })();
+</script>
+<script>
+  (function(){
+    function injectIcons() {
+      var ic = window.Icons; if (!ic) return;
+      function set(id, svg, w) { var el = document.getElementById(id); if (!el) return; el.innerHTML = svg; var s = el.querySelector('svg'); if (s) { s.style.width = w||'100%'; s.style.height = w||'100%'; } }
+      set('logo-icon-svg', ic.grain, '24px');
+      set('footer-icon-map', ic.mapPin, '16px');
+      set('footer-icon-building', ic.building, '16px');
+      set('float-wa-icon', ic.whatsapp, '22px');
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', injectIcons);
+    else injectIcons();
+  })();
+</script>
+</body>
+</html>
