@@ -1,5 +1,5 @@
 /* ========================================
-   News / Articles - localStorage CRUD
+   News / Articles - Supabase + localStorage fallback
    ======================================== */
 
 const NEWS_KEY = 'pmp_news';
@@ -38,22 +38,100 @@ const SEED_ARTICLES = [
   }
 ];
 
-function getArticles() {
-  try {
-    const data = localStorage.getItem(NEWS_KEY);
-    if (!data) {
-      // Seed on first visit
-      localStorage.setItem(NEWS_KEY, JSON.stringify(SEED_ARTICLES));
-      return SEED_ARTICLES;
-    }
-    return JSON.parse(data);
-  } catch (e) {
-    return [];
+var _newsCache = null;
+var _newsReady = false;
+var _newsCallbacks = [];
+
+function _newsSupa() {
+  return (typeof getSupabase === 'function') ? getSupabase() : null;
+}
+
+function loadNews(callback) {
+  if (_newsReady) {
+    if (callback) callback(_newsCache);
+    return;
   }
+  if (callback) _newsCallbacks.push(callback);
+  if (_newsCallbacks.length > 1) return;
+
+  // Wait for Supabase
+  var attempts = 0;
+  var timer = setInterval(function () {
+    attempts++;
+    var sb = _newsSupa();
+    if (sb || attempts >= 30) {
+      clearInterval(timer);
+      if (sb) {
+        sb.from('articles').select('*').order('date', { ascending: false })
+          .then(function (res) {
+            if (res.data && res.data.length > 0) {
+              _newsCache = res.data;
+              _newsReady = true;
+              _fireNewsCallbacks();
+            } else if (res.error) {
+              console.warn('Supabase articles error:', res.error.message);
+              _loadNewsLocal();
+            } else {
+              // Empty — seed from defaults
+              _newsCache = SEED_ARTICLES;
+              _newsReady = true;
+              _fireNewsCallbacks();
+              // Seed to Supabase
+              sb.from('articles').upsert(SEED_ARTICLES).then(function () {
+                console.log('Articles seeded to Supabase');
+              });
+            }
+          })
+          .catch(function () { _loadNewsLocal(); });
+      } else {
+        _loadNewsLocal();
+      }
+    }
+  }, 100);
+}
+
+function _loadNewsLocal() {
+  try {
+    var data = localStorage.getItem(NEWS_KEY);
+    if (data) {
+      _newsCache = JSON.parse(data);
+    } else {
+      _newsCache = SEED_ARTICLES;
+      localStorage.setItem(NEWS_KEY, JSON.stringify(SEED_ARTICLES));
+    }
+  } catch (e) {
+    _newsCache = SEED_ARTICLES;
+  }
+  _newsReady = true;
+  _fireNewsCallbacks();
+}
+
+function _fireNewsCallbacks() {
+  var cbs = _newsCallbacks.slice();
+  _newsCallbacks = [];
+  cbs.forEach(function (cb) { cb(_newsCache); });
+}
+
+function getArticles() {
+  if (_newsCache) return _newsCache;
+  // Sync fallback for code that calls getArticles() before loadNews completes
+  try {
+    var data = localStorage.getItem(NEWS_KEY);
+    if (data) return JSON.parse(data);
+  } catch (e) {}
+  return SEED_ARTICLES;
 }
 
 function saveArticles(articles) {
+  _newsCache = articles;
   localStorage.setItem(NEWS_KEY, JSON.stringify(articles));
+  var sb = _newsSupa();
+  if (sb) {
+    // Sync to Supabase: delete all then upsert
+    sb.from('articles').delete().neq('id', '').then(function () {
+      sb.from('articles').upsert(articles);
+    });
+  }
 }
 
 function getArticleById(id) {
@@ -62,7 +140,12 @@ function getArticleById(id) {
 
 function deleteArticle(id) {
   const articles = getArticles().filter(a => a.id !== id);
-  saveArticles(articles);
+  _newsCache = articles;
+  localStorage.setItem(NEWS_KEY, JSON.stringify(articles));
+  var sb = _newsSupa();
+  if (sb) {
+    sb.from('articles').delete().eq('id', id);
+  }
 }
 
 function upsertArticle(article) {
@@ -73,7 +156,12 @@ function upsertArticle(article) {
   } else {
     articles.unshift(article);
   }
-  saveArticles(articles);
+  _newsCache = articles;
+  localStorage.setItem(NEWS_KEY, JSON.stringify(articles));
+  var sb = _newsSupa();
+  if (sb) {
+    sb.from('articles').upsert(article);
+  }
 }
 
 function generateId() {
@@ -138,8 +226,12 @@ function renderNewsCards(container, articles, lang, readMoreText) {
   `).join('');
 }
 
+// Auto-load
+loadNews();
+
 // Export
 window.NewsDB = {
+  loadNews,
   getArticles,
   saveArticles,
   getArticleById,

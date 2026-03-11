@@ -1,5 +1,5 @@
 /* ========================================
-   PT PMP - Harga Jagung localStorage CRUD
+   PT PMP - Harga Jagung - Supabase + localStorage fallback
    ======================================== */
 
 const HARGA_KEY = 'pmp_harga_jagung';
@@ -53,23 +53,82 @@ const HARGA_DEFAULT = {
   ]
 };
 
-function getHarga() {
-  try {
-    const data = localStorage.getItem(HARGA_KEY);
-    if (!data) {
-      const defaultData = { ...HARGA_DEFAULT, last_updated: new Date().toISOString() };
-      localStorage.setItem(HARGA_KEY, JSON.stringify(defaultData));
-      return defaultData;
-    }
-    return JSON.parse(data);
-  } catch (e) {
-    return HARGA_DEFAULT;
+var _hargaCache = null;
+var _hargaReady = false;
+
+function _hargaSupa() {
+  return (typeof getSupabase === 'function') ? getSupabase() : null;
+}
+
+function loadHarga(callback) {
+  if (_hargaReady && _hargaCache) {
+    if (callback) callback(_hargaCache);
+    return;
   }
+
+  var attempts = 0;
+  var timer = setInterval(function () {
+    attempts++;
+    var sb = _hargaSupa();
+    if (sb || attempts >= 30) {
+      clearInterval(timer);
+      if (sb) {
+        sb.from('harga').select('*').eq('id', 'main').single()
+          .then(function (res) {
+            if (res.data && res.data.data) {
+              _hargaCache = res.data.data;
+              _hargaReady = true;
+              if (callback) callback(_hargaCache);
+            } else {
+              // No data in Supabase — use default and seed
+              _hargaCache = { ...HARGA_DEFAULT, last_updated: new Date().toISOString() };
+              _hargaReady = true;
+              if (callback) callback(_hargaCache);
+              sb.from('harga').upsert({ id: 'main', data: _hargaCache });
+            }
+          })
+          .catch(function () { _loadHargaLocal(callback); });
+      } else {
+        _loadHargaLocal(callback);
+      }
+    }
+  }, 100);
+}
+
+function _loadHargaLocal(callback) {
+  try {
+    var data = localStorage.getItem(HARGA_KEY);
+    if (data) {
+      _hargaCache = JSON.parse(data);
+    } else {
+      _hargaCache = { ...HARGA_DEFAULT, last_updated: new Date().toISOString() };
+      localStorage.setItem(HARGA_KEY, JSON.stringify(_hargaCache));
+    }
+  } catch (e) {
+    _hargaCache = HARGA_DEFAULT;
+  }
+  _hargaReady = true;
+  if (callback) callback(_hargaCache);
+}
+
+function getHarga() {
+  if (_hargaCache) return _hargaCache;
+  // Sync fallback
+  try {
+    var data = localStorage.getItem(HARGA_KEY);
+    if (data) return JSON.parse(data);
+  } catch (e) {}
+  return { ...HARGA_DEFAULT, last_updated: new Date().toISOString() };
 }
 
 function saveHarga(data) {
   data.last_updated = new Date().toISOString();
+  _hargaCache = data;
   localStorage.setItem(HARGA_KEY, JSON.stringify(data));
+  var sb = _hargaSupa();
+  if (sb) {
+    sb.from('harga').upsert({ id: 'main', data: data, updated_at: new Date().toISOString() });
+  }
 }
 
 function formatHarga(num) {
@@ -85,4 +144,7 @@ function formatDateTime(isoStr) {
   }) + ' WIB';
 }
 
-window.HargaDB = { getHarga, saveHarga, formatHarga, formatDateTime };
+// Auto-load
+loadHarga();
+
+window.HargaDB = { getHarga, saveHarga, formatHarga, formatDateTime, loadHarga };
