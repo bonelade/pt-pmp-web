@@ -757,7 +757,7 @@
         <span></span><span></span><span></span>
       </button>
       <a href="index.html" class="nav-logo">
-        <div class="logo-icon" id="logo-icon-svg"></div>
+        <div class="logo-icon"><img src="images/gallery/LOGO PMP HITAM TRANSPARANT Large.png" alt="PT PMP" style="width:100%;height:100%;object-fit:contain;"></div>
         <div class="logo-text-wrap">
           <span class="logo-name">PT PANGAN <em>MERAH</em> PUTIH</span>
           <span class="logo-sub">Bengkayang, Kalimantan Barat</span>
@@ -774,7 +774,7 @@
   <div id="nav-panel">
     <div class="nav-panel-header">
       <a href="index.html" class="nav-logo">
-        <div class="nav-panel-logo-icon">🌽</div>
+        <div class="nav-panel-logo-icon"><img src="images/gallery/LOGO PMP HITAM TRANSPARANT Large.png" alt="PT PMP" style="width:100%;height:100%;object-fit:contain;filter:brightness(0) invert(1);"></div>
         <div class="logo-text-wrap">
           <span class="logo-name">PT PANGAN <em>MERAH</em> PUTIH</span>
           <span class="logo-sub">Bengkayang, Kalimantan Barat</span>
@@ -1157,7 +1157,10 @@
     <div class="container" style="position: relative; z-index: 1;">
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="logo-text">PT PANGAN <span>MERAH</span> PUTIH</div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px;">
+            <img src="images/gallery/LOGO PMP HITAM TRANSPARANT Large.png" alt="PT PMP" style="width:36px;height:36px;object-fit:contain;filter:brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(15deg);opacity:0.85;">
+            <div class="logo-text">PT PANGAN <span>MERAH</span> PUTIH</div>
+          </div>
           <p data-i18n="footer_tagline">Pusat pengeringan dan distribusi jagung pakan terkemuka di Kalimantan Barat.</p>
         </div>
         <div class="footer-col">
@@ -1488,8 +1491,7 @@
           var s = el.querySelector('svg');
           if (s) { s.style.width = size || '100%'; s.style.height = size || '100%'; }
         }
-        // Logo
-        set('logo-icon-svg', ic.grain, '24px');
+
         // Nav corn icon (hero visual bg — keep as large SVG)
         var heroEl = document.getElementById('hero-corn-icon');
         if (heroEl) { heroEl.innerHTML = ic.corn; var hsvg = heroEl.querySelector('svg'); if (hsvg) { hsvg.style.width = '260px'; hsvg.style.height = '260px'; hsvg.style.opacity = '0.18'; hsvg.style.color = '#c9932a'; } }

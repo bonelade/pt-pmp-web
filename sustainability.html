@@ -132,7 +132,7 @@
         <span></span><span></span><span></span>
       </button>
       <a href="index.html" class="nav-logo">
-        <div class="logo-icon" id="logo-icon-svg" style="font-size:0"></div>
+        <div class="logo-icon"><img src="images/gallery/LOGO PMP HITAM TRANSPARANT Large.png" alt="PT PMP" style="width:100%;height:100%;object-fit:contain;"></div>
         <div class="logo-text-wrap">
           <span class="logo-name">PT PANGAN <em>MERAH</em> PUTIH</span>
           <span class="logo-sub">Bengkayang, Kalimantan Barat</span>
@@ -149,7 +149,7 @@
   <div id="nav-panel">
     <div class="nav-panel-header">
       <a href="index.html" class="nav-logo">
-        <div class="nav-panel-logo-icon">🌽</div>
+        <div class="nav-panel-logo-icon"><img src="images/gallery/LOGO PMP HITAM TRANSPARANT Large.png" alt="PT PMP" style="width:100%;height:100%;object-fit:contain;filter:brightness(0) invert(1);"></div>
         <div class="logo-text-wrap">
           <span class="logo-name">PT PANGAN <em>MERAH</em> PUTIH</span>
           <span class="logo-sub">Bengkayang, Kalimantan Barat</span>
@@ -453,7 +453,7 @@
       function injectIcons() {
         var ic = window.Icons; if (!ic) return;
         function set(id, svg, w) { var el = document.getElementById(id); if (!el) return; el.innerHTML = svg; var s = el.querySelector('svg'); if (s) { s.style.width = w || '100%'; s.style.height = w || '100%'; } }
-        set('logo-icon-svg', ic.grain, '24px');
+
         set('footer-icon-map', ic.mapPin, '16px');
         set('footer-icon-building', ic.building, '16px');
         set('float-wa-icon', ic.whatsapp, '22px');
