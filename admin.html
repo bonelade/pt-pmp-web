@@ -1553,21 +1553,19 @@
       showToast(editId ? '✓ Artikel berhasil diperbarui!' : '✓ Artikel berhasil dipublikasikan!', 'success');
     }
 
-    // New thumbnail selected? Upload to Supabase Storage first
+    // New thumbnail selected? Upload to Supabase Storage first, then save URL only
     if (window._newThumbDataUrl) {
       showToast('Mengupload thumbnail ke cloud...', 'success');
       window.GalleryDB.uploadBase64ToStorage(window._newThumbDataUrl, 'thumbnails', function(res) {
-        var thumbUrl;
-        if (res.success && res.url) {
-          thumbUrl = res.url;
-          console.log('Thumbnail uploaded to Storage:', thumbUrl);
-        } else {
-          // Storage failed — save compressed base64 directly
-          console.warn('Storage upload failed, saving base64:', res.error);
-          thumbUrl = window._newThumbDataUrl;
-        }
         window._newThumbDataUrl = null;
-        finishSave(thumbUrl);
+        if (res.success && res.url) {
+          console.log('[SaveArticle] Thumbnail uploaded OK:', res.url);
+          finishSave(res.url);
+        } else {
+          console.error('[SaveArticle] Thumbnail upload FAILED:', res.error);
+          showToast('Gagal upload thumbnail: ' + (res.error || 'Unknown error') + '. Artikel disimpan tanpa thumbnail.', 'error');
+          finishSave('');
+        }
       });
     } else {
       // No new thumbnail — keep existing
@@ -1973,15 +1971,13 @@
     }
 
     toUpload.forEach(function (p, i) {
-      // Try Supabase Storage first
       window.GalleryDB.uploadBase64ToStorage(p.dataUrl, album, function (res) {
         uploaded++;
         if (res.error) {
-          console.warn('Storage upload failed, saving base64 to DB:', res.error);
-          // Fallback: save base64 directly to Supabase DB (works but larger)
-          savePhotoEntry(p.dataUrl, i);
+          console.error('[Upload] Storage FAILED for photo ' + (i+1) + ':', res.error);
+          showToast('Gagal upload foto: ' + res.error, 'error');
         } else {
-          // Save with Supabase Storage URL
+          console.log('[Upload] Photo ' + (i+1) + ' uploaded:', res.url);
           savePhotoEntry(res.url, i);
         }
         if (uploaded >= totalToUpload) finishUpload();
