@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="id" data-lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PT Pangan Merah Putih - Pusat Jagung Kalimantan Barat</title>
-  <meta name="description" content="PT Pangan Merah Putih - Pusat pengeringan, penyimpanan, dan distribusi jagung pakan di Bengkayang, Kalimantan Barat.">
-  <script>(function(){var l=localStorage.getItem('pmp_lang')||'id';document.documentElement.setAttribute('lang',l);document.documentElement.setAttribute('data-lang',l);})()</script>
+  <meta name="description"
+    content="PT Pangan Merah Putih - Pusat pengeringan, penyimpanan, dan distribusi jagung pakan di Bengkayang, Kalimantan Barat.">
+  <script>(function () { var l = localStorage.getItem('pmp_lang') || 'id'; document.documentElement.setAttribute('lang', l); document.documentElement.setAttribute('data-lang', l); })()</script>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/nav.css">
   <link rel="stylesheet" href="css/components.css">
@@ -19,20 +21,23 @@
       align-items: center;
       overflow: hidden;
     }
+
     .hero::before {
       content: '';
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse 70% 80% at 75% 50%, rgba(201,147,42,0.18) 0%, transparent 65%),
-        radial-gradient(ellipse 50% 60% at 15% 85%, rgba(201,147,42,0.09) 0%, transparent 55%),
-        radial-gradient(ellipse 40% 40% at 50% 10%, rgba(255,255,255,0.03) 0%, transparent 60%);
+        radial-gradient(ellipse 70% 80% at 75% 50%, rgba(201, 147, 42, 0.18) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 60% at 15% 85%, rgba(201, 147, 42, 0.09) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 40% at 50% 10%, rgba(255, 255, 255, 0.03) 0%, transparent 60%);
     }
+
     .hero-pattern {
       position: absolute;
       inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.025'%3E%3Cpath d='M40 40v-6h-2v6h-6v2h6v6h2v-6h6v-2h-6zm0-40V-4h-2v4h-6v2h6v6h2V2h6V0h-6zM0 40v-4h-2v4h-4v2h4v4h2v-4h4v-2H0zM0 0V-4h-2v4h-4v2h4v4h2V2h4V0H0z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
+
     /* Animated particles */
     .hero-particles {
       position: absolute;
@@ -40,30 +45,47 @@
       overflow: hidden;
       pointer-events: none;
     }
+
     .hero-particle {
       position: absolute;
       border-radius: 50%;
-      background: rgba(201,147,42,0.15);
+      background: rgba(201, 147, 42, 0.15);
       animation: particle-float linear infinite;
     }
+
     @keyframes particle-float {
-      0% { transform: translateY(100vh) scale(0); opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 0.6; }
-      100% { transform: translateY(-120px) scale(1); opacity: 0; }
+      0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      90% {
+        opacity: 0.6;
+      }
+
+      100% {
+        transform: translateY(-120px) scale(1);
+        opacity: 0;
+      }
     }
+
     .hero-content {
       position: relative;
       z-index: 1;
       padding: 130px 0 90px;
       width: 100%;
     }
+
     .hero-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(201,147,42,0.15);
-      border: 1px solid rgba(201,147,42,0.45);
+      background: rgba(201, 147, 42, 0.15);
+      border: 1px solid rgba(201, 147, 42, 0.45);
       color: var(--color-gold-light);
       padding: 8px 20px;
       border-radius: 30px;
@@ -75,11 +97,24 @@
       text-transform: uppercase;
       animation: badge-glow 3s ease-in-out infinite;
     }
+
     @keyframes badge-glow {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(201,147,42,0); }
-      50% { box-shadow: 0 0 20px 4px rgba(201,147,42,0.2); }
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(201, 147, 42, 0);
+      }
+
+      50% {
+        box-shadow: 0 0 20px 4px rgba(201, 147, 42, 0.2);
+      }
     }
-    .hero-badge::before { content: '🇮🇩'; font-size: 1rem; }
+
+    .hero-badge::before {
+      content: '🇮🇩';
+      font-size: 1rem;
+    }
+
     .hero-title {
       font-family: var(--font-heading);
       font-size: clamp(3rem, 9vw, 6rem);
@@ -88,53 +123,48 @@
       line-height: 1.0;
       margin-bottom: 28px;
       letter-spacing: -0.01em;
-      animation: hero-title-in 0.9s cubic-bezier(0.22,1,0.36,1) both;
+      animation: hero-title-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
+
     @keyframes hero-title-in {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
+
     .hero-title .red {
       color: var(--color-red);
-      text-shadow: 0 0 40px rgba(204,34,41,0.35);
+      text-shadow: 0 0 40px rgba(204, 34, 41, 0.35);
     }
+
     .hero-title .gold-text {
       background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
+
     .hero-subtitle {
       font-size: clamp(1rem, 2vw, 1.2rem);
-      color: rgba(255,255,255,0.75);
+      color: rgba(255, 255, 255, 0.75);
       max-width: 500px;
       line-height: 1.7;
       margin-bottom: 44px;
       font-weight: 400;
-      animation: hero-title-in 0.9s 0.15s cubic-bezier(0.22,1,0.36,1) both;
+      animation: hero-title-in 0.9s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
+
     .hero-actions {
       display: flex;
-      gap: 14px;
+      gap: 16px;
       flex-wrap: wrap;
-      animation: hero-title-in 0.9s 0.28s cubic-bezier(0.22,1,0.36,1) both;
-    }
-    .hero-actions .btn-primary {
-      background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light));
-      box-shadow: 0 8px 28px rgba(201,147,42,0.4);
-    }
-    .hero-actions .btn-primary:hover {
-      box-shadow: 0 12px 36px rgba(201,147,42,0.6);
-      transform: translateY(-4px);
-    }
-    .hero-actions .btn-outline {
-      border-color: rgba(255,255,255,0.35);
-      backdrop-filter: blur(6px);
-    }
-    .hero-actions .btn-outline:hover {
-      background: rgba(255,255,255,0.12);
-      border-color: rgba(255,255,255,0.7);
-      color: white;
+      animation: hero-title-in 0.9s 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
     /* Hero stats strip */
@@ -143,12 +173,14 @@
       gap: 32px;
       margin-top: 52px;
       flex-wrap: wrap;
-      animation: hero-title-in 0.9s 0.4s cubic-bezier(0.22,1,0.36,1) both;
+      animation: hero-title-in 0.9s 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
+
     .hero-mini-stat {
       display: flex;
       flex-direction: column;
     }
+
     .hero-mini-stat .hms-num {
       font-family: var(--font-heading);
       font-size: 1.5rem;
@@ -156,9 +188,10 @@
       color: var(--color-gold-light);
       line-height: 1;
     }
+
     .hero-mini-stat .hms-label {
       font-size: 0.72rem;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255, 255, 255, 0.5);
       text-transform: uppercase;
       letter-spacing: 0.1em;
       margin-top: 4px;
@@ -166,18 +199,22 @@
 
     .hero-visual {
       position: absolute;
-      right: 0; top: 0; bottom: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
       width: 44%;
       overflow: hidden;
       pointer-events: none;
     }
+
     .hero-visual::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(to right, var(--color-primary) 0%, rgba(26,71,49,0.7) 30%, rgba(26,71,49,0.3) 70%);
+      background: linear-gradient(to right, var(--color-primary) 0%, rgba(26, 71, 49, 0.7) 30%, rgba(26, 71, 49, 0.3) 70%);
       z-index: 1;
     }
+
     .hero-corn-bg {
       width: 100%;
       height: 100%;
@@ -187,29 +224,44 @@
       justify-content: center;
       filter: blur(0.5px);
     }
+
     /* Decorative floating orbs */
     .hero-orb-1 {
       position: absolute;
-      width: 400px; height: 400px;
+      width: 400px;
+      height: 400px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(201,147,42,0.12) 0%, transparent 70%);
-      right: 5%; top: 10%;
+      background: radial-gradient(circle, rgba(201, 147, 42, 0.12) 0%, transparent 70%);
+      right: 5%;
+      top: 10%;
       pointer-events: none;
       animation: float-orb 8s ease-in-out infinite;
     }
+
     .hero-orb-2 {
       position: absolute;
-      width: 250px; height: 250px;
+      width: 250px;
+      height: 250px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
-      left: 20%; bottom: 15%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
+      left: 20%;
+      bottom: 15%;
       pointer-events: none;
       animation: float-orb 12s ease-in-out infinite reverse;
     }
+
     @keyframes float-orb {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-20px) scale(1.05); }
+
+      0%,
+      100% {
+        transform: translateY(0) scale(1);
+      }
+
+      50% {
+        transform: translateY(-20px) scale(1.05);
+      }
     }
+
     .hero-scroll {
       position: absolute;
       bottom: 32px;
@@ -219,33 +271,55 @@
       flex-direction: column;
       align-items: center;
       gap: 6px;
-      color: rgba(255,255,255,0.4);
+      color: rgba(255, 255, 255, 0.4);
       font-size: 0.7rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       animation: bounce 2.5s ease-in-out infinite;
       z-index: 2;
     }
+
     .hero-scroll .scroll-line {
       width: 1px;
       height: 28px;
-      background: linear-gradient(180deg, rgba(201,147,42,0.7), transparent);
+      background: linear-gradient(180deg, rgba(201, 147, 42, 0.7), transparent);
       animation: scroll-grow 2.5s ease-in-out infinite;
     }
+
     @keyframes bounce {
-      0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.5; }
-      50% { transform: translateX(-50%) translateY(8px); opacity: 0.9; }
+
+      0%,
+      100% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 0.5;
+      }
+
+      50% {
+        transform: translateX(-50%) translateY(8px);
+        opacity: 0.9;
+      }
     }
+
     @keyframes scroll-grow {
-      0%, 100% { transform: scaleY(0.7); opacity: 0.5; }
-      50% { transform: scaleY(1); opacity: 1; }
+
+      0%,
+      100% {
+        transform: scaleY(0.7);
+        opacity: 0.5;
+      }
+
+      50% {
+        transform: scaleY(1);
+        opacity: 1;
+      }
     }
 
     /* Stat Bar */
     .stat-bar {
       background: linear-gradient(90deg, var(--color-primary-dark) 0%, #0a1e14 100%);
-      border-bottom: 1px solid rgba(201,147,42,0.1);
+      border-bottom: 1px solid rgba(201, 147, 42, 0.1);
     }
+
     .stat-item-icon {
       font-size: 1.4rem;
       margin-bottom: 6px;
@@ -259,6 +333,7 @@
       gap: 64px;
       align-items: center;
     }
+
     .about-image-wrap {
       position: relative;
       border-radius: var(--radius-lg);
@@ -268,22 +343,25 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 20px 60px rgba(26,71,49,0.25);
+      box-shadow: 0 20px 60px rgba(26, 71, 49, 0.25);
     }
+
     .about-image-wrap::after {
       content: '';
       position: absolute;
       inset: 0;
       border-radius: var(--radius-lg);
-      border: 1px solid rgba(201,147,42,0.2);
+      border: 1px solid rgba(201, 147, 42, 0.2);
       pointer-events: none;
     }
+
     .about-image-placeholder {
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--color-gold);
     }
+
     .about-badge-strip {
       position: absolute;
       bottom: 20px;
@@ -291,7 +369,7 @@
       right: 20px;
       background: rgba(15, 30, 20, 0.85);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(201,147,42,0.35);
+      border: 1px solid rgba(201, 147, 42, 0.35);
       border-radius: var(--radius-card);
       padding: 16px 20px;
       color: var(--color-white);
@@ -299,10 +377,12 @@
       align-items: center;
       gap: 14px;
     }
+
     .about-badge-strip .strip-flag {
       font-size: 2rem;
       flex-shrink: 0;
     }
+
     .about-badge-strip .strip-label {
       font-size: 0.68rem;
       text-transform: uppercase;
@@ -310,6 +390,7 @@
       color: var(--color-gold-light);
       font-weight: 600;
     }
+
     .about-badge-strip .strip-value {
       font-family: var(--font-heading);
       font-size: 1rem;
@@ -317,6 +398,7 @@
       margin-top: 4px;
       color: white;
     }
+
     /* About text improvements */
     .about-feature-list {
       display: flex;
@@ -324,6 +406,7 @@
       gap: 12px;
       margin: 24px 0 28px;
     }
+
     .about-feature-item {
       display: flex;
       align-items: flex-start;
@@ -331,6 +414,7 @@
       font-size: 0.92rem;
       color: var(--color-text-muted);
     }
+
     .about-feature-item .afcheck {
       width: 22px;
       height: 22px;
@@ -352,37 +436,51 @@
       border-radius: var(--radius-card);
       padding: 44px 32px 36px;
       border: 1.5px solid var(--color-border);
-      transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
       text-align: center;
       position: relative;
       overflow: hidden;
     }
+
     .service-card::before {
       content: '';
       position: absolute;
-      bottom: 0; left: 0; right: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
       height: 3px;
       background: linear-gradient(90deg, var(--color-gold), var(--color-gold-light));
       transform: scaleX(0);
       transition: transform 0.4s ease;
     }
+
     .service-card::after {
       content: '';
       position: absolute;
-      top: -80px; right: -80px;
-      width: 160px; height: 160px;
+      top: -80px;
+      right: -80px;
+      width: 160px;
+      height: 160px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(201,147,42,0.07) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(201, 147, 42, 0.07) 0%, transparent 70%);
       transition: transform 0.5s ease;
       pointer-events: none;
     }
+
     .service-card:hover {
-      border-color: rgba(201,147,42,0.3);
-      box-shadow: 0 20px 56px rgba(26,71,49,0.14);
+      border-color: rgba(201, 147, 42, 0.3);
+      box-shadow: 0 20px 56px rgba(26, 71, 49, 0.14);
       transform: translateY(-6px);
     }
-    .service-card:hover::before { transform: scaleX(1); }
-    .service-card:hover::after { transform: scale(1.8); }
+
+    .service-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .service-card:hover::after {
+      transform: scale(1.8);
+    }
+
     .service-icon {
       width: 84px;
       height: 84px;
@@ -393,18 +491,27 @@
       justify-content: center;
       font-size: 2.2rem;
       margin: 0 auto 28px;
-      box-shadow: 0 8px 24px rgba(201,147,42,0.3);
+      box-shadow: 0 8px 24px rgba(201, 147, 42, 0.3);
       transition: var(--transition);
     }
+
     .service-card:hover .service-icon {
       transform: scale(1.08) rotate(-4deg);
-      box-shadow: 0 14px 36px rgba(201,147,42,0.5);
+      box-shadow: 0 14px 36px rgba(201, 147, 42, 0.5);
     }
-    .service-card h3 { margin-bottom: 12px; }
-    .service-card p { margin-bottom: 24px; font-size: 0.92rem; }
+
+    .service-card h3 {
+      margin-bottom: 12px;
+    }
+
+    .service-card p {
+      margin-bottom: 24px;
+      font-size: 0.92rem;
+    }
+
     .service-card .svc-tag {
       display: inline-block;
-      background: rgba(201,147,42,0.1);
+      background: rgba(201, 147, 42, 0.1);
       color: var(--color-gold);
       font-size: 0.72rem;
       font-weight: 700;
@@ -416,13 +523,18 @@
     }
 
     /* Advantages */
-    .adv-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .adv-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
 
     /* CTA Section improvements */
     .cta-section-inner {
       max-width: 620px;
       margin: 0 auto;
     }
+
     .cta-section-inner h2 {
       font-size: clamp(1.6rem, 3vw, 2.4rem);
     }
@@ -436,618 +548,672 @@
       flex-wrap: wrap;
       padding: 28px 0 0;
     }
+
     .trusted-label {
       font-size: 0.72rem;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      color: rgba(255,255,255,0.4);
+      color: rgba(255, 255, 255, 0.4);
       font-weight: 600;
     }
+
     .trusted-item {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 8px;
       padding: 8px 18px;
       font-size: 0.8rem;
       font-weight: 700;
-      color: rgba(255,255,255,0.55);
+      color: rgba(255, 255, 255, 0.55);
       letter-spacing: 0.04em;
       transition: all 0.25s;
     }
+
     .trusted-item:hover {
-      background: rgba(255,255,255,0.12);
-      color: rgba(255,255,255,0.85);
+      background: rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.85);
     }
 
     @media (max-width: 900px) {
-      .hero-visual { display: none; }
-      .about-split { grid-template-columns: 1fr; }
-      .adv-grid { grid-template-columns: 1fr; }
-      .hero-mini-stats { gap: 20px; }
+      .hero-visual {
+        display: none;
+      }
+
+      .about-split {
+        grid-template-columns: 1fr;
+      }
+
+      .adv-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-mini-stats {
+        gap: 20px;
+      }
     }
+
     @media (max-width: 600px) {
-      .hero-content { padding: 110px 0 70px; }
-      .hero-mini-stats { display: none; }
+      .hero-content {
+        padding: 110px 0 70px;
+      }
+
+      .hero-mini-stats {
+        display: none;
+      }
     }
   </style>
 </head>
+
 <body>
-<div id="reading-progress"></div>
+  <div id="reading-progress"></div>
 
-<!-- Navigation -->
-<header id="main-header">
-  <nav class="container">
-    <button class="hamburger" id="hamburger" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-    <a href="index.html" class="nav-logo">
-      <div class="logo-icon" id="logo-icon-svg"></div>
-      <div class="logo-text-wrap">
-        <span class="logo-name">PT PANGAN <em>MERAH</em> PUTIH</span>
-        <span class="logo-sub">Bengkayang, Kalimantan Barat</span>
+  <!-- Navigation -->
+  <header id="main-header">
+    <nav class="container">
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <a href="index.html" class="nav-logo">
+        <div class="logo-icon" id="logo-icon-svg"></div>
+        <div class="logo-text-wrap">
+          <span class="logo-name">PT PANGAN <em>MERAH</em> PUTIH</span>
+          <span class="logo-sub">Bengkayang, Kalimantan Barat</span>
+        </div>
+      </a>
+      <div class="nav-controls">
+        <button id="lang-toggle" onclick="toggleLanguage()">ID | EN</button>
       </div>
-    </a>
-    <div class="nav-controls">
-      <button id="lang-toggle" onclick="toggleLanguage()">ID | EN</button>
+    </nav>
+  </header>
+
+  <!-- Sliding Nav Panel -->
+  <div id="nav-overlay"></div>
+  <div id="nav-panel">
+    <div class="nav-panel-header">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-panel-logo-icon">🌽</div>
+        <div class="logo-text-wrap">
+          <span class="logo-name">PT PANGAN <em>MERAH</em> PUTIH</span>
+          <span class="logo-sub">Bengkayang, Kalimantan Barat</span>
+        </div>
+      </a>
+      <button id="nav-panel-close" aria-label="Tutup">✕</button>
     </div>
-  </nav>
-</header>
-
-<!-- Sliding Nav Panel -->
-<div id="nav-overlay"></div>
-<div id="nav-panel">
-  <div class="nav-panel-header">
-    <a href="index.html" class="nav-logo">
-      <div class="nav-panel-logo-icon">🌽</div>
-      <div class="logo-text-wrap">
-        <span class="logo-name">PT PANGAN <em>MERAH</em> PUTIH</span>
-        <span class="logo-sub">Bengkayang, Kalimantan Barat</span>
-      </div>
-    </a>
-    <button id="nav-panel-close" aria-label="Tutup">✕</button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html" data-i18n="nav_home" class="active">Beranda</a></li>
+      <li><a href="about.html" data-i18n="nav_about">Tentang Kami</a></li>
+      <li><a href="sustainability.html" data-i18n="nav_sustainability">Keberlanjutan</a></li>
+      <li><a href="products.html" data-i18n="nav_products">Produk & Jasa</a></li>
+      <li><a href="community.html" data-i18n="nav_community">Komunitas</a></li>
+      <li><a href="news.html" data-i18n="nav_news">Berita</a></li>
+      <li><a href="harga-jagung.html" class="nav-harga">Harga</a></li>
+    </ul>
   </div>
-  <ul class="nav-links" id="nav-links">
-    <li><a href="index.html" data-i18n="nav_home" class="active">Beranda</a></li>
-    <li><a href="about.html" data-i18n="nav_about">Tentang Kami</a></li>
-    <li><a href="sustainability.html" data-i18n="nav_sustainability">Keberlanjutan</a></li>
-    <li><a href="products.html" data-i18n="nav_products">Produk & Jasa</a></li>
-    <li><a href="community.html" data-i18n="nav_community">Komunitas</a></li>
-    <li><a href="news.html" data-i18n="nav_news">Berita</a></li>
-    <li><a href="harga-jagung.html" class="nav-harga">Harga</a></li>
-  </ul>
-</div>
 
-<!-- Hero -->
-<section class="hero">
-  <div class="hero-pattern"></div>
-  <div class="hero-particles" id="hero-particles"></div>
-  <div class="hero-orb-1"></div>
-  <div class="hero-orb-2"></div>
-  <div class="hero-visual">
-    <div class="hero-corn-bg" id="hero-corn-icon"></div>
-  </div>
-  <div class="container hero-content">
-    <h1 class="hero-title">
-      <span data-i18n="hero_title1">PT PANGAN</span><br>
-      <span class="red" data-i18n="hero_title2">MERAH</span> <span class="gold-text" data-i18n="hero_title3">PUTIH</span>
-    </h1>
-    <p class="hero-subtitle" data-i18n="hero_subtitle">Pusat Pengeringan & Distribusi Jagung Pakan Terbesar di Kalimantan Barat</p>
-    <div class="hero-actions">
-      <a href="about.html" class="btn btn-primary btn-lg" data-i18n="hero_cta1">Pelajari Lebih Lanjut</a>
-      <a href="community.html" class="btn btn-outline btn-lg" data-i18n="hero_cta2">Hubungi Kami</a>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-pattern"></div>
+    <div class="hero-particles" id="hero-particles"></div>
+    <div class="hero-orb-1"></div>
+    <div class="hero-orb-2"></div>
+    <div class="hero-visual">
+      <div class="hero-corn-bg" id="hero-corn-icon"></div>
     </div>
-  </div>
-  <div class="hero-scroll">
-    <div class="scroll-line"></div>
-    <span style="font-size:0.65rem; letter-spacing:0.2em;">SCROLL</span>
-  </div>
-</section>
-
-<!-- Stats Bar -->
-<section class="stat-bar section-sm">
-  <div class="container">
-    <div class="stat-grid">
-      <div class="stat-item animate-on-scroll">
-        <div class="stat-item-icon">🌽</div>
-        <div class="stat-number" data-i18n="stat1_num">17 Juta+</div>
-        <div class="stat-label" data-i18n="stat1_label">Ton Kebutuhan Jagung Nasional/Tahun</div>
-      </div>
-      <div class="stat-item animate-on-scroll animate-delay-1">
-        <div class="stat-item-icon">⚡</div>
-        <div class="stat-number" data-i18n="stat2_num">300 Ton</div>
-        <div class="stat-label" data-i18n="stat2_label">Kapasitas Dryer Per Hari</div>
-      </div>
-      <div class="stat-item animate-on-scroll animate-delay-2">
-        <div class="stat-item-icon">🏭</div>
-        <div class="stat-number" data-i18n="stat3_num">1.000 Ton</div>
-        <div class="stat-label" data-i18n="stat3_label">Kapasitas Penyimpanan Gudang</div>
-      </div>
-      <div class="stat-item animate-on-scroll animate-delay-3">
-        <div class="stat-item-icon">🌾</div>
-        <div class="stat-number" data-i18n="stat4_num">12.000 Ha</div>
-        <div class="stat-label" data-i18n="stat4_label">Lahan Jagung di Kalimantan Barat</div>
+    <div class="container hero-content">
+      <h1 class="hero-title">
+        <span data-i18n="hero_title1">PT PANGAN</span><br>
+        <span class="red" data-i18n="hero_title2">MERAH</span> <span class="gold-text"
+          data-i18n="hero_title3">PUTIH</span>
+      </h1>
+      <p class="hero-subtitle" data-i18n="hero_subtitle">Pusat Pengeringan & Distribusi Jagung Pakan Terbesar di
+        Kalimantan Barat</p>
+      <div class="hero-actions">
+        <a href="about.html" class="btn btn-primary btn-lg" data-i18n="hero_cta1">Pelajari Lebih Lanjut</a>
+        <a href="community.html" class="btn btn-outline btn-lg" data-i18n="hero_cta2">Hubungi Kami</a>
       </div>
     </div>
-  </div>
-</section>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span style="font-size:0.65rem; letter-spacing:0.2em;">SCROLL</span>
+    </div>
+  </section>
 
-<!-- About Section -->
-<section class="section bg-white">
-  <div class="container">
-    <div class="about-split">
-      <div class="about-image-wrap animate-on-scroll">
-        <div class="about-image-placeholder" id="about-corn-icon"></div>
-        <div class="about-badge-strip">
-          <div class="strip-flag">🇮🇩</div>
-          <div>
-            <div class="strip-label">Diresmikan oleh / Inaugurated by</div>
-            <div class="strip-value">Presiden RI Prabowo Subianto — 5 Juni 2025</div>
+  <!-- Stats Bar -->
+  <section class="stat-bar section-sm">
+    <div class="container">
+      <div class="stat-grid">
+        <div class="stat-item animate-on-scroll">
+          <div class="stat-item-icon">🌽</div>
+          <div class="stat-number" data-i18n="stat1_num">17 Juta+</div>
+          <div class="stat-label" data-i18n="stat1_label">Ton Kebutuhan Jagung Nasional/Tahun</div>
+        </div>
+        <div class="stat-item animate-on-scroll animate-delay-1">
+          <div class="stat-item-icon">⚡</div>
+          <div class="stat-number" data-i18n="stat2_num">300 Ton</div>
+          <div class="stat-label" data-i18n="stat2_label">Kapasitas Dryer Per Hari</div>
+        </div>
+        <div class="stat-item animate-on-scroll animate-delay-2">
+          <div class="stat-item-icon">🏭</div>
+          <div class="stat-number" data-i18n="stat3_num">1.000 Ton</div>
+          <div class="stat-label" data-i18n="stat3_label">Kapasitas Penyimpanan Gudang</div>
+        </div>
+        <div class="stat-item animate-on-scroll animate-delay-3">
+          <div class="stat-item-icon">🌾</div>
+          <div class="stat-number" data-i18n="stat4_num">12.000 Ha</div>
+          <div class="stat-label" data-i18n="stat4_label">Lahan Jagung di Kalimantan Barat</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section bg-white">
+    <div class="container">
+      <div class="about-split">
+        <div class="about-image-wrap animate-on-scroll">
+          <div class="about-image-placeholder" id="about-corn-icon"></div>
+          <div class="about-badge-strip">
+            <div class="strip-flag">🇮🇩</div>
+            <div>
+              <div class="strip-label">Diresmikan oleh / Inaugurated by</div>
+              <div class="strip-value">Presiden RI Prabowo Subianto — 5 Juni 2025</div>
+            </div>
+          </div>
+        </div>
+        <div class="animate-on-scroll animate-delay-1">
+          <div class="section-header" style="text-align:left; margin-bottom:32px;">
+            <span class="label" data-i18n="home_about_label">Tentang Kami</span>
+            <h2 data-i18n="home_about_title">Solusi Rantai Pasok Jagung Nasional</h2>
+            <div class="section-divider" style="margin:16px 0 0;"></div>
+          </div>
+          <p data-i18n="home_about_text">PT Pangan Merah Putih adalah perusahaan agribisnis yang berfokus pada
+            pengeringan, penyimpanan, dan distribusi jagung pakan.</p>
+          <div class="about-feature-list">
+            <div class="about-feature-item">
+              <div class="afcheck">✓</div><span>Diresmikan oleh Presiden RI Prabowo Subianto, 5 Juni 2025</span>
+            </div>
+            <div class="about-feature-item">
+              <div class="afcheck">✓</div><span>Mendukung program Ketahanan Pangan pemerintah</span>
+            </div>
+            <div class="about-feature-item">
+              <div class="afcheck">✓</div><span>Mitra strategis petani & Bulog Kalimantan Barat</span>
+            </div>
+          </div>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <a href="about.html" class="btn btn-dark" data-i18n="home_about_btn">Selengkapnya</a>
+            <a href="products.html" class="btn btn-outline"
+              style="border-color:var(--color-primary);color:var(--color-primary);" data-i18n="home_svc_btn">Lihat
+              Layanan</a>
           </div>
         </div>
       </div>
-      <div class="animate-on-scroll animate-delay-1">
-        <div class="section-header" style="text-align:left; margin-bottom:32px;">
-          <span class="label" data-i18n="home_about_label">Tentang Kami</span>
-          <h2 data-i18n="home_about_title">Solusi Rantai Pasok Jagung Nasional</h2>
-          <div class="section-divider" style="margin:16px 0 0;"></div>
-        </div>
-        <p data-i18n="home_about_text">PT Pangan Merah Putih adalah perusahaan agribisnis yang berfokus pada pengeringan, penyimpanan, dan distribusi jagung pakan.</p>
-        <div class="about-feature-list">
-          <div class="about-feature-item"><div class="afcheck">✓</div><span>Diresmikan oleh Presiden RI Prabowo Subianto, 5 Juni 2025</span></div>
-          <div class="about-feature-item"><div class="afcheck">✓</div><span>Mendukung program Ketahanan Pangan pemerintah</span></div>
-          <div class="about-feature-item"><div class="afcheck">✓</div><span>Mitra strategis petani & Bulog Kalimantan Barat</span></div>
-        </div>
-        <div style="display:flex; gap:12px; flex-wrap:wrap;">
-          <a href="about.html" class="btn btn-dark" data-i18n="home_about_btn">Selengkapnya</a>
-          <a href="products.html" class="btn btn-outline" style="border-color:var(--color-primary);color:var(--color-primary);" data-i18n="home_svc_btn">Lihat Layanan</a>
-        </div>
-      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Services Section -->
-<section class="section bg-light">
-  <div class="container">
-    <div class="section-header animate-on-scroll">
-      <span class="label" data-i18n="home_svc_label">Layanan Kami</span>
-      <h2 data-i18n="home_svc_title">Produk & Jasa Unggulan</h2>
-      <div class="section-divider"></div>
-    </div>
-    <div class="grid grid-3">
-      <div class="service-card animate-on-scroll">
-        <div class="service-icon" id="svc-icon-1"></div>
-        <div class="svc-tag">300 Ton/Hari</div>
-        <h3 data-i18n="home_svc1_title">Pengeringan Jagung</h3>
-        <p data-i18n="home_svc1_text">Menggunakan vertical dryer berkapasitas 300 ton/hari dengan efisiensi bahan bakar tinggi.</p>
-        <a href="products.html" class="btn btn-outline" style="border-color:var(--color-gold);color:var(--color-gold);" data-i18n="home_svc_btn">Lihat Semua Layanan</a>
+  <!-- Services Section -->
+  <section class="section bg-light">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <span class="label" data-i18n="home_svc_label">Layanan Kami</span>
+        <h2 data-i18n="home_svc_title">Produk & Jasa Unggulan</h2>
+        <div class="section-divider"></div>
       </div>
-      <div class="service-card animate-on-scroll animate-delay-1">
-        <div class="service-icon" id="svc-icon-2"></div>
-        <div class="svc-tag">1.000 Ton</div>
-        <h3 data-i18n="home_svc2_title">Penyimpanan Jagung</h3>
-        <p data-i18n="home_svc2_text">Gudang penyimpanan berkapasitas hingga 1.000 ton dengan sistem QC internal ketat.</p>
-        <a href="products.html" class="btn btn-outline" style="border-color:var(--color-gold);color:var(--color-gold);" data-i18n="home_svc_btn">Lihat Semua Layanan</a>
-      </div>
-      <div class="service-card animate-on-scroll animate-delay-2">
-        <div class="service-icon" id="svc-icon-3"></div>
-        <div class="svc-tag">Bulog & Feedmill</div>
-        <h3 data-i18n="home_svc3_title">Distribusi Jagung</h3>
-        <p data-i18n="home_svc3_text">Distribusi jagung ke Bulog & feedmill swasta di seluruh Kalimantan Barat.</p>
-        <a href="products.html" class="btn btn-outline" style="border-color:var(--color-gold);color:var(--color-gold);" data-i18n="home_svc_btn">Lihat Semua Layanan</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Advantages Section -->
-<section class="section bg-white">
-  <div class="container">
-    <div class="section-header animate-on-scroll">
-      <span class="label" data-i18n="home_adv_label">Keunggulan Kami</span>
-      <h2 data-i18n="home_adv_title">Mengapa Memilih PT PMP?</h2>
-      <div class="section-divider"></div>
-    </div>
-    <div class="adv-grid">
-      <div class="advantage-card animate-on-scroll">
-        <div class="icon-box icon-box-gold" id="adv-icon-1"></div>
-        <div class="advantage-card-content">
-          <h3 data-i18n="adv1_title">Teknologi Dryer Modern</h3>
-          <p data-i18n="adv1_text">Vertical dryer 300 ton/hari dengan efisiensi bahan bakar tinggi.</p>
+      <div class="grid grid-3">
+        <div class="service-card animate-on-scroll">
+          <div class="service-icon" id="svc-icon-1"></div>
+          <div class="svc-tag">300 Ton/Hari</div>
+          <h3 data-i18n="home_svc1_title">Pengeringan Jagung</h3>
+          <p data-i18n="home_svc1_text">Menggunakan vertical dryer berkapasitas 300 ton/hari dengan efisiensi bahan
+            bakar tinggi.</p>
+          <a href="products.html" class="btn btn-outline"
+            style="border-color:var(--color-gold);color:var(--color-gold);" data-i18n="home_svc_btn">Lihat Semua
+            Layanan</a>
         </div>
-      </div>
-      <div class="advantage-card animate-on-scroll animate-delay-1">
-        <div class="icon-box icon-box-gold" id="adv-icon-2"></div>
-        <div class="advantage-card-content">
-          <h3 data-i18n="adv2_title">Lokasi Strategis</h3>
-          <p data-i18n="adv2_text">Dekat dengan sentra produksi petani, akses ke Bulog dan feedmill.</p>
+        <div class="service-card animate-on-scroll animate-delay-1">
+          <div class="service-icon" id="svc-icon-2"></div>
+          <div class="svc-tag">1.000 Ton</div>
+          <h3 data-i18n="home_svc2_title">Penyimpanan Jagung</h3>
+          <p data-i18n="home_svc2_text">Gudang penyimpanan berkapasitas hingga 1.000 ton dengan sistem QC internal
+            ketat.</p>
+          <a href="products.html" class="btn btn-outline"
+            style="border-color:var(--color-gold);color:var(--color-gold);" data-i18n="home_svc_btn">Lihat Semua
+            Layanan</a>
         </div>
-      </div>
-      <div class="advantage-card animate-on-scroll animate-delay-2">
-        <div class="icon-box icon-box-gold" id="adv-icon-3"></div>
-        <div class="advantage-card-content">
-          <h3 data-i18n="adv3_title">Kualitas Terjamin</h3>
-          <p data-i18n="adv3_text">Sistem QC internal: kadar air 14%, bebas aflatoksin (&lt;50ppb).</p>
-        </div>
-      </div>
-      <div class="advantage-card animate-on-scroll animate-delay-3">
-        <div class="icon-box icon-box-gold" id="adv-icon-4"></div>
-        <div class="advantage-card-content">
-          <h3 data-i18n="adv4_title">Kemitraan Petani</h3>
-          <p data-i18n="adv4_text">Skema pembelian harga fair, mengurangi kerugian pasca panen.</p>
+        <div class="service-card animate-on-scroll animate-delay-2">
+          <div class="service-icon" id="svc-icon-3"></div>
+          <div class="svc-tag">Bulog & Feedmill</div>
+          <h3 data-i18n="home_svc3_title">Distribusi Jagung</h3>
+          <p data-i18n="home_svc3_text">Distribusi jagung ke Bulog & feedmill swasta di seluruh Kalimantan Barat.</p>
+          <a href="products.html" class="btn btn-outline"
+            style="border-color:var(--color-gold);color:var(--color-gold);" data-i18n="home_svc_btn">Lihat Semua
+            Layanan</a>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- News Section -->
-<section class="section bg-light">
-  <div class="container">
-    <div class="section-header animate-on-scroll">
-      <span class="label" data-i18n="home_news_label">Berita Terbaru</span>
-      <h2 data-i18n="home_news_title">Kabar dari PT PMP</h2>
-      <div class="section-divider"></div>
-    </div>
-    <div class="grid grid-3" id="home-news-grid">
-      <div class="empty-state">
-        <div class="empty-icon">📰</div>
-        <p data-i18n="home_news_empty">Belum ada berita yang dipublikasikan.</p>
+  <!-- Advantages Section -->
+  <section class="section bg-white">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <span class="label" data-i18n="home_adv_label">Keunggulan Kami</span>
+        <h2 data-i18n="home_adv_title">Mengapa Memilih PT PMP?</h2>
+        <div class="section-divider"></div>
       </div>
-    </div>
-    <div class="text-center" style="margin-top:40px;">
-      <a href="news.html" class="btn btn-dark" data-i18n="home_news_btn">Lihat Semua Berita</a>
-    </div>
-  </div>
-</section>
-
-<!-- Photo Gallery Preview Section -->
-<section class="section bg-white" id="home-gallery-section" style="display:none;">
-  <div class="container">
-    <div class="section-header animate-on-scroll">
-      <span class="label">Galeri</span>
-      <h2>Foto Terbaru</h2>
-      <div class="section-divider"></div>
-    </div>
-    <div class="gallery-grid" id="home-gallery-display"></div>
-  </div>
-</section>
-
-<!-- Lightbox -->
-<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
-  <span class="lightbox-close">✕</span>
-  <img class="lightbox-img" id="lightbox-img" src="" alt="">
-</div>
-
-<!-- CTA Section -->
-<section class="section bg-dark">
-  <div class="container text-center">
-    <div class="animate-on-scroll cta-section-inner" style="margin:0 auto;">
-      <span class="label" style="background:transparent; color:var(--color-gold-light); border-color:rgba(201,147,42,0.55);">PT Pangan Merah Putih</span>
-      <h2 style="color:var(--color-white); margin:20px 0 16px;" data-i18n="hero_subtitle">Pusat Pengeringan & Distribusi Jagung Pakan Terbesar di Kalimantan Barat</h2>
-      <p style="max-width:500px; margin:0 auto 32px;" data-i18n="home_about_text2">Diresmikan oleh Presiden RI Prabowo Subianto pada 5 Juni 2025.</p>
-      <div class="flex-center flex-gap-4" style="flex-wrap:wrap;">
-        <a href="products.html" class="btn btn-primary btn-lg" data-i18n="home_svc_btn">Lihat Semua Layanan</a>
-        <a href="community.html" class="btn btn-outline btn-lg" data-i18n="comm_market_label">Analisis Pasar</a>
-      </div>
-      <div class="trusted-strip">
-        <span class="trusted-label">Mitra Kami:</span>
-        <span class="trusted-item">BULOG</span>
-        <span class="trusted-item">Pemerintah Kalbar</span>
-        <span class="trusted-item">Feedmill Swasta</span>
-        <span class="trusted-item">Petani Jagung</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Social CTA Section -->
-<section class="section" style="background:linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%); padding:60px 0;">
-  <div class="container">
-    <div class="animate-on-scroll" style="text-align:center; max-width:640px; margin:0 auto;">
-      <span class="label" style="background:var(--color-gold);" data-i18n="social_connect">Terhubung dengan Kami</span>
-      <h2 style="color:white; margin:20px 0 12px;" data-i18n="social_cta_title">Siap Bermitra dengan PT PMP?</h2>
-      <p style="color:rgba(255,255,255,0.75); margin-bottom:32px;" data-i18n="social_cta_text">Hubungi kami sekarang untuk informasi harga, kemitraan petani, dan distribusi jagung.</p>
-      <div id="social-cta-buttons" style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"></div>
-    </div>
-  </div>
-</section>
-<script>
-  (function(){
-    function renderSocialCTA() {
-      if (!window.KontakDB) return;
-      var k = window.KontakDB.getKontak();
-      var container = document.getElementById('social-cta-buttons');
-      if (!container) return;
-      var ic = window.Icons || {};
-      var svgWA = ic.whatsapp ? '<span style="width:20px;height:20px;display:inline-flex;flex-shrink:0;">' + ic.whatsapp + '</span>' : '';
-      var svgIG = ic.instagram ? '<span style="width:20px;height:20px;display:inline-flex;flex-shrink:0;">' + ic.instagram + '</span>' : '';
-      var svgFB = ic.facebook ? '<span style="width:20px;height:20px;display:inline-flex;flex-shrink:0;">' + ic.facebook + '</span>' : '';
-      var svgEM = ic.email ? '<span style="width:20px;height:20px;display:inline-flex;flex-shrink:0;">' + ic.email + '</span>' : '';
-      var btns = [];
-      if (k.whatsapp) btns.push({ href: 'https://wa.me/62' + k.whatsapp, icon: svgWA, label: k.whatsapp_label||'WhatsApp', style: 'background:#25d366;color:white;' });
-      if (k.instagram) btns.push({ href: 'https://instagram.com/' + k.instagram, icon: svgIG, label: k.instagram_label||'Instagram', style: 'background:#e1306c;color:white;' });
-      if (k.facebook) {
-        var fbHref = k.facebook.startsWith('http') ? k.facebook : 'https://facebook.com/' + k.facebook;
-        btns.push({ href: fbHref, icon: svgFB, label: k.facebook_label||'Facebook', style: 'background:#1877f2;color:white;' });
-      }
-      if (k.email) btns.push({ href: 'mailto:' + k.email, icon: svgEM, label: k.email_label||'Email', style: 'background:var(--color-gold);color:white;' });
-      if (btns.length === 0) {
-        container.innerHTML = '<a href="community.html" class="btn btn-primary btn-lg" data-i18n="hero_cta2">Hubungi Kami</a>';
-      } else {
-        container.innerHTML = btns.map(b =>
-          '<a href="' + b.href + '" target="_blank" rel="noopener" style="' + b.style + ' display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:50px;font-weight:700;font-size:0.9rem;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,0.2);transition:transform 0.2s;" onmouseover="this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.transform=\'\'">' + b.icon + b.label + '</a>'
-        ).join('');
-      }
-    }
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', renderSocialCTA);
-    else renderSocialCTA();
-  })();
-</script>
-
-<!-- Footer -->
-<footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="logo-text">PT PANGAN <span>MERAH</span> PUTIH</div>
-        <p data-i18n="footer_tagline">Pusat pengeringan dan distribusi jagung pakan terkemuka di Kalimantan Barat.</p>
-      </div>
-      <div class="footer-col">
-        <h4 data-i18n="footer_nav">Navigasi</h4>
-        <ul>
-          <li><a href="index.html" data-i18n="nav_home">Beranda</a></li>
-          <li><a href="about.html" data-i18n="nav_about">Tentang Kami</a></li>
-          <li><a href="sustainability.html" data-i18n="nav_sustainability">Keberlanjutan</a></li>
-          <li><a href="products.html" data-i18n="nav_products">Produk & Jasa</a></li>
-          <li><a href="community.html" data-i18n="nav_community">Komunitas</a></li>
-          <li><a href="news.html" data-i18n="nav_news">Berita</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4 data-i18n="footer_contact">Kontak</h4>
-        <div class="footer-contact-item">
-          <span class="footer-icon" id="footer-icon-map"></span>
-          <span data-i18n="footer_address">Bengkayang, Kalimantan Barat, Indonesia</span>
+      <div class="adv-grid">
+        <div class="advantage-card animate-on-scroll">
+          <div class="icon-box icon-box-gold" id="adv-icon-1"></div>
+          <div class="advantage-card-content">
+            <h3 data-i18n="adv1_title">Teknologi Dryer Modern</h3>
+            <p data-i18n="adv1_text">Vertical dryer 300 ton/hari dengan efisiensi bahan bakar tinggi.</p>
+          </div>
         </div>
-        <div class="footer-contact-item">
-          <span class="footer-icon" id="footer-icon-building"></span>
-          <span>PT Pangan Merah Putih</span>
+        <div class="advantage-card animate-on-scroll animate-delay-1">
+          <div class="icon-box icon-box-gold" id="adv-icon-2"></div>
+          <div class="advantage-card-content">
+            <h3 data-i18n="adv2_title">Lokasi Strategis</h3>
+            <p data-i18n="adv2_text">Dekat dengan sentra produksi petani, akses ke Bulog dan feedmill.</p>
+          </div>
         </div>
-        <div id="footer-social-links" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:16px;"></div>
-      </div>
-      <div class="footer-col">
-        <h4>Admin</h4>
-        <ul>
-          <li><a href="admin.html" style="display:flex;align-items:center;gap:6px;"><span id="footer-icon-lock" style="width:14px;height:14px;display:inline-flex;opacity:0.7;"></span> Admin Panel</a></li>
-        </ul>
+        <div class="advantage-card animate-on-scroll animate-delay-2">
+          <div class="icon-box icon-box-gold" id="adv-icon-3"></div>
+          <div class="advantage-card-content">
+            <h3 data-i18n="adv3_title">Kualitas Terjamin</h3>
+            <p data-i18n="adv3_text">Sistem QC internal: kadar air 14%, bebas aflatoksin (&lt;50ppb).</p>
+          </div>
+        </div>
+        <div class="advantage-card animate-on-scroll animate-delay-3">
+          <div class="icon-box icon-box-gold" id="adv-icon-4"></div>
+          <div class="advantage-card-content">
+            <h3 data-i18n="adv4_title">Kemitraan Petani</h3>
+            <p data-i18n="adv4_text">Skema pembelian harga fair, mengurangi kerugian pasca panen.</p>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="container">
-    <div class="footer-bottom">
-      <span>© <span class="year-current"></span> PT Pangan Merah Putih. <span data-i18n="footer_rights">Seluruh hak cipta dilindungi.</span></span>
-      <a href="#" id="back-to-top" style="color:var(--color-gold); opacity:0; transition:opacity 0.3s;" data-i18n="footer_back_top">Kembali ke Atas ↑</a>
-    </div>
-  </div>
-</footer>
+  </section>
 
-<script>
-  // Hero particles
-  (function() {
-    var container = document.getElementById('hero-particles');
-    if (!container) return;
-    var count = 18;
-    for (var i = 0; i < count; i++) {
-      var p = document.createElement('div');
-      p.className = 'hero-particle';
-      var size = Math.random() * 6 + 3;
-      p.style.cssText = [
-        'width:' + size + 'px',
-        'height:' + size + 'px',
-        'left:' + Math.random() * 60 + '%',
-        'animation-duration:' + (Math.random() * 14 + 10) + 's',
-        'animation-delay:' + (Math.random() * 12) + 's',
-        'opacity:' + (Math.random() * 0.5 + 0.1)
-      ].join(';');
-      container.appendChild(p);
-    }
-  })();
-</script>
-<script src="js/icons.js"></script>
-<script>
-  // Reading progress bar
-  (function(){
-    var prog = document.getElementById('reading-progress');
-    if (!prog) return;
-    function updateProgress() {
-      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      var docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      if (docHeight <= 0) return;
-      var pct = (scrollTop / docHeight) * 100;
-      prog.style.width = pct + '%';
-      if (scrollTop > 100) prog.classList.add('visible');
-      else prog.classList.remove('visible');
-    }
-    window.addEventListener('scroll', updateProgress, { passive: true });
-  })();
-</script>
-<script src="js/i18n.js"></script>
-<script src="js/gallery.js"></script>
-<script src="js/kontak.js"></script>
-<script src="js/news.js"></script>
-<script src="js/nav.js"></script>
-<script src="js/main.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // Load latest 3 news
-    const grid = document.getElementById('home-news-grid');
-    const articles = window.NewsDB.getArticles().slice(0, 3);
-    const lang = window.getCurrentLang();
-    if (articles.length > 0) {
-      window.NewsDB.renderNewsCards(grid, articles, lang,
-        window.translations[lang]['home_news_read']);
-      // Re-observe new cards
-      setTimeout(() => {
-        document.querySelectorAll('.animate-on-scroll:not(.visible)').forEach(el => {
-          const observer = new IntersectionObserver((entries) => {
-            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-          }, { threshold: 0.12 });
-          observer.observe(el);
-        });
-      }, 100);
-    }
-    // Gallery preview
-    if (window.GalleryDB) {
-      var galleryPhotos = window.GalleryDB.getGallery();
-      if (galleryPhotos.length > 0) {
-        var homeGallerySection = document.getElementById('home-gallery-section');
-        var homeGalleryGrid = document.getElementById('home-gallery-display');
-        if (homeGallerySection) homeGallerySection.style.display = 'block';
-        if (homeGalleryGrid) homeGalleryGrid.innerHTML = galleryPhotos.slice(0, 8).map(function(p){
-          return '<div class="gallery-item animate-on-scroll" onclick="openLightbox(\'' + p.src.replace(/'/g,"&#39;") + '\')">' +
-            '<img src="' + p.src + '" alt="' + (p.caption_id||'') + '" loading="lazy">' +
-            '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + (p.caption_id||'') + '</div></div>' +
-            '</div>';
-        }).join('');
-      }
-    }
-    window.openLightbox = function(src) {
-      var lb = document.getElementById('lightbox');
-      var img = document.getElementById('lightbox-img');
-      if (img) img.src = src;
-      if (lb) lb.classList.add('open');
-    };
-    window.closeLightbox = function() {
-      var lb = document.getElementById('lightbox');
-      if (lb) lb.classList.remove('open');
-    };
-    document.addEventListener('click', function(e) {
-      if (e.target && e.target.classList.contains('lightbox-close')) closeLightbox();
-    });
-    // Animate stat numbers on scroll into view
-    var statObserver = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          var el = entry.target;
-          var text = el.textContent;
-          // Extract number (first numeric sequence)
-          var match = text.match(/[\d,\.]+/);
-          if (!match) return;
-          var numStr = match[0].replace(/,/g, '');
-          var num = parseFloat(numStr);
-          if (isNaN(num)) return;
-          var suffix = text.replace(match[0], '').trim();
-          var prefix = text.slice(0, text.indexOf(match[0]));
-          var duration = 1400;
-          var start = null;
-          var startVal = 0;
-          function step(ts) {
-            if (!start) start = ts;
-            var prog = Math.min((ts - start) / duration, 1);
-            var eased = 1 - Math.pow(1 - prog, 3);
-            var cur = Math.round(startVal + (num - startVal) * eased);
-            var display = cur.toLocaleString('id-ID');
-            el.textContent = prefix + display + (prog < 1 ? '' : ' ' + suffix.replace(/^\s+/,''));
-            if (prog < 1) requestAnimationFrame(step);
-            else el.textContent = text; // restore original
+  <!-- News Section -->
+  <section class="section bg-light">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <span class="label" data-i18n="home_news_label">Berita Terbaru</span>
+        <h2 data-i18n="home_news_title">Kabar dari PT PMP</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="grid grid-3" id="home-news-grid">
+        <div class="empty-state">
+          <div class="empty-icon">📰</div>
+          <p data-i18n="home_news_empty">Belum ada berita yang dipublikasikan.</p>
+        </div>
+      </div>
+      <div class="text-center" style="margin-top:40px;">
+        <a href="news.html" class="btn btn-dark" data-i18n="home_news_btn">Lihat Semua Berita</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo Gallery Preview Section -->
+  <section class="section bg-white" id="home-gallery-section" style="display:none;">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <span class="label">Galeri</span>
+        <h2>Foto Terbaru</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="gallery-grid" id="home-gallery-display"></div>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close">✕</span>
+    <img class="lightbox-img" id="lightbox-img" src="" alt="">
+  </div>
+
+  <!-- CTA Section -->
+  <section class="section bg-dark">
+    <div class="container text-center">
+      <div class="animate-on-scroll cta-section-inner" style="margin:0 auto;">
+        <span class="label"
+          style="background:transparent; color:var(--color-gold-light); border-color:rgba(201,147,42,0.55);">PT Pangan
+          Merah Putih</span>
+        <h2 style="color:var(--color-white); margin:20px 0 16px;" data-i18n="hero_subtitle">Pusat Pengeringan &
+          Distribusi Jagung Pakan Terbesar di Kalimantan Barat</h2>
+        <p style="max-width:500px; margin:0 auto 32px;" data-i18n="home_about_text2">Diresmikan oleh Presiden RI Prabowo
+          Subianto pada 5 Juni 2025.</p>
+        <div class="flex-center flex-gap-4" style="flex-wrap:wrap;">
+          <a href="products.html" class="btn btn-primary btn-lg" data-i18n="home_svc_btn">Lihat Semua Layanan</a>
+          <a href="community.html" class="btn btn-outline btn-lg" data-i18n="comm_market_label">Analisis Pasar</a>
+        </div>
+        <div class="trusted-strip">
+          <span class="trusted-label">Mitra Kami:</span>
+          <span class="trusted-item">BULOG</span>
+          <span class="trusted-item">Pemerintah Kalbar</span>
+          <span class="trusted-item">Feedmill Swasta</span>
+          <span class="trusted-item">Petani Jagung</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social CTA Section -->
+  <section class="section"
+    style="background:linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%); padding:60px 0;">
+    <div class="container">
+      <div class="animate-on-scroll" style="text-align:center; max-width:640px; margin:0 auto;">
+        <span class="label" style="background:var(--color-gold);" data-i18n="social_connect">Terhubung dengan
+          Kami</span>
+        <h2 style="color:white; margin:20px 0 12px;" data-i18n="social_cta_title">Siap Bermitra dengan PT PMP?</h2>
+        <p style="color:rgba(255,255,255,0.75); margin-bottom:32px;" data-i18n="social_cta_text">Hubungi kami sekarang
+          untuk informasi harga, kemitraan petani, dan distribusi jagung.</p>
+        <div id="social-cta-buttons" style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"></div>
+      </div>
+    </div>
+  </section>
+  <script>
+      (function () {
+        function renderSocialCTA() {
+          if (!window.KontakDB) return;
+          var k = window.KontakDB.getKontak();
+          var container = document.getElementById('social-cta-buttons');
+          if (!container) return;
+          var ic = window.Icons || {};
+          var svgWA = ic.whatsapp ? '<span style="width:20px;height:20px;display:inline-flex;flex-shrink:0;">' + ic.whatsapp + '</span>' : '';
+          var svgIG = ic.instagram ? '<span style="width:20px;height:20px;display:inline-flex;flex-shrink:0;">' + ic.instagram + '</span>' : '';
+          var svgFB = ic.facebook ? '<span style="width:20px;height:20px;display:inline-flex;flex-shrink:0;">' + ic.facebook + '</span>' : '';
+          var svgEM = ic.email ? '<span style="width:20px;height:20px;display:inline-flex;flex-shrink:0;">' + ic.email + '</span>' : '';
+          var btns = [];
+          if (k.whatsapp) btns.push({ href: 'https://wa.me/62' + k.whatsapp, icon: svgWA, label: k.whatsapp_label || 'WhatsApp', style: 'background:#25d366;color:white;' });
+          if (k.instagram) btns.push({ href: 'https://instagram.com/' + k.instagram, icon: svgIG, label: k.instagram_label || 'Instagram', style: 'background:#e1306c;color:white;' });
+          if (k.facebook) {
+            var fbHref = k.facebook.startsWith('http') ? k.facebook : 'https://facebook.com/' + k.facebook;
+            btns.push({ href: fbHref, icon: svgFB, label: k.facebook_label || 'Facebook', style: 'background:#1877f2;color:white;' });
           }
-          requestAnimationFrame(step);
-          statObserver.unobserve(el);
+          if (k.email) btns.push({ href: 'mailto:' + k.email, icon: svgEM, label: k.email_label || 'Email', style: 'background:var(--color-gold);color:white;' });
+          if (btns.length === 0) {
+            container.innerHTML = '<a href="community.html" class="btn btn-primary btn-lg" data-i18n="hero_cta2">Hubungi Kami</a>';
+          } else {
+            container.innerHTML = btns.map(b =>
+              '<a href="' + b.href + '" target="_blank" rel="noopener" style="' + b.style + ' display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:50px;font-weight:700;font-size:0.9rem;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,0.2);transition:transform 0.2s;" onmouseover="this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.transform=\'\'">' + b.icon + b.label + '</a>'
+            ).join('');
+          }
         }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', renderSocialCTA);
+        else renderSocialCTA();
+      })();
+  </script>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo-text">PT PANGAN <span>MERAH</span> PUTIH</div>
+          <p data-i18n="footer_tagline">Pusat pengeringan dan distribusi jagung pakan terkemuka di Kalimantan Barat.</p>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="footer_nav">Navigasi</h4>
+          <ul>
+            <li><a href="index.html" data-i18n="nav_home">Beranda</a></li>
+            <li><a href="about.html" data-i18n="nav_about">Tentang Kami</a></li>
+            <li><a href="sustainability.html" data-i18n="nav_sustainability">Keberlanjutan</a></li>
+            <li><a href="products.html" data-i18n="nav_products">Produk & Jasa</a></li>
+            <li><a href="community.html" data-i18n="nav_community">Komunitas</a></li>
+            <li><a href="news.html" data-i18n="nav_news">Berita</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="footer_contact">Kontak</h4>
+          <div class="footer-contact-item">
+            <span class="footer-icon" id="footer-icon-map"></span>
+            <span data-i18n="footer_address">Bengkayang, Kalimantan Barat, Indonesia</span>
+          </div>
+          <div class="footer-contact-item">
+            <span class="footer-icon" id="footer-icon-building"></span>
+            <span>PT Pangan Merah Putih</span>
+          </div>
+          <div id="footer-social-links" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:16px;"></div>
+        </div>
+        <div class="footer-col">
+          <h4>Admin</h4>
+          <ul>
+            <li><a href="admin.html" style="display:flex;align-items:center;gap:6px;"><span id="footer-icon-lock"
+                  style="width:14px;height:14px;display:inline-flex;opacity:0.7;"></span> Admin Panel</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© <span class="year-current"></span> PT Pangan Merah Putih. <span data-i18n="footer_rights">Seluruh hak
+            cipta dilindungi.</span></span>
+        <a href="#" id="back-to-top" style="color:var(--color-gold); opacity:0; transition:opacity 0.3s;"
+          data-i18n="footer_back_top">Kembali ke Atas ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Hero particles
+    (function () {
+      var container = document.getElementById('hero-particles');
+      if (!container) return;
+      var count = 18;
+      for (var i = 0; i < count; i++) {
+        var p = document.createElement('div');
+        p.className = 'hero-particle';
+        var size = Math.random() * 6 + 3;
+        p.style.cssText = [
+          'width:' + size + 'px',
+          'height:' + size + 'px',
+          'left:' + Math.random() * 60 + '%',
+          'animation-duration:' + (Math.random() * 14 + 10) + 's',
+          'animation-delay:' + (Math.random() * 12) + 's',
+          'opacity:' + (Math.random() * 0.5 + 0.1)
+        ].join(';');
+        container.appendChild(p);
+      }
+    })();
+  </script>
+  <script src="js/icons.js"></script>
+  <script>
+    // Reading progress bar
+    (function () {
+      var prog = document.getElementById('reading-progress');
+      if (!prog) return;
+      function updateProgress() {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        var docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        if (docHeight <= 0) return;
+        var pct = (scrollTop / docHeight) * 100;
+        prog.style.width = pct + '%';
+        if (scrollTop > 100) prog.classList.add('visible');
+        else prog.classList.remove('visible');
+      }
+      window.addEventListener('scroll', updateProgress, { passive: true });
+    })();
+  </script>
+  <script src="js/i18n.js"></script>
+  <script src="js/gallery.js"></script>
+  <script src="js/kontak.js"></script>
+  <script src="js/news.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load latest 3 news
+      const grid = document.getElementById('home-news-grid');
+      const articles = window.NewsDB.getArticles().slice(0, 3);
+      const lang = window.getCurrentLang();
+      if (articles.length > 0) {
+        window.NewsDB.renderNewsCards(grid, articles, lang,
+          window.translations[lang]['home_news_read']);
+        // Re-observe new cards
+        setTimeout(() => {
+          document.querySelectorAll('.animate-on-scroll:not(.visible)').forEach(el => {
+            const observer = new IntersectionObserver((entries) => {
+              entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+            }, { threshold: 0.12 });
+            observer.observe(el);
+          });
+        }, 100);
+      }
+      // Gallery preview
+      if (window.GalleryDB) {
+        var galleryPhotos = window.GalleryDB.getGallery();
+        if (galleryPhotos.length > 0) {
+          var homeGallerySection = document.getElementById('home-gallery-section');
+          var homeGalleryGrid = document.getElementById('home-gallery-display');
+          if (homeGallerySection) homeGallerySection.style.display = 'block';
+          if (homeGalleryGrid) homeGalleryGrid.innerHTML = galleryPhotos.slice(0, 8).map(function (p) {
+            return '<div class="gallery-item animate-on-scroll" onclick="openLightbox(\'' + p.src.replace(/'/g, "&#39;") + '\')">' +
+              '<img src="' + p.src + '" alt="' + (p.caption_id || '') + '" loading="lazy">' +
+              '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + (p.caption_id || '') + '</div></div>' +
+              '</div>';
+          }).join('');
+        }
+      }
+      window.openLightbox = function (src) {
+        var lb = document.getElementById('lightbox');
+        var img = document.getElementById('lightbox-img');
+        if (img) img.src = src;
+        if (lb) lb.classList.add('open');
+      };
+      window.closeLightbox = function () {
+        var lb = document.getElementById('lightbox');
+        if (lb) lb.classList.remove('open');
+      };
+      document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList.contains('lightbox-close')) closeLightbox();
       });
-    }, { threshold: 0.5 });
-    document.querySelectorAll('.stat-number').forEach(function(el) {
-      statObserver.observe(el);
+      // Animate stat numbers on scroll into view
+      var statObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var el = entry.target;
+            var text = el.textContent;
+            // Extract number (first numeric sequence)
+            var match = text.match(/[\d,\.]+/);
+            if (!match) return;
+            var numStr = match[0].replace(/,/g, '');
+            var num = parseFloat(numStr);
+            if (isNaN(num)) return;
+            var suffix = text.replace(match[0], '').trim();
+            var prefix = text.slice(0, text.indexOf(match[0]));
+            var duration = 1400;
+            var start = null;
+            var startVal = 0;
+            function step(ts) {
+              if (!start) start = ts;
+              var prog = Math.min((ts - start) / duration, 1);
+              var eased = 1 - Math.pow(1 - prog, 3);
+              var cur = Math.round(startVal + (num - startVal) * eased);
+              var display = cur.toLocaleString('id-ID');
+              el.textContent = prefix + display + (prog < 1 ? '' : ' ' + suffix.replace(/^\s+/, ''));
+              if (prog < 1) requestAnimationFrame(step);
+              else el.textContent = text; // restore original
+            }
+            requestAnimationFrame(step);
+            statObserver.unobserve(el);
+          }
+        });
+      }, { threshold: 0.5 });
+      document.querySelectorAll('.stat-number').forEach(function (el) {
+        statObserver.observe(el);
+      });
     });
-  });
-</script>
-<!-- Floating WhatsApp Button -->
-<div id="float-wa" style="display:none; position:fixed; bottom:28px; right:28px; z-index:999;">
-  <a id="float-wa-link" href="#" target="_blank" rel="noopener"
-    style="display:flex; align-items:center; justify-content:center; background:#25d366; color:white; width:56px; height:56px; border-radius:50%; box-shadow:0 4px 20px rgba(37,211,102,0.4); text-decoration:none; transition:transform 0.2s,box-shadow 0.2s;"
-    onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(37,211,102,0.5)'"
-    onmouseout="this.style.transform='';this.style.boxShadow='0 4px 20px rgba(37,211,102,0.4)'">
-    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-  </a>
-</div>
-<script>
-  (function(){
-    function initKontakUI() {
-      if (!window.KontakDB) return;
-      var k = window.KontakDB.getKontak();
-      // Floating WA
-      if (k.whatsapp) {
-        var btn = document.getElementById('float-wa');
-        var link = document.getElementById('float-wa-link');
-        var lbl = document.getElementById('float-wa-label');
-        if (btn) btn.style.display = 'block';
-        if (link) link.href = 'https://wa.me/62' + k.whatsapp;
-        if (lbl) lbl.textContent = k.whatsapp_label || 'WhatsApp';
-      }
-      // Footer social icons
-      var socialContainer = document.getElementById('footer-social-links');
-      if (socialContainer) {
-        var ic2 = window.Icons || {};
-        var links = [];
-        if (k.whatsapp) links.push({ href: 'https://wa.me/62' + k.whatsapp, icon: ic2.whatsapp||'', label: 'WA', color: '#25d366' });
-        if (k.instagram) links.push({ href: 'https://instagram.com/' + k.instagram, icon: ic2.instagram||'', label: 'IG', color: '#e1306c' });
-        if (k.facebook) {
-          var fbHref2 = k.facebook.startsWith('http') ? k.facebook : 'https://facebook.com/' + k.facebook;
-          links.push({ href: fbHref2, icon: ic2.facebook||'', label: 'FB', color: '#1877f2' });
+  </script>
+  <!-- Floating WhatsApp Button -->
+  <div id="float-wa" style="display:none; position:fixed; bottom:28px; right:28px; z-index:999;">
+    <a id="float-wa-link" href="#" target="_blank" rel="noopener"
+      style="display:flex; align-items:center; justify-content:center; background:#25d366; color:white; width:56px; height:56px; border-radius:50%; box-shadow:0 4px 20px rgba(37,211,102,0.4); text-decoration:none; transition:transform 0.2s,box-shadow 0.2s;"
+      onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(37,211,102,0.5)'"
+      onmouseout="this.style.transform='';this.style.boxShadow='0 4px 20px rgba(37,211,102,0.4)'">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="white">
+        <path
+          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+      </svg>
+    </a>
+  </div>
+  <script>
+    (function () {
+      function initKontakUI() {
+        if (!window.KontakDB) return;
+        var k = window.KontakDB.getKontak();
+        // Floating WA
+        if (k.whatsapp) {
+          var btn = document.getElementById('float-wa');
+          var link = document.getElementById('float-wa-link');
+          var lbl = document.getElementById('float-wa-label');
+          if (btn) btn.style.display = 'block';
+          if (link) link.href = 'https://wa.me/62' + k.whatsapp;
+          if (lbl) lbl.textContent = k.whatsapp_label || 'WhatsApp';
         }
-        if (k.email) links.push({ href: 'mailto:' + k.email, icon: ic2.email||'', label: 'Email', color: '#c9932a' });
-        if (links.length > 0) {
-          socialContainer.innerHTML = links.map(l =>
-            '<a href="' + l.href + '" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:' + l.color + ';color:white;padding:7px 13px;border-radius:20px;font-size:0.78rem;font-weight:700;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'"><span style="width:14px;height:14px;display:inline-flex;flex-shrink:0;">' + l.icon + '</span>' + l.label + '</a>'
-          ).join('');
+        // Footer social icons
+        var socialContainer = document.getElementById('footer-social-links');
+        if (socialContainer) {
+          var ic2 = window.Icons || {};
+          var links = [];
+          if (k.whatsapp) links.push({ href: 'https://wa.me/62' + k.whatsapp, icon: ic2.whatsapp || '', label: 'WA', color: '#25d366' });
+          if (k.instagram) links.push({ href: 'https://instagram.com/' + k.instagram, icon: ic2.instagram || '', label: 'IG', color: '#e1306c' });
+          if (k.facebook) {
+            var fbHref2 = k.facebook.startsWith('http') ? k.facebook : 'https://facebook.com/' + k.facebook;
+            links.push({ href: fbHref2, icon: ic2.facebook || '', label: 'FB', color: '#1877f2' });
+          }
+          if (k.email) links.push({ href: 'mailto:' + k.email, icon: ic2.email || '', label: 'Email', color: '#c9932a' });
+          if (links.length > 0) {
+            socialContainer.innerHTML = links.map(l =>
+              '<a href="' + l.href + '" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:' + l.color + ';color:white;padding:7px 13px;border-radius:20px;font-size:0.78rem;font-weight:700;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'"><span style="width:14px;height:14px;display:inline-flex;flex-shrink:0;">' + l.icon + '</span>' + l.label + '</a>'
+            ).join('');
+          }
         }
       }
-    }
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initKontakUI);
-    else initKontakUI();
-  })();
-</script>
-<script>
-  // Inject SVG icons into placeholder elements
-  (function(){
-    function inject() {
-      var ic = window.Icons;
-      if (!ic) return;
-      function set(id, svg, size) {
-        var el = document.getElementById(id);
-        if (!el) return;
-        el.innerHTML = svg;
-        var s = el.querySelector('svg');
-        if (s) { s.style.width = size||'100%'; s.style.height = size||'100%'; }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initKontakUI);
+      else initKontakUI();
+    })();
+  </script>
+  <script>
+    // Inject SVG icons into placeholder elements
+    (function () {
+      function inject() {
+        var ic = window.Icons;
+        if (!ic) return;
+        function set(id, svg, size) {
+          var el = document.getElementById(id);
+          if (!el) return;
+          el.innerHTML = svg;
+          var s = el.querySelector('svg');
+          if (s) { s.style.width = size || '100%'; s.style.height = size || '100%'; }
+        }
+        // Logo
+        set('logo-icon-svg', ic.grain, '24px');
+        // Nav corn icon (hero visual bg — keep as large SVG)
+        var heroEl = document.getElementById('hero-corn-icon');
+        if (heroEl) { heroEl.innerHTML = ic.corn; var hsvg = heroEl.querySelector('svg'); if (hsvg) { hsvg.style.width = '260px'; hsvg.style.height = '260px'; hsvg.style.opacity = '0.18'; hsvg.style.color = '#c9932a'; } }
+        // About corn
+        var aboutEl = document.getElementById('about-corn-icon');
+        if (aboutEl) { aboutEl.innerHTML = ic.corn; var asvg = aboutEl.querySelector('svg'); if (asvg) { asvg.style.width = '140px'; asvg.style.height = '140px'; asvg.style.opacity = '0.18'; asvg.style.color = '#c9932a'; } }
+        // Service icons
+        set('svc-icon-1', ic.dryer, '38px');
+        set('svc-icon-2', ic.warehouse, '38px');
+        set('svc-icon-3', ic.truck, '38px');
+        // Advantage icons
+        set('adv-icon-1', ic.settings, '28px');
+        set('adv-icon-2', ic.location, '28px');
+        set('adv-icon-3', ic.shield, '28px');
+        set('adv-icon-4', ic.handshake, '28px');
+        // Footer icons
+        set('footer-icon-map', ic.mapPin, '16px');
+        set('footer-icon-building', ic.building, '16px');
+        set('footer-icon-lock', ic.lock, '14px');
+        // Floating WA icon
+        set('float-wa-icon', ic.whatsapp, '22px');
       }
-      // Logo
-      set('logo-icon-svg', ic.grain, '24px');
-      // Nav corn icon (hero visual bg — keep as large SVG)
-      var heroEl = document.getElementById('hero-corn-icon');
-      if (heroEl) { heroEl.innerHTML = ic.corn; var hsvg = heroEl.querySelector('svg'); if(hsvg){hsvg.style.width='260px';hsvg.style.height='260px';hsvg.style.opacity='0.18';hsvg.style.color='#c9932a';} }
-      // About corn
-      var aboutEl = document.getElementById('about-corn-icon');
-      if (aboutEl) { aboutEl.innerHTML = ic.corn; var asvg = aboutEl.querySelector('svg'); if(asvg){asvg.style.width='140px';asvg.style.height='140px';asvg.style.opacity='0.18';asvg.style.color='#c9932a';} }
-      // Service icons
-      set('svc-icon-1', ic.dryer, '38px');
-      set('svc-icon-2', ic.warehouse, '38px');
-      set('svc-icon-3', ic.truck, '38px');
-      // Advantage icons
-      set('adv-icon-1', ic.settings, '28px');
-      set('adv-icon-2', ic.location, '28px');
-      set('adv-icon-3', ic.shield, '28px');
-      set('adv-icon-4', ic.handshake, '28px');
-      // Footer icons
-      set('footer-icon-map', ic.mapPin, '16px');
-      set('footer-icon-building', ic.building, '16px');
-      set('footer-icon-lock', ic.lock, '14px');
-      // Floating WA icon
-      set('float-wa-icon', ic.whatsapp, '22px');
-    }
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
-    else inject();
-  })();
-</script>
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+      else inject();
+    })();
+  </script>
 </body>
+
 </html>
