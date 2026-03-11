@@ -97,7 +97,7 @@
       padding: 10px 14px; border: 2px solid var(--color-primary);
       border-left: none; border-radius: 0 4px 4px 0;
       font-size: 1.1rem; font-weight: 700; font-family: var(--font-heading);
-      color: var(--color-primary); width: 180px; outline: none;
+      color: var(--color-primary); width: 180px; max-width: 100%; outline: none;
     }
     .harga-satuan { color: var(--color-text-muted); font-size: 0.82rem; padding-bottom: 12px; }
 
@@ -506,7 +506,7 @@
             <button class="btn btn-primary btn-sm" onclick="openModal()">+ Artikel Baru</button>
           </div>
           <div style="padding:16px 24px; border-bottom:1px solid var(--color-border); display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
-            <input type="text" id="search-input" placeholder="Cari artikel..." style="flex:1; min-width:200px; padding:8px 14px; border:1.5px solid var(--color-border); border-radius:4px; font-family:var(--font-body); font-size:0.88rem; outline:none;" oninput="renderArticleTable()">
+            <input type="text" id="search-input" placeholder="Cari artikel..." style="flex:1; min-width:0; padding:8px 14px; border:1.5px solid var(--color-border); border-radius:4px; font-family:var(--font-body); font-size:0.88rem; outline:none;" oninput="renderArticleTable()">
             <select id="cat-filter" style="padding:8px 14px; border:1.5px solid var(--color-border); border-radius:4px; font-family:var(--font-body); font-size:0.88rem; outline:none; background:white;" onchange="renderArticleTable()">
               <option value="all">Semua Kategori</option>
               <option value="company">Kabar Perusahaan</option>
@@ -1287,7 +1287,7 @@
     container.innerHTML = `
       <div style="display:flex; gap:16px; flex-wrap:wrap;">
         ${hdata.grades.map(g => `
-          <div style="flex:1; min-width:160px; background:${gradeBg[g.grade]}; border:2px solid ${gradeColors[g.grade]}; border-radius:10px; padding:16px 20px; text-align:center;">
+          <div style="flex:1; min-width:0; background:${gradeBg[g.grade]}; border:2px solid ${gradeColors[g.grade]}; border-radius:10px; padding:16px 20px; text-align:center;">
             <div style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:${gradeColors[g.grade]}; margin-bottom:4px;">GRADE ${g.grade}</div>
             <div style="font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:800; color:${gradeColors[g.grade]}; line-height:1;">${window.HargaDB.formatHarga(g.harga)}</div>
             <div style="font-size:0.72rem; color:#6b7280; margin-top:4px;">per kilogram • KA ${g.kadar_air}%</div>

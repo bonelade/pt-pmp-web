@@ -5,7 +5,10 @@
 body.admin-body {
   background: #eef0f4;
   font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
+html { overflow-x: hidden; }
 
 /* === Admin Login === */
 .admin-login-page {
@@ -97,7 +100,7 @@ body.admin-body {
 .login-error.show { display: block; }
 
 /* === Admin Layout === */
-#admin-panel { display: none; min-height: 100vh; }
+#admin-panel { display: none; min-height: 100vh; overflow-x: hidden; width: 100%; max-width: 100vw; }
 #admin-panel.show { display: flex; }
 
 .admin-sidebar {
@@ -189,6 +192,8 @@ body.admin-body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 .admin-topbar {
   background: rgba(255,255,255,0.95);
@@ -244,7 +249,11 @@ body.admin-body {
 .admin-content {
   padding: 28px 32px;
   flex: 1;
+  overflow-x: hidden;
+  max-width: 100%;
+  box-sizing: border-box;
 }
+.admin-content * { box-sizing: border-box; }
 .admin-page { display: none; }
 .admin-page.active { display: block; }
 
@@ -307,6 +316,7 @@ body.admin-body {
   box-shadow: 0 2px 12px rgba(0,0,0,0.05);
   border: 1px solid rgba(0,0,0,0.05);
   overflow: hidden;
+  max-width: 100%;
 }
 .admin-card-header {
   padding: 18px 24px;
@@ -567,7 +577,7 @@ body.admin-body {
 @media (max-width: 768px) {
   .admin-sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
   .admin-sidebar.open { transform: translateX(0); }
-  .admin-main { margin-left: 0; }
+  .admin-main { margin-left: 0; width: 100%; max-width: 100vw; }
   .admin-topbar { padding: 0 16px; height: 56px; }
   .admin-topbar h1 { font-size: 1rem; }
   .admin-content { padding: 16px 12px; }
