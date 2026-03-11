@@ -1512,13 +1512,30 @@
 
   function previewThumbnail(input) {
     if (input.files && input.files[0]) {
-      window._thumbFile = input.files[0];
-      const reader = new FileReader();
-      reader.onload = e => {
-        document.getElementById('thumb-preview').innerHTML = `<img src="${e.target.result}" alt="preview">`;
-        window._editThumbnailPreview = e.target.result;
+      var file = input.files[0];
+      // Show original preview immediately
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('thumb-preview').innerHTML = '<img src="' + e.target.result + '" alt="preview">';
       };
-      reader.readAsDataURL(input.files[0]);
+      reader.readAsDataURL(file);
+      // Compress thumbnail (reuse gallery compressor)
+      compressImage(file).then(function(r) {
+        // Convert compressed dataUrl back to a File/Blob for storage upload
+        var parts = r.dataUrl.split(',');
+        var mime = parts[0].match(/:(.*?);/)[1];
+        var bstr = atob(parts[1]);
+        var arr = new Uint8Array(bstr.length);
+        for (var i = 0; i < bstr.length; i++) arr[i] = bstr.charCodeAt(i);
+        window._thumbFile = new File([new Uint8Array(arr)], file.name, { type: mime });
+        window._editThumbnailPreview = r.dataUrl;
+        // Update preview with compressed version
+        document.getElementById('thumb-preview').innerHTML = '<img src="' + r.dataUrl + '" alt="preview">';
+      }).catch(function(err) {
+        // Fallback: use original file
+        window._thumbFile = file;
+        console.warn('Thumbnail compress failed:', err);
+      });
     }
   }
 
@@ -1736,7 +1753,7 @@
   // Accepts up to 5MB input
   // ============================
   var MAX_INPUT_SIZE = 5 * 1024 * 1024;  // 5MB
-  var TARGET_SIZE = 480 * 1024;           // ~500KB target (IndexedDB has plenty of space)
+  var TARGET_SIZE = 400 * 1024;           // ~400KB target (under 500KB after encoding)
   var _isCompressing = false;
 
   function formatFileSize(bytes) {
@@ -1769,8 +1786,8 @@
           var ctx = canvas.getContext('2d');
           var w = img.naturalWidth, h = img.naturalHeight;
 
-          // Resize if large (max 1600px)
-          var maxDim = 1600;
+          // Resize if large (max 1200px)
+          var maxDim = 1200;
           if (w > maxDim || h > maxDim) {
             var ratio = Math.min(maxDim / w, maxDim / h);
             w = Math.round(w * ratio);
