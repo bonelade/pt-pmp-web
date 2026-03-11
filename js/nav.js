@@ -18,7 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
     header.classList.add('solid');
   }
 
-  // Scroll behavior
+  // Scroll behavior — hide header after passing hero
+  var hero = document.querySelector('.hero');
+  function getHeroBottom() {
+    if (!hero) return 600;
+    var rect = hero.getBoundingClientRect();
+    return rect.bottom + window.scrollY;
+  }
   function handleScroll() {
     if (window.scrollY > 60) {
       header.classList.add('scrolled');
@@ -26,6 +32,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isHomePage) {
         header.classList.remove('scrolled');
       }
+    }
+    // Hide header when scrolled past hero section
+    var hidePoint = getHeroBottom() - 200;
+    if (window.scrollY > hidePoint) {
+      header.classList.add('header-hidden');
+    } else {
+      header.classList.remove('header-hidden');
     }
   }
   window.addEventListener('scroll', handleScroll, { passive: true });

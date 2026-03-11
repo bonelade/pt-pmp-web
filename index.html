@@ -624,36 +624,104 @@
     /* Trusted by strip */
     .trusted-strip {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 32px;
-      flex-wrap: wrap;
-      padding: 28px 0 0;
+      gap: 20px;
+      padding: 36px 0 0;
     }
 
     .trusted-label {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 0.18em;
+      color: rgba(255, 255, 255, 0.35);
       font-weight: 600;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .trusted-label::before,
+    .trusted-label::after {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25));
+    }
+
+    .trusted-label::after {
+      background: linear-gradient(90deg, rgba(255,255,255,0.25), transparent);
+    }
+
+    .trusted-items {
+      display: grid;
+      grid-template-columns: repeat(4, auto);
+      justify-content: center;
+      gap: 12px;
     }
 
     .trusted-item {
-      background: rgba(255, 255, 255, 0.07);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      padding: 8px 18px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.55);
-      letter-spacing: 0.04em;
-      transition: all 0.25s;
+      border-radius: 12px;
+      padding: 10px 18px;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 0.03em;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
     }
 
     .trusted-item:hover {
       background: rgba(255, 255, 255, 0.12);
-      color: rgba(255, 255, 255, 0.85);
+      border-color: rgba(212, 175, 55, 0.3);
+      color: rgba(255, 255, 255, 0.95);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .trusted-item .ti-icon {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.05));
+      color: var(--color-gold);
+      flex-shrink: 0;
+    }
+
+    .trusted-item .ti-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .trusted-items {
+        grid-template-columns: repeat(2, auto);
+        gap: 8px;
+      }
+      .trusted-item {
+        padding: 8px 12px;
+        font-size: 0.7rem;
+        gap: 8px;
+      }
+      .trusted-item .ti-icon {
+        width: 24px;
+        height: 24px;
+      }
+      .trusted-item .ti-icon svg {
+        width: 14px;
+        height: 14px;
+      }
     }
 
     @media (max-width: 900px) {
@@ -814,7 +882,7 @@
   <!-- About Section -->
   <section class="section bg-white" style="position: relative; overflow: hidden;">
     <!-- Dynamic Ornaments -->
-    <div id="about-ornaments" class="section-ornaments"></div>
+    <div id="about-ornaments" class="section-ornaments" data-type="falling-mix"></div>
     <div class="container" style="position: relative; z-index: 1;">
       <div class="about-split">
         <div class="about-image-wrap animate-on-scroll">
@@ -860,7 +928,7 @@
   <!-- Services Section -->
   <section class="section bg-light" style="position: relative; overflow: hidden;">
     <!-- Dynamic Ornaments -->
-    <div id="services-ornaments" class="section-ornaments"></div>
+    <div id="services-ornaments" class="section-ornaments" data-type="float-scatter" data-theme="mix"></div>
     <div class="container" style="position: relative; z-index: 1;">
       <div class="section-header animate-on-scroll">
         <span class="label" data-i18n="home_svc_label">Layanan Kami</span>
@@ -904,7 +972,7 @@
   <!-- Advantages Section -->
   <section class="section bg-white" style="position: relative; overflow: hidden;">
     <!-- Dynamic Ornaments -->
-    <div id="adv-ornaments" class="section-ornaments"></div>
+    <div id="adv-ornaments" class="section-ornaments" data-type="float-scatter" data-theme="mix"></div>
     <div class="container" style="position: relative; z-index: 1;">
       <div class="section-header animate-on-scroll">
         <span class="label" data-i18n="home_adv_label">Keunggulan Kami</span>
@@ -985,7 +1053,7 @@
   <!-- CTA Section -->
   <section class="section bg-dark" style="position: relative; overflow: hidden;">
     <!-- Dynamic Ornaments -->
-    <div id="cta-ornaments" class="section-ornaments"></div>
+    <div id="cta-ornaments" class="section-ornaments" data-type="particles" data-theme="gold" data-count="8"></div>
 
     <div class="container text-center" style="position: relative; z-index: 1;">
       <div class="animate-on-scroll cta-section-inner" style="margin:0 auto;">
@@ -1001,11 +1069,25 @@
           <a href="community.html" class="btn btn-outline btn-lg" data-i18n="comm_market_label">Analisis Pasar</a>
         </div>
         <div class="trusted-strip">
-          <span class="trusted-label">Mitra Kami:</span>
-          <span class="trusted-item">BULOG</span>
-          <span class="trusted-item">Pemerintah Kalbar</span>
-          <span class="trusted-item">Feedmill Swasta</span>
-          <span class="trusted-item">Petani Jagung</span>
+          <span class="trusted-label">Mitra Kami</span>
+          <div class="trusted-items">
+            <span class="trusted-item">
+              <span class="ti-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/><path d="M9 9v.01M9 12v.01M9 15v.01M9 18v.01"/></svg></span>
+              BULOG
+            </span>
+            <span class="trusted-item">
+              <span class="ti-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
+              Pemerintah Kalbar
+            </span>
+            <span class="trusted-item">
+              <span class="ti-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 0 0-8 0v2"/><circle cx="12" cy="15" r="2"/></svg></span>
+              Feedmill Swasta
+            </span>
+            <span class="trusted-item">
+              <span class="ti-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C12 2 8 6 8 12C8 18 12 22 12 22C12 22 16 18 16 12C16 6 12 2 12 2Z"/><path d="M9 8h6M8.5 11h7M9 14h6M9.5 17h5"/></svg></span>
+              Petani Jagung
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -1015,7 +1097,7 @@
   <section class="section"
     style="background:linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%); padding:60px 0; position: relative; overflow: hidden;">
     <!-- Dynamic Ornaments -->
-    <div id="social-ornaments" class="section-ornaments"></div>
+    <div id="social-ornaments" class="section-ornaments" data-type="particles" data-theme="white" data-count="12"></div>
 
     <div class="container" style="position: relative; z-index: 1;">
       <div class="animate-on-scroll" style="text-align:center; max-width:640px; margin:0 auto;">
@@ -1041,18 +1123,18 @@
           var svgFB = ic.facebook ? '<span style="width:20px;height:20px;display:inline-flex;flex-shrink:0;">' + ic.facebook + '</span>' : '';
           var svgEM = ic.email ? '<span style="width:20px;height:20px;display:inline-flex;flex-shrink:0;">' + ic.email + '</span>' : '';
           var btns = [];
-          if (k.whatsapp) btns.push({ href: 'https://wa.me/62' + k.whatsapp, icon: svgWA, label: k.whatsapp_label || 'WhatsApp', style: 'background:#25d366;color:white;' });
-          if (k.instagram) btns.push({ href: 'https://instagram.com/' + k.instagram, icon: svgIG, label: k.instagram_label || 'Instagram', style: 'background:#e1306c;color:white;' });
+          if (k.whatsapp) btns.push({ href: 'https://wa.me/62' + k.whatsapp, icon: svgWA, style: 'background:#25d366;color:white;' });
+          if (k.instagram) btns.push({ href: 'https://instagram.com/' + k.instagram, icon: svgIG, style: 'background:#e1306c;color:white;' });
           if (k.facebook) {
             var fbHref = k.facebook.startsWith('http') ? k.facebook : 'https://facebook.com/' + k.facebook;
-            btns.push({ href: fbHref, icon: svgFB, label: k.facebook_label || 'Facebook', style: 'background:#1877f2;color:white;' });
+            btns.push({ href: fbHref, icon: svgFB, style: 'background:#1877f2;color:white;' });
           }
-          if (k.email) btns.push({ href: 'mailto:' + k.email, icon: svgEM, label: k.email_label || 'Email', style: 'background:var(--color-gold);color:white;' });
+          if (k.email) btns.push({ href: 'mailto:' + k.email, icon: svgEM, style: 'background:var(--color-gold);color:white;' });
           if (btns.length === 0) {
             container.innerHTML = '<a href="community.html" class="btn btn-primary btn-lg" data-i18n="hero_cta2">Hubungi Kami</a>';
           } else {
             container.innerHTML = btns.map(b =>
-              '<a href="' + b.href + '" target="_blank" rel="noopener" style="' + b.style + ' display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:50px;font-weight:700;font-size:0.9rem;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,0.2);transition:transform 0.2s;" onmouseover="this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.transform=\'\'">' + b.icon + b.label + '</a>'
+              '<a href="' + b.href + '" target="_blank" rel="noopener" style="' + b.style + ' display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;text-decoration:none;box-shadow:0 4px 20px rgba(0,0,0,0.25);transition:transform 0.3s,box-shadow 0.3s;" onmouseover="this.style.transform=\'translateY(-3px) scale(1.08)\';this.style.boxShadow=\'0 8px 28px rgba(0,0,0,0.35)\'" onmouseout="this.style.transform=\'\';this.style.boxShadow=\'0 4px 20px rgba(0,0,0,0.25)\'">' + b.icon + '</a>'
             ).join('');
           }
         }
@@ -1064,7 +1146,7 @@
   <!-- Footer -->
   <footer style="position: relative; overflow: hidden;">
     <!-- Dynamic Ornaments -->
-    <div id="footer-ornaments" class="section-ornaments"></div>
+    <div id="footer-ornaments" class="section-ornaments" data-type="particles" data-theme="gold" data-count="15"></div>
 
     <div class="container" style="position: relative; z-index: 1;">
       <div class="footer-grid">
@@ -1233,7 +1315,7 @@
       }
       // Gallery preview
       if (window.GalleryDB) {
-        var galleryPhotos = window.GalleryDB.getGallery();
+        var galleryPhotos = window.GalleryDB.getGallery().filter(function(p) { return p.album === 'home_gallery' || p.album === 'home_hero'; });
         if (galleryPhotos.length > 0) {
           var homeGallerySection = document.getElementById('home-gallery-section');
           var homeGalleryGrid = document.getElementById('home-gallery-display');
@@ -1259,52 +1341,30 @@
       document.addEventListener('click', function (e) {
         if (e.target && e.target.classList.contains('lightbox-close')) closeLightbox();
       });
-      // Animate stat numbers on scroll into view
-      var statObserver = new IntersectionObserver(function (entries) {
+      // Animate stat items: slide up + fade in with stagger
+      var statItems = document.querySelectorAll('.stat-item');
+      statItems.forEach(function (item) {
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(30px)';
+        item.style.transition = 'none';
+      });
+      var statBarObserver = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
-            var el = entry.target;
-            var text = el.textContent;
-            // Extract number (first numeric sequence)
-            var match = text.match(/[\d,\.]+/);
-            if (!match) return;
-            var numStr = match[0].replace(/,/g, '');
-            var num = parseFloat(numStr);
-            if (isNaN(num)) return;
-            var suffix = text.replace(match[0], '').trim();
-            var prefix = text.slice(0, text.indexOf(match[0]));
-
-            // Slower, delayed counting
-            var duration = 2500;
-            var start = null;
-            var startVal = 0;
-
-            // Show 0 initially while waiting for the delay
-            el.textContent = prefix + "0 " + suffix.replace(/^\s+/, '');
-
-            function step(ts) {
-              if (!start) start = ts;
-              var prog = Math.min((ts - start) / duration, 1);
-              // Cubic ease out
-              var eased = 1 - Math.pow(1 - prog, 3);
-              var cur = Math.round(startVal + (num - startVal) * eased);
-              var display = cur.toLocaleString('id-ID');
-              el.textContent = prefix + display + (prog < 1 ? '' : ' ' + suffix.replace(/^\s+/, ''));
-              if (prog < 1) requestAnimationFrame(step);
-              else el.textContent = text; // restore original
-            }
-
-            // Delay 800ms before starting the counter
-            setTimeout(function () {
-              requestAnimationFrame(step);
-            }, 800);
-            statObserver.unobserve(el);
+            var items = entry.target.querySelectorAll('.stat-item');
+            items.forEach(function (item, i) {
+              setTimeout(function () {
+                item.style.transition = 'opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1)';
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+              }, i * 200);
+            });
+            statBarObserver.unobserve(entry.target);
           }
         });
-      }, { threshold: 0.5 });
-      document.querySelectorAll('.stat-number').forEach(function (el) {
-        statObserver.observe(el);
-      });
+      }, { threshold: 0.3 });
+      var statBar = document.querySelector('.stat-bar');
+      if (statBar) statBarObserver.observe(statBar);
     });
   </script>
   <!-- Floating WhatsApp Button -->
@@ -1338,16 +1398,16 @@
         if (socialContainer) {
           var ic2 = window.Icons || {};
           var links = [];
-          if (k.whatsapp) links.push({ href: 'https://wa.me/62' + k.whatsapp, icon: ic2.whatsapp || '', label: 'WA', color: '#25d366' });
-          if (k.instagram) links.push({ href: 'https://instagram.com/' + k.instagram, icon: ic2.instagram || '', label: 'IG', color: '#e1306c' });
+          if (k.whatsapp) links.push({ href: 'https://wa.me/62' + k.whatsapp, icon: ic2.whatsapp || '', color: '#25d366' });
+          if (k.instagram) links.push({ href: 'https://instagram.com/' + k.instagram, icon: ic2.instagram || '', color: '#e1306c' });
           if (k.facebook) {
             var fbHref2 = k.facebook.startsWith('http') ? k.facebook : 'https://facebook.com/' + k.facebook;
-            links.push({ href: fbHref2, icon: ic2.facebook || '', label: 'FB', color: '#1877f2' });
+            links.push({ href: fbHref2, icon: ic2.facebook || '', color: '#1877f2' });
           }
-          if (k.email) links.push({ href: 'mailto:' + k.email, icon: ic2.email || '', label: 'Email', color: '#c9932a' });
+          if (k.email) links.push({ href: 'mailto:' + k.email, icon: ic2.email || '', color: '#c9932a' });
           if (links.length > 0) {
             socialContainer.innerHTML = links.map(l =>
-              '<a href="' + l.href + '" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:' + l.color + ';color:white;padding:7px 13px;border-radius:20px;font-size:0.78rem;font-weight:700;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'"><span style="width:14px;height:14px;display:inline-flex;flex-shrink:0;">' + l.icon + '</span>' + l.label + '</a>'
+              '<a href="' + l.href + '" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:' + l.color + ';color:white;border-radius:50%;text-decoration:none;transition:transform 0.3s,box-shadow 0.3s;" onmouseover="this.style.transform=\'translateY(-2px) scale(1.1)\';this.style.boxShadow=\'0 4px 16px rgba(0,0,0,0.3)\'" onmouseout="this.style.transform=\'\';this.style.boxShadow=\'\'"><span style="width:16px;height:16px;display:inline-flex;flex-shrink:0;">' + l.icon + '</span></a>'
             ).join('');
           }
         }
@@ -1356,106 +1416,8 @@
       else initKontakUI();
     })();
   </script>
-  <script>
-    // Inject Dynamic Lower Ornaments
-    (function () {
-      var shapes = {
-        leaf: '<path d="M4 20C4 20 4 11 12 3C20 3 20 3 20 3C20 3 20 11 12 19C4 19 4 20 4 20Z" stroke="currentColor" stroke-width="1.5" fill="none"/>',
-        ring: '<circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.5" fill="none"/>',
-        diamond: '<path d="M12 2 L15 9 L22 12 L15 15 L12 22 L9 15 L2 12 L9 9 Z" fill="currentColor"/>',
-        square: '<rect x="6" y="6" width="12" height="12" stroke="currentColor" stroke-width="1.5" fill="none" transform="rotate(45 12 12)"/>',
-        dot: '<circle cx="12" cy="12" r="3" fill="currentColor"/>',
-        plus: '<path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
-        star: '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/>'
-      };
+  <script src="js/ornaments.js"></script>
 
-      var configs = [
-        { id: 'about-ornaments', type: 'falling-mix', count: 18 },
-        { id: 'services-ornaments', colorClass: 'shape-green', type: 'lines' },
-        { id: 'adv-ornaments', colorClass: 'shape-green', type: 'lines' },
-        { id: 'cta-ornaments', colorClass: 'shape-gold', type: 'particles', mix: [shapes.diamond, shapes.ring, shapes.plus], count: 8 },
-        { id: 'social-ornaments', colorClass: 'shape-white', type: 'particles', mix: [shapes.leaf, shapes.dot, shapes.diamond], count: 12 },
-        { id: 'footer-ornaments', colorClass: 'shape-gold', type: 'particles', mix: [shapes.square, shapes.dot, shapes.ring], count: 15 }
-      ];
-
-      var animClasses = ['shape-float', 'shape-rotate', 'shape-pulse', ''];
-
-      function initLowerOrnaments() {
-        configs.forEach(function (cfg) {
-          var cont = document.getElementById(cfg.id);
-          if (!cont) return;
-
-          if (cfg.type === 'falling-mix') {
-            // Mix of falling green stars and golden-green leaves
-            for (var j = 0; j < cfg.count; j++) {
-              var elF = document.createElement('div');
-              var shapeSvg, colorCls;
-              if (Math.random() > 0.5) {
-                shapeSvg = shapes.leaf;
-                colorCls = 'shape-golden-green';
-              } else {
-                shapeSvg = shapes.star;
-                colorCls = 'shape-green';
-              }
-              elF.className = 'lower-shape ' + colorCls + ' shape-fall';
-
-              var sizeF = Math.random() * 20 + 12; // 12px to 32px
-              elF.style.cssText = [
-                'width:' + sizeF + 'px',
-                'height:' + sizeF + 'px',
-                'left:' + (Math.random() * 96 + 2) + '%',
-                'top:' + (Math.random() * -20) + '%',
-                'opacity:' + (Math.random() * 0.2 + 0.1),
-                'animation-duration:' + (Math.random() * 8 + 10) + 's',
-                'animation-delay:' + (Math.random() * 10) + 's'
-              ].join(';');
-
-              elF.innerHTML = '<svg viewBox="0 0 24 24" width="100%" height="100%">' + shapeSvg + '</svg>';
-              cont.appendChild(elF);
-            }
-          } else if (cfg.type === 'lines') {
-            // Elegant flowing moving lines (drifting left/right)
-            var el1 = document.createElement('div');
-            el1.className = 'lower-shape ' + cfg.colorClass + ' ornament-1';
-            el1.style.cssText = 'width:120%; height:100%; left:-10%; top:0;';
-            el1.innerHTML = '<svg viewBox="0 0 1200 600" preserveAspectRatio="xMinYMid slice" style="width:100%; height:100%;"><path d="M-200,400 C100,200 400,600 800,400 C1200,200 1400,500 1600,400" stroke="currentColor" stroke-width="2" fill="none" vector-effect="non-scaling-stroke"/></svg>';
-            cont.appendChild(el1);
-
-            var el2 = document.createElement('div');
-            el2.className = 'lower-shape ' + cfg.colorClass + ' ornament-2';
-            el2.style.cssText = 'width:120%; height:100%; left:-10%; top:0;';
-            el2.innerHTML = '<svg viewBox="0 0 1200 600" preserveAspectRatio="xMinYMid slice" style="width:100%; height:100%; opacity:0.6;"><path d="M-200,300 C150,500 350,200 700,400 C1050,600 1250,300 1600,500" stroke="currentColor" stroke-width="2" fill="none" vector-effect="non-scaling-stroke"/></svg>';
-            cont.appendChild(el2);
-          } else {
-            // Scattered particles
-            for (var i = 0; i < cfg.count; i++) {
-              var el = document.createElement('div');
-              var anim = animClasses[Math.floor(Math.random() * animClasses.length)];
-              el.className = 'lower-shape ' + cfg.colorClass + ' ' + anim;
-
-              // Randomize size between 14px and 40px
-              var size = Math.random() * 26 + 14;
-              el.style.cssText = [
-                'width:' + size + 'px',
-                'height:' + size + 'px',
-                'left:' + (Math.random() * 96 + 2) + '%',
-                'top:' + (Math.random() * 90 + 5) + '%',
-                'animation-duration:' + (Math.random() * 5 + 4) + 's',
-                'animation-delay:' + (Math.random() * 3) + 's'
-              ].join(';');
-
-              var shapeSvg = cfg.mix[Math.floor(Math.random() * cfg.mix.length)];
-              el.innerHTML = '<svg viewBox="0 0 24 24" width="100%" height="100%">' + shapeSvg + '</svg>';
-              cont.appendChild(el);
-            }
-          }
-        });
-      }
-
-      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initLowerOrnaments);
-      else initLowerOrnaments();
-    })();
-  </script>
   <script>
     // Inject SVG icons into placeholder elements
     (function () {
@@ -1497,6 +1459,7 @@
       else inject();
     })();
   </script>
+  <script src="js/stats.js"></script>
 </body>
 
 </html>

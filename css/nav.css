@@ -8,30 +8,34 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  background: rgba(17, 56, 36, 0.4);
-  /* More transparent background */
-  backdrop-filter: blur(24px);
-  /* Stronger blur */
-  -webkit-backdrop-filter: blur(24px);
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   padding: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  /* subtle top border */
+  border-bottom: 1px solid transparent;
 }
 
 #main-header.scrolled {
-  background: rgba(10, 36, 22, 0.75);
-  backdrop-filter: blur(32px);
-  -webkit-backdrop-filter: blur(32px);
-  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
-  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  border-bottom: 1px solid transparent;
 }
 
 #main-header.solid {
-  background: rgba(10, 36, 22, 0.95);
-  backdrop-filter: blur(32px);
-  -webkit-backdrop-filter: blur(32px);
-  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom: 1px solid transparent;
+}
+
+#main-header.header-hidden {
+  transform: translateY(-100%);
+  pointer-events: none;
+  opacity: 0;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease;
 }
 
 #main-header nav {
