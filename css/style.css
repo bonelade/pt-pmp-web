@@ -208,6 +208,15 @@ p:last-child {
   vector-effect: non-scaling-stroke;
 }
 
+.ornament-green {
+  opacity: 0.04;
+}
+
+.ornament-green path {
+  stroke: var(--color-primary);
+  stroke-width: 1.2;
+}
+
 .ornament-left {
   top: 10%;
   left: -10%;
