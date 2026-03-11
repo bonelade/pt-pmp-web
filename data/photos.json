@@ -8,6 +8,14 @@
     "order": 1
   },
   {
+    "id": "photo-011",
+    "album": "home_about",
+    "caption_id": "Peresmian oleh Presiden Prabowo Subianto",
+    "caption_en": "Inauguration by President Prabowo Subianto",
+    "src": "images/gallery/PrabowoPTPMP.jpeg",
+    "order": 1
+  },
+  {
     "id": "photo-002",
     "album": "home_gallery",
     "caption_id": "Peresmian oleh Presiden Prabowo",
@@ -62,6 +70,22 @@
     "caption_en": "Bengkayang Corn Field",
     "src": "images/gallery/Corn field.jpg",
     "order": 8
+  },
+  {
+    "id": "photo-012",
+    "album": "about_slider",
+    "caption_id": "Jagung Pakan Berkualitas",
+    "caption_en": "Quality Feed Corn",
+    "src": "images/gallery/Corn.jpg",
+    "order": 9
+  },
+  {
+    "id": "photo-013",
+    "album": "about_slider",
+    "caption_id": "Peresmian PT PMP",
+    "caption_en": "PT PMP Inauguration",
+    "src": "images/gallery/PrabowoPTPMP.jpeg",
+    "order": 10
   },
   {
     "id": "photo-009",

@@ -497,6 +497,7 @@
             (p.caption_id ? '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + p.caption_id + '</div></div>' : '') +
             '</div>';
         }).join('');
+        if (window.observeNewAnimations) window.observeNewAnimations();
       });
     }
     window.openLightbox = function (src) {

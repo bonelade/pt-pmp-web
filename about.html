@@ -83,20 +83,7 @@
       object-fit: cover;
     }
 
-    .about-gallery-placeholder {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      color: rgba(255, 255, 255, 0.35);
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      background: linear-gradient(155deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-    }
+
 
     .about-gallery-caption {
       position: absolute;
@@ -515,24 +502,7 @@
           <!-- Gallery Slider -->
           <div class="about-gallery">
             <div class="about-gallery-track" id="about-gallery-track">
-              <div class="about-gallery-slide active">
-                <img src="images/Corn field.jpg" alt="Lahan Jagung PT PMP">
-                <div class="about-gallery-caption">Lahan Jagung Bengkayang</div>
-              </div>
-              <div class="about-gallery-slide">
-                <div class="about-gallery-placeholder">
-                  <span class="pmp-icon" id="gallery-icon-1" style="width:3rem;height:3rem;display:inline-flex;color:var(--color-gold);opacity:0.5;"></span>
-                  <span>Fasilitas Dryer</span>
-                </div>
-                <div class="about-gallery-caption">Vertical Dryer 300 Ton/Hari</div>
-              </div>
-              <div class="about-gallery-slide">
-                <div class="about-gallery-placeholder">
-                  <span class="pmp-icon" id="gallery-icon-2" style="width:3rem;height:3rem;display:inline-flex;color:var(--color-gold);opacity:0.5;"></span>
-                  <span>Gudang Penyimpanan</span>
-                </div>
-                <div class="about-gallery-caption">Gudang Kapasitas 1.000 Ton</div>
-              </div>
+              <!-- Dynamically loaded from about_slider album -->
             </div>
             <div class="about-gallery-nav">
               <button class="about-gallery-btn" id="gallery-prev" aria-label="Previous">
@@ -795,11 +765,57 @@
           display.innerHTML = html;
         }
       }
+      function renderSlider(photos) {
+        var sliderPhotos = photos.filter(function (p) { return p.album === 'about_slider'; });
+        var track = document.getElementById('about-gallery-track');
+        if (!track || sliderPhotos.length === 0) {
+          // Fallback: use all about photos for slider
+          sliderPhotos = photos.filter(function (p) { return p.album === 'about_facility' || p.album === 'about_activity' || p.album === 'about_team'; });
+        }
+        if (!track || sliderPhotos.length === 0) return;
+        track.innerHTML = sliderPhotos.map(function (p, i) {
+          return '<div class="about-gallery-slide' + (i === 0 ? ' active' : '') + '">' +
+            '<img src="' + p.src + '" alt="' + (p.caption_id || '') + '" loading="lazy">' +
+            (p.caption_id ? '<div class="about-gallery-caption">' + p.caption_id + '</div>' : '') +
+            '</div>';
+        }).join('');
+        initSlider();
+      }
+      function initSlider() {
+        var slides = document.querySelectorAll('.about-gallery-slide');
+        var dotsContainer = document.getElementById('about-gallery-dots');
+        var prevBtn = document.getElementById('gallery-prev');
+        var nextBtn = document.getElementById('gallery-next');
+        if (!slides.length || !dotsContainer) return;
+        dotsContainer.innerHTML = '';
+        var current = 0;
+        var timer;
+        slides.forEach(function (_, i) {
+          var dot = document.createElement('span');
+          dot.className = 'about-gallery-dot' + (i === 0 ? ' active' : '');
+          dot.addEventListener('click', function () { goTo(i); });
+          dotsContainer.appendChild(dot);
+        });
+        function goTo(idx) {
+          slides[current].classList.remove('active');
+          dotsContainer.children[current].classList.remove('active');
+          current = (idx + slides.length) % slides.length;
+          slides[current].classList.add('active');
+          dotsContainer.children[current].classList.add('active');
+          resetTimer();
+        }
+        function resetTimer() { clearInterval(timer); timer = setInterval(function () { goTo(current + 1); }, 5000); }
+        prevBtn.addEventListener('click', function () { goTo(current - 1); });
+        nextBtn.addEventListener('click', function () { goTo(current + 1); });
+        resetTimer();
+      }
       function init() {
         if (window.GalleryDB) {
           window.GalleryDB.loadGalleryData(function (photos) {
+            renderSlider(photos);
             renderGallery(photos);
             renderVideo(photos);
+            if (window.observeNewAnimations) window.observeNewAnimations();
           });
         }
       }
@@ -818,47 +834,12 @@
         set('float-wa-icon', ic.whatsapp, '22px');
         set('vm-icon-vision', ic.target, '100%');
         set('vm-icon-mission', ic.rocket, '100%');
-        set('gallery-icon-1', ic.dryer, '100%');
-        set('gallery-icon-2', ic.warehouse, '100%');
       }
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', injectIcons);
       else injectIcons();
     })();
   </script>
-  <script>
-    // Gallery slider
-    (function () {
-      var slides = document.querySelectorAll('.about-gallery-slide');
-      var dotsContainer = document.getElementById('about-gallery-dots');
-      var prevBtn = document.getElementById('gallery-prev');
-      var nextBtn = document.getElementById('gallery-next');
-      if (!slides.length || !dotsContainer) return;
-      var current = 0;
-      var timer;
-      // Create dots
-      slides.forEach(function (_, i) {
-        var dot = document.createElement('span');
-        dot.className = 'about-gallery-dot' + (i === 0 ? ' active' : '');
-        dot.addEventListener('click', function () { goTo(i); });
-        dotsContainer.appendChild(dot);
-      });
-      function goTo(idx) {
-        slides[current].classList.remove('active');
-        dotsContainer.children[current].classList.remove('active');
-        current = (idx + slides.length) % slides.length;
-        slides[current].classList.add('active');
-        dotsContainer.children[current].classList.add('active');
-        resetTimer();
-      }
-      function resetTimer() {
-        clearInterval(timer);
-        timer = setInterval(function () { goTo(current + 1); }, 5000);
-      }
-      prevBtn.addEventListener('click', function () { goTo(current - 1); });
-      nextBtn.addEventListener('click', function () { goTo(current + 1); });
-      resetTimer();
-    })();
-  </script>
+  <!-- Slider is now initialized dynamically inside the GalleryDB callback above -->
   <script src="js/stats.js"></script>
   <script src="js/ornaments.js"></script>
 </body>

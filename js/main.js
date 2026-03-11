@@ -15,6 +15,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
 
+  // Expose observer globally so dynamically rendered elements can be observed
+  window._scrollObserver = observer;
+  // Helper: observe any new .animate-on-scroll elements inside a container
+  window.observeNewAnimations = function(container) {
+    if (!container) container = document;
+    container.querySelectorAll('.animate-on-scroll').forEach(function(el) {
+      if (!el.classList.contains('visible')) observer.observe(el);
+    });
+  };
+
   // === Current Year in Footer ===
   document.querySelectorAll('.year-current').forEach(el => {
     el.textContent = new Date().getFullYear();

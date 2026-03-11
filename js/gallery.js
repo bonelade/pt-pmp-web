@@ -16,6 +16,7 @@ var _idb = null; // IndexedDB instance
 // Album categories organized by page
 var GALLERY_ALBUMS = {
   home_hero:        { label: 'Hero Background',        page: 'Beranda',        desc: 'Foto latar belakang hero di halaman utama' },
+  home_about:       { label: 'Foto Tentang Kami',       page: 'Beranda',        desc: 'Foto di section Tentang Kami halaman utama (foto peresmian, dsb)' },
   home_gallery:     { label: 'Galeri Beranda',          page: 'Beranda',        desc: 'Foto galeri preview di halaman utama (maks 8 foto)' },
   home_video:       { label: 'Video Profil',            page: 'Beranda',        desc: 'Video profil perusahaan (URL video MP4 atau YouTube embed)' },
   about_slider:     { label: 'Slider Utama',            page: 'Tentang Kami',   desc: 'Foto untuk slider galeri utama di halaman tentang' },
