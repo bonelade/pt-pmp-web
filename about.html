@@ -468,7 +468,7 @@
 
   <!-- Profile -->
   <section class="section bg-white" style="position: relative; overflow: hidden;">
-    <div class="section-ornaments" data-type="falling-mix"></div>
+    <div class="section-ornaments" data-type="cloud-curves" data-theme="mix"></div>
     <div class="container">
       <div class="profile-split">
         <div class="animate-on-scroll">
@@ -579,7 +579,7 @@
 
   <!-- Video Section -->
   <section class="section bg-white" id="about-video-section" style="display:none; position:relative; overflow:hidden;">
-    <div class="section-ornaments" data-type="float-scatter" data-theme="mix"></div>
+    <div class="section-ornaments" data-type="cloud-curves" data-theme="mix"></div>
     <div class="container" style="position:relative; z-index:1;">
       <div class="section-header animate-on-scroll">
         <span class="label">Video</span>
@@ -698,7 +698,7 @@
             if (k.email) links.push({ href: 'mailto:' + k.email, icon: ic2.email || '', color: '#c9932a' });
             if (links.length > 0) {
               socialContainer.innerHTML = links.map(l =>
-                '<a href="' + l.href + '" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:' + l.color + ';color:white;border-radius:50%;text-decoration:none;transition:transform 0.3s,box-shadow 0.3s;" onmouseover="this.style.transform=\'translateY(-2px) scale(1.1)\';this.style.boxShadow=\'0 4px 16px rgba(0,0,0,0.3)\'" onmouseout="this.style.transform=\'\';this.style.boxShadow=\'\'"><span style="width:16px;height:16px;display:inline-flex;flex-shrink:0;">' + l.icon + '</span></a>'
+                '<a href="' + l.href + '" target="_blank" rel="noopener" class="social-icon-elegant"><span>' + l.icon + '</span></a>'
               ).join('');
             }
           }

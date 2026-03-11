@@ -24,7 +24,44 @@
             var colorClass = 'shape-' + theme;
             var count = parseInt(cont.getAttribute('data-count') || '12', 10);
 
-            if (type === 'float-scatter') {
+            if (type === 'cloud-curves') {
+                // Elegant flowing curves like clouds drifting
+                var curves = [
+                    'M-100,##Y## C200,##Y1## 500,##Y2## 900,##Y3## C1300,##Y4## 1500,##Y5## 1800,##Y6##',
+                    'M-150,##Y## C150,##Y1## 450,##Y2## 750,##Y3## C1050,##Y4## 1350,##Y5## 1700,##Y6##',
+                    'M-80,##Y## C250,##Y1## 550,##Y2## 850,##Y3## C1150,##Y4## 1400,##Y5## 1750,##Y6##',
+                    'M-120,##Y## C180,##Y1## 480,##Y2## 780,##Y3## C1080,##Y4## 1380,##Y5## 1680,##Y6##',
+                    'M-60,##Y## C300,##Y1## 600,##Y2## 950,##Y3## C1250,##Y4## 1450,##Y5## 1800,##Y6##'
+                ];
+                var curveColors = {
+                    gold: ['rgba(201,147,42,0.06)', 'rgba(201,147,42,0.04)', 'rgba(201,147,42,0.03)', 'rgba(181,137,52,0.05)', 'rgba(201,147,42,0.025)'],
+                    green: ['rgba(26,71,49,0.05)', 'rgba(26,71,49,0.035)', 'rgba(26,71,49,0.025)', 'rgba(36,81,59,0.04)', 'rgba(26,71,49,0.02)'],
+                    mix: ['rgba(201,147,42,0.05)', 'rgba(26,71,49,0.04)', 'rgba(201,147,42,0.03)', 'rgba(26,71,49,0.035)', 'rgba(201,147,42,0.025)']
+                };
+                var themeColors = curveColors[theme] || curveColors.mix;
+                var strokeWidths = [2.5, 2, 1.5, 1.8, 1.2];
+
+                for (var c = 0; c < 5; c++) {
+                    var elC = document.createElement('div');
+                    elC.className = 'cloud-curve cloud-curve-' + (c + 1);
+
+                    // Generate smooth random Y positions for natural wave shapes
+                    var baseY = 80 + c * 100;
+                    var path = curves[c]
+                        .replace('##Y##', baseY + Math.random() * 40)
+                        .replace('##Y1##', baseY + 60 + Math.random() * 80 - 40)
+                        .replace('##Y2##', baseY - 30 + Math.random() * 60)
+                        .replace('##Y3##', baseY + 40 + Math.random() * 60 - 30)
+                        .replace('##Y4##', baseY - 20 + Math.random() * 80)
+                        .replace('##Y5##', baseY + 50 + Math.random() * 60 - 30)
+                        .replace('##Y6##', baseY + Math.random() * 50);
+
+                    elC.innerHTML = '<svg viewBox="0 0 1600 600" preserveAspectRatio="none">' +
+                        '<path d="' + path + '" stroke="' + themeColors[c] + '" stroke-width="' + strokeWidths[c] + '" fill="none" stroke-linecap="round"/>' +
+                        '</svg>';
+                    cont.appendChild(elC);
+                }
+            } else if (type === 'float-scatter') {
                 // Diverse floating shapes drifting in various directions
                 var scatterCount = parseInt(cont.getAttribute('data-count') || '16', 10);
                 var scatterMix = [shapes.leaf, shapes.ring, shapes.diamond, shapes.dot, shapes.plus, shapes.star, shapes.square];
