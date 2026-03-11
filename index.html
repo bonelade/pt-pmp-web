@@ -1192,6 +1192,37 @@
         container.appendChild(p);
       }
     })();
+
+    // Diverse Ornaments (Moving & Static)
+    (function () {
+      var container = document.getElementById('hero-particles');
+      if (!container) return;
+      var shapes = [
+        '<circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2" fill="none"/>', // Ring
+        '<path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>', // Plus
+        '<path d="M12 2 L15 9 L22 12 L15 15 L12 22 L9 15 L2 12 L9 9 Z" fill="currentColor"/>', // Diamond Star
+        '<rect x="6" y="6" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" transform="rotate(45 12 12)"/>' // Rotated Square
+      ];
+      var animClasses = ['shape-float', 'shape-rotate', 'shape-pulse', '']; // empty string means static
+      var count = 16;
+      for (var i = 0; i < count; i++) {
+        var el = document.createElement('div');
+        var animClass = animClasses[Math.floor(Math.random() * animClasses.length)];
+        el.className = 'hero-ornament-shape ' + animClass;
+        var size = Math.random() * 20 + 12; // 12px to 32px
+        el.style.cssText = [
+          'width:' + size + 'px',
+          'height:' + size + 'px',
+          'left:' + (Math.random() * 100) + '%',
+          'top:' + (Math.random() * 100) + '%',
+          'animation-duration:' + (Math.random() * 5 + 4) + 's',
+          'animation-delay:' + (Math.random() * 3) + 's'
+        ].join(';');
+        var shapeSvg = shapes[Math.floor(Math.random() * shapes.length)];
+        el.innerHTML = '<svg viewBox="0 0 24 24" width="100%" height="100%">' + shapeSvg + '</svg>';
+        container.appendChild(el);
+      }
+    })();
   </script>
   <script src="js/icons.js"></script>
   <script>
