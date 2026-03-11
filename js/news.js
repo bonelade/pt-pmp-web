@@ -65,6 +65,7 @@ function loadNews(callback) {
         sb.from('articles').select('*').order('date', { ascending: false })
           .then(function (res) {
             if (res.data && res.data.length > 0) {
+              console.log('[NewsDB] Loaded from Supabase:', res.data.length, 'articles. First thumbnail:', res.data[0].thumbnail ? res.data[0].thumbnail.substring(0, 80) + '...' : '(empty)');
               _newsCache = res.data;
               _newsReady = true;
               _fireNewsCallbacks();
@@ -160,7 +161,7 @@ function upsertArticle(article) {
   localStorage.setItem(NEWS_KEY, JSON.stringify(articles));
   var sb = _newsSupa();
   if (sb) {
-    sb.from('articles').upsert({
+    var row = {
       id: article.id,
       title_id: article.title_id || '',
       title_en: article.title_en || '',
@@ -169,11 +170,13 @@ function upsertArticle(article) {
       date: article.date || '',
       category: article.category || '',
       thumbnail: article.thumbnail || ''
-    }).then(function(res) {
+    };
+    console.log('[NewsDB] Upserting article:', article.id, 'thumbnail length:', (article.thumbnail || '').length, 'thumbnail preview:', (article.thumbnail || '').substring(0, 80));
+    sb.from('articles').upsert(row).then(function(res) {
       if (res.error) {
-        console.error('Supabase upsert article error:', res.error);
+        console.error('[NewsDB] Supabase upsert FAILED:', res.error.message, res.error);
       } else {
-        console.log('Article saved to Supabase:', article.id);
+        console.log('[NewsDB] Article saved OK:', article.id);
       }
     });
   }

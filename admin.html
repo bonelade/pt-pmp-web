@@ -1474,6 +1474,7 @@
       document.getElementById('thumb-preview').innerHTML = '<span class="placeholder admin-icon-image"></span>';
       document.getElementById('art-thumbnail').value = '';
       window._editThumbnail = '';
+      window._newThumbDataUrl = null;
     }
     switchLangTab('id', document.querySelector('.form-tab-btn'));
     modal.classList.add('open');
@@ -1490,6 +1491,7 @@
     document.getElementById('art-category').value = art.category || 'company';
     document.getElementById('art-date').value = art.date || '';
     window._editThumbnail = art.thumbnail || '';
+    window._newThumbDataUrl = null;
     document.getElementById('thumb-preview').innerHTML = art.thumbnail
       ? `<img src="${art.thumbnail}" alt="thumbnail">`
       : '<span class="placeholder admin-icon-image"></span>';
@@ -1509,20 +1511,16 @@
   function previewThumbnail(input) {
     if (input.files && input.files[0]) {
       var file = input.files[0];
-      // Show loading state
       document.getElementById('thumb-preview').innerHTML = '<span style="font-size:0.8rem;color:var(--color-text-muted);">Mengompres...</span>';
-      // Compress thumbnail (reuse gallery compressor)
+      window._newThumbDataUrl = null;
       compressImage(file).then(function(r) {
-        window._editThumbnail = r.dataUrl;
-        window._thumbFile = null; // use dataUrl directly, not file upload
+        window._newThumbDataUrl = r.dataUrl;
         document.getElementById('thumb-preview').innerHTML = '<img src="' + r.dataUrl + '" alt="preview">';
       }).catch(function(err) {
-        // Fallback: read as-is
         console.warn('Thumbnail compress failed:', err);
         var reader = new FileReader();
         reader.onload = function(e) {
-          window._editThumbnail = e.target.result;
-          window._thumbFile = null;
+          window._newThumbDataUrl = e.target.result;
           document.getElementById('thumb-preview').innerHTML = '<img src="' + e.target.result + '" alt="preview">';
         };
         reader.readAsDataURL(file);
@@ -1538,20 +1536,43 @@
     const editId = document.getElementById('edit-id').value;
     const articleId = editId || window.NewsDB.generateId();
 
-    window.NewsDB.upsertArticle({
-      id: articleId,
-      title_id: titleId,
-      title_en: document.getElementById('title-en').value.trim(),
-      body_id: bodyId,
-      body_en: document.getElementById('body-en').value.trim(),
-      category: document.getElementById('art-category').value,
-      date: document.getElementById('art-date').value || new Date().toISOString().split('T')[0],
-      thumbnail: window._editThumbnail || ''
-    });
-    closeModal();
-    refreshDashboard();
-    renderArticleTable();
-    showToast(editId ? '✓ Artikel berhasil diperbarui!' : '✓ Artikel berhasil dipublikasikan!', 'success');
+    function finishSave(thumbUrl) {
+      window.NewsDB.upsertArticle({
+        id: articleId,
+        title_id: titleId,
+        title_en: document.getElementById('title-en').value.trim(),
+        body_id: bodyId,
+        body_en: document.getElementById('body-en').value.trim(),
+        category: document.getElementById('art-category').value,
+        date: document.getElementById('art-date').value || new Date().toISOString().split('T')[0],
+        thumbnail: thumbUrl
+      });
+      closeModal();
+      refreshDashboard();
+      renderArticleTable();
+      showToast(editId ? '✓ Artikel berhasil diperbarui!' : '✓ Artikel berhasil dipublikasikan!', 'success');
+    }
+
+    // New thumbnail selected? Upload to Supabase Storage first
+    if (window._newThumbDataUrl) {
+      showToast('Mengupload thumbnail ke cloud...', 'success');
+      window.GalleryDB.uploadBase64ToStorage(window._newThumbDataUrl, 'thumbnails', function(res) {
+        var thumbUrl;
+        if (res.success && res.url) {
+          thumbUrl = res.url;
+          console.log('Thumbnail uploaded to Storage:', thumbUrl);
+        } else {
+          // Storage failed — save compressed base64 directly
+          console.warn('Storage upload failed, saving base64:', res.error);
+          thumbUrl = window._newThumbDataUrl;
+        }
+        window._newThumbDataUrl = null;
+        finishSave(thumbUrl);
+      });
+    } else {
+      // No new thumbnail — keep existing
+      finishSave(window._editThumbnail || '');
+    }
   }
 
   // ============================
