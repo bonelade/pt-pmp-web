@@ -805,13 +805,14 @@
             <li>Commit & push ke GitHub → Vercel auto-deploy</li>
           </ol>
         </div>
-        <div style="display:flex; gap:10px; margin-bottom:24px; flex-wrap:wrap;">
+        <div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap; align-items:center;">
           <button class="btn btn-primary" onclick="exportPhotosJSON()" style="font-size:0.82rem;">
             <span class="admin-icon admin-icon-save"></span> Download photos.json
           </button>
           <button class="btn btn-outline" onclick="resetGalleryToJSON()" style="font-size:0.82rem;">
             Reset ke data JSON asli
           </button>
+          <span id="storage-usage" style="font-size:0.72rem; color:var(--color-text-muted); margin-left:auto;"></span>
         </div>
 
         <!-- Upload Panel -->
@@ -853,13 +854,13 @@
 
             <!-- Step 3: File upload with auto-compress -->
             <div class="form-group" style="margin-bottom:16px;">
-              <label class="upload-label">5. Upload Foto (Maks 5MB per file — otomatis dikompres ke &lt;500KB)</label>
+              <label class="upload-label">5. Upload Foto (Maks 5MB per file — otomatis dikompres)</label>
               <div class="upload-drop-zone" id="upload-drop-zone" onclick="document.getElementById('photo-file').click()">
                 <div class="drop-zone-icon">
                   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                 </div>
                 <div style="font-weight:600; font-size:0.88rem; color:var(--color-text);">Klik atau drag foto ke sini</div>
-                <div style="font-size:0.72rem; color:var(--color-text-muted); margin-top:4px;">JPG, PNG, WebP — Maks 5MB per file — Otomatis kompres ke &lt;500KB</div>
+                <div style="font-size:0.72rem; color:var(--color-text-muted); margin-top:4px;">JPG, PNG, WebP — Maks 5MB per file — Otomatis dikompres untuk penyimpanan optimal</div>
                 <input type="file" id="photo-file" accept="image/*" multiple onchange="handlePhotoFiles(this.files)" style="display:none;">
               </div>
               <!-- Compression progress -->
@@ -1673,7 +1674,7 @@
   // Accepts up to 5MB input
   // ============================
   var MAX_INPUT_SIZE = 5 * 1024 * 1024;  // 5MB
-  var TARGET_SIZE = 480 * 1024;           // 480KB target
+  var TARGET_SIZE = 200 * 1024;           // 200KB target (fit more in localStorage)
   var _isCompressing = false;
 
   function formatFileSize(bytes) {
@@ -1833,14 +1834,18 @@
     }
 
     toUpload.forEach(function (p, i) {
-      window.GalleryDB.upsertPhoto({
+      var result = window.GalleryDB.upsertPhoto({
         id: window.GalleryDB.generatePhotoId(),
         album: album,
-        caption_id: captionId || p.name,
-        caption_en: captionEn || p.name,
+        caption_id: captionId || '',
+        caption_en: captionEn || '',
         src: p.dataUrl,
         order: Date.now() + i
       });
+      if (result && result.error) {
+        showToast('Penyimpanan penuh! Hapus beberapa foto lama atau download photos.json lalu reset.', 'error');
+        return;
+      }
     });
 
     _pendingPhotos = [];
@@ -1852,6 +1857,7 @@
     showToast('✓ ' + toUpload.length + ' foto berhasil ditambahkan!', 'success');
     renderGalleryPages();
     onAlbumSelectChange();
+    updateStorageUsage();
   }
 
   // Export photos.json for download
@@ -1881,10 +1887,28 @@
 
   function loadGalleryPage() {
     initAlbumSelector();
-    // Ensure data is loaded before rendering
     window.GalleryDB.loadGalleryData(function () {
       renderGalleryPages();
+      updateStorageUsage();
     });
+  }
+
+  function updateStorageUsage() {
+    var el = document.getElementById('storage-usage');
+    if (!el) return;
+    try {
+      var used = 0;
+      for (var key in localStorage) {
+        if (localStorage.hasOwnProperty(key)) {
+          used += localStorage.getItem(key).length * 2; // UTF-16
+        }
+      }
+      var usedMB = (used / (1024 * 1024)).toFixed(1);
+      var maxMB = 5; // typical browser limit
+      var pct = Math.round((used / (maxMB * 1024 * 1024)) * 100);
+      var color = pct > 80 ? 'var(--color-red)' : pct > 50 ? 'var(--color-gold)' : 'var(--color-text-muted)';
+      el.innerHTML = 'Penyimpanan: <strong style="color:' + color + '">' + usedMB + ' MB</strong> / ~' + maxMB + ' MB (' + pct + '%)';
+    } catch (e) { el.textContent = ''; }
   }
 
   function togglePageGroup(el) {

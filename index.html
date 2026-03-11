@@ -1324,7 +1324,7 @@
             if (homeGalleryGrid) homeGalleryGrid.innerHTML = galleryPhotos.slice(0, 8).map(function (p) {
               return '<div class="gallery-item animate-on-scroll" onclick="openLightbox(\'' + p.src.replace(/'/g, "&#39;") + '\')">' +
                 '<img src="' + p.src + '" alt="' + (p.caption_id || '') + '" loading="lazy">' +
-                '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + (p.caption_id || '') + '</div></div>' +
+                (p.caption_id ? '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + p.caption_id + '</div></div>' : '') +
                 '</div>';
             }).join('');
           }

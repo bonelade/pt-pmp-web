@@ -119,7 +119,14 @@ function getGallery() {
 
 function saveGallery(photos) {
   _galleryCache = photos;
-  localStorage.setItem(GALLERY_KEY, JSON.stringify(photos));
+  try {
+    localStorage.setItem(GALLERY_KEY, JSON.stringify(photos));
+    return { success: true };
+  } catch (e) {
+    // localStorage quota exceeded
+    console.warn('localStorage full:', e.message);
+    return { error: 'storage_full' };
+  }
 }
 
 function getPhotosByAlbum(album) {
@@ -139,7 +146,7 @@ function upsertPhoto(photo) {
   var idx = -1;
   for (var i = 0; i < photos.length; i++) { if (photos[i].id === photo.id) { idx = i; break; } }
   if (idx >= 0) photos[idx] = photo; else photos.push(photo);
-  saveGallery(photos);
+  return saveGallery(photos);
 }
 
 function deletePhoto(id) {
