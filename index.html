@@ -73,6 +73,60 @@
       }
     }
 
+    /* Elegant Animated Ornaments */
+    .hero-ornament {
+      position: absolute;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.15;
+    }
+
+    .hero-ornament path {
+      fill: none;
+      stroke: url(#ornament-gradient);
+      stroke-width: 1.5;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .ornament-1 {
+      top: 10%;
+      left: -15%;
+      width: 70%;
+      height: 80%;
+      animation: ornament-breath 14s infinite alternate ease-in-out;
+    }
+
+    .ornament-2 {
+      bottom: -10%;
+      left: 10%;
+      width: 60%;
+      height: 70%;
+      animation: ornament-breath 18s infinite alternate-reverse ease-in-out, ornament-drift 22s infinite alternate ease-in-out;
+      opacity: 0.12;
+    }
+
+    @keyframes ornament-breath {
+      0% {
+        transform: scale(1) rotate(0deg);
+        opacity: 0.12;
+      }
+
+      100% {
+        transform: scale(1.08) rotate(2deg);
+        opacity: 0.25;
+      }
+    }
+
+    @keyframes ornament-drift {
+      0% {
+        transform: translateX(0) translateY(0);
+      }
+
+      100% {
+        transform: translateX(30px) translateY(-20px);
+      }
+    }
+
     .hero-content {
       position: relative;
       z-index: 1;
@@ -654,6 +708,29 @@
   <section class="hero">
     <div class="hero-pattern"></div>
     <div class="hero-particles" id="hero-particles"></div>
+
+    <!-- Elegant Ornaments -->
+    <svg class="hero-ornament ornament-1" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice"
+      xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="ornament-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="var(--color-gold)" stop-opacity="0.8" />
+          <stop offset="100%" stop-color="var(--color-gold-light)" stop-opacity="0.2" />
+        </linearGradient>
+      </defs>
+      <!-- Abstract flowing corn leaf / wind pattern -->
+      <path d="M-100,500 C150,550 250,200 450,300 C650,400 750,150 900,100" />
+      <path d="M-50,600 C200,650 300,300 500,400 C700,500 800,250 950,200" style="opacity: 0.6;" />
+      <path d="M0,700 C250,750 350,400 550,500 C750,600 850,350 1000,300" style="opacity: 0.3;" />
+    </svg>
+
+    <svg class="hero-ornament ornament-2" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice"
+      xmlns="http://www.w3.org/2000/svg">
+      <!-- Abstract flowing corn leaf / wind pattern (reversed) -->
+      <path d="M900,500 C650,550 550,200 350,300 C150,400 50,150 -100,100" />
+      <path d="M850,600 C600,650 500,300 300,400 C100,500 0,250 -150,200" style="opacity: 0.6;" />
+    </svg>
+
     <div class="hero-orb-1"></div>
     <div class="hero-orb-2"></div>
     <div class="hero-visual">
