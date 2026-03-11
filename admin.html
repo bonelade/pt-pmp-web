@@ -278,6 +278,46 @@
     .stat-dot.red { background: var(--color-red); }
     .stat-dot.blue { background: #2563eb; }
 
+    /* Upload drop zone */
+    .upload-drop-zone {
+      border: 2px dashed var(--color-border); border-radius: 12px;
+      padding: 28px 20px; text-align: center; cursor: pointer;
+      transition: all 0.25s; background: var(--color-light);
+    }
+    .upload-drop-zone:hover, .upload-drop-zone.drag-over {
+      border-color: var(--color-gold); background: #fffbeb;
+    }
+    .drop-zone-icon { color: var(--color-text-muted); margin-bottom: 8px; }
+    .upload-drop-zone:hover .drop-zone-icon { color: var(--color-gold); }
+
+    /* Compress spinner */
+    .compress-spinner {
+      width: 18px; height: 18px; border: 2.5px solid var(--color-border);
+      border-top-color: var(--color-primary); border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Photo preview card with size info */
+    .preview-card {
+      position: relative; width: 140px; border-radius: 8px; overflow: hidden;
+      border: 1.5px solid var(--color-border); background: white;
+    }
+    .preview-card img { width: 100%; height: 85px; object-fit: cover; display: block; }
+    .preview-card .preview-info { padding: 6px 8px; }
+    .preview-card .preview-name {
+      font-size: 0.65rem; font-weight: 600; color: var(--color-text);
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .preview-card .preview-size { font-size: 0.6rem; color: var(--color-text-muted); }
+    .preview-card .preview-badge {
+      position: absolute; top: 4px; right: 4px; font-size: 0.55rem; font-weight: 700;
+      padding: 2px 6px; border-radius: 4px; color: white;
+    }
+    .preview-badge.compressed { background: #16a34a; }
+    .preview-badge.original { background: var(--color-gold); }
+    .preview-badge.too-big { background: var(--color-red); }
+
     /* === Admin SVG Icon Styles === */
     .admin-icon,
     .admin-icon-info,
@@ -811,24 +851,34 @@
               </div>
             </div>
 
-            <!-- Step 3: File path or upload -->
-            <div class="form-group" style="margin-bottom:12px;">
-              <label class="upload-label">5. Path File Foto</label>
-              <div style="display:flex; gap:10px; align-items:flex-start;">
-                <div style="flex:1;">
-                  <input type="text" id="photo-path" placeholder="images/gallery/nama-foto.jpg" class="upload-input" style="margin-bottom:6px;">
-                  <small style="color:var(--color-text-muted); font-size:0.72rem;">Masukkan path relatif foto. Letakkan file di folder <code>images/gallery/</code></small>
+            <!-- Step 3: File upload with auto-compress -->
+            <div class="form-group" style="margin-bottom:16px;">
+              <label class="upload-label">5. Upload Foto (Maks 5MB per file — otomatis dikompres ke &lt;500KB)</label>
+              <div class="upload-drop-zone" id="upload-drop-zone" onclick="document.getElementById('photo-file').click()">
+                <div class="drop-zone-icon">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                 </div>
-                <div style="text-align:center;">
-                  <label style="display:inline-block; padding:10px 16px; background:var(--color-light); border:1.5px solid var(--color-border); border-radius:8px; cursor:pointer; font-size:0.78rem; font-weight:600; color:var(--color-text-muted); transition:all 0.2s;" onmouseover="this.style.borderColor='var(--color-gold)'" onmouseout="this.style.borderColor='var(--color-border)'">
-                    Browse...
-                    <input type="file" id="photo-file" accept="image/*" multiple onchange="previewUploadPhotos(this)" style="display:none;">
-                  </label>
+                <div style="font-weight:600; font-size:0.88rem; color:var(--color-text);">Klik atau drag foto ke sini</div>
+                <div style="font-size:0.72rem; color:var(--color-text-muted); margin-top:4px;">JPG, PNG, WebP — Maks 5MB per file — Otomatis kompres ke &lt;500KB</div>
+                <input type="file" id="photo-file" accept="image/*" multiple onchange="handlePhotoFiles(this.files)" style="display:none;">
+              </div>
+              <!-- Compression progress -->
+              <div id="compress-progress" style="display:none; margin-top:12px;">
+                <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+                  <div class="compress-spinner"></div>
+                  <span id="compress-status" style="font-size:0.82rem; font-weight:600; color:var(--color-primary);">Mengompres foto...</span>
+                </div>
+                <div style="background:var(--color-border); border-radius:4px; height:6px; overflow:hidden;">
+                  <div id="compress-bar" style="width:0%; height:100%; background:linear-gradient(90deg, var(--color-primary), var(--color-gold)); border-radius:4px; transition:width 0.3s;"></div>
                 </div>
               </div>
+              <!-- Preview grid -->
               <div id="photo-upload-preview" style="display:flex; gap:12px; flex-wrap:wrap; margin-top:12px;"></div>
             </div>
-            <button class="btn btn-primary" onclick="uploadPhotos()"><span class="admin-icon admin-icon-upload"></span> Tambah Foto</button>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <button class="btn btn-primary" onclick="uploadPhotos()" id="btn-upload"><span class="admin-icon admin-icon-upload"></span> Tambah Foto</button>
+              <span id="upload-size-info" style="font-size:0.72rem; color:var(--color-text-muted);"></span>
+            </div>
           </div>
         </div>
 
@@ -1617,72 +1667,169 @@
     infoBox.style.display = 'block';
   }
 
-  function previewUploadPhotos(input) {
-    _pendingPhotos = [];
-    const preview = document.getElementById('photo-upload-preview');
-    const pathInput = document.getElementById('photo-path');
-    preview.innerHTML = '';
+  // ============================
+  // Image Compression Engine
+  // Uses canvas to resize & compress images to <500KB
+  // Accepts up to 5MB input
+  // ============================
+  var MAX_INPUT_SIZE = 5 * 1024 * 1024;  // 5MB
+  var TARGET_SIZE = 480 * 1024;           // 480KB target
+  var _isCompressing = false;
 
-    Array.from(input.files).forEach(function (file) {
-      var filePath = 'images/gallery/' + file.name;
-      _pendingPhotos.push({ src: filePath, name: file.name });
+  function formatFileSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+  }
 
+  function compressImage(file) {
+    return new Promise(function (resolve, reject) {
+      if (file.size > MAX_INPUT_SIZE) {
+        reject(new Error(file.name + ' terlalu besar (' + formatFileSize(file.size) + '). Maks 5MB.'));
+        return;
+      }
       var reader = new FileReader();
+      reader.onerror = function () { reject(new Error('Gagal membaca ' + file.name)); };
       reader.onload = function (e) {
-        var thumb = document.createElement('div');
-        thumb.style.cssText = 'position:relative; width:120px; border-radius:6px; overflow:hidden; border:2px solid var(--color-border);';
-        thumb.innerHTML = '<img src="' + e.target.result + '" style="width:100%;height:80px;object-fit:cover;">' +
-          '<div style="font-size:0.65rem; padding:4px 6px; color:var(--color-text-muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' + file.name + '</div>';
-        preview.appendChild(thumb);
+        var originalDataUrl = e.target.result;
+        var originalSize = file.size;
+
+        if (originalSize <= TARGET_SIZE) {
+          resolve({ dataUrl: originalDataUrl, originalSize: originalSize, compressedSize: originalSize, compressed: false, name: file.name });
+          return;
+        }
+
+        var img = new Image();
+        img.onerror = function () { reject(new Error('Gagal memuat ' + file.name)); };
+        img.onload = function () {
+          var canvas = document.createElement('canvas');
+          var ctx = canvas.getContext('2d');
+          var w = img.naturalWidth, h = img.naturalHeight;
+
+          // Resize if large (max 1600px)
+          var maxDim = 1600;
+          if (w > maxDim || h > maxDim) {
+            var ratio = Math.min(maxDim / w, maxDim / h);
+            w = Math.round(w * ratio);
+            h = Math.round(h * ratio);
+          }
+          canvas.width = w; canvas.height = h;
+          ctx.drawImage(img, 0, 0, w, h);
+
+          // Binary search for optimal JPEG quality
+          var minQ = 0.1, maxQ = 0.92, bestUrl = '', bestSize = Infinity;
+          for (var i = 0; i < 8; i++) {
+            var q = (minQ + maxQ) / 2;
+            var url = canvas.toDataURL('image/jpeg', q);
+            var sz = Math.round(url.length * 0.75);
+            if (sz <= TARGET_SIZE) { bestUrl = url; bestSize = sz; minQ = q; }
+            else { maxQ = q; }
+          }
+          if (!bestUrl) { bestUrl = canvas.toDataURL('image/jpeg', minQ); bestSize = Math.round(bestUrl.length * 0.75); }
+
+          // If still too big, shrink dimensions
+          if (bestSize > TARGET_SIZE) {
+            var sf = Math.sqrt(TARGET_SIZE / bestSize) * 0.85;
+            canvas.width = Math.round(w * sf); canvas.height = Math.round(h * sf);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            bestUrl = canvas.toDataURL('image/jpeg', 0.7);
+            bestSize = Math.round(bestUrl.length * 0.75);
+          }
+
+          resolve({ dataUrl: bestUrl, originalSize: originalSize, compressedSize: bestSize, compressed: true, name: file.name });
+        };
+        img.src = originalDataUrl;
       };
       reader.readAsDataURL(file);
     });
-
-    // Auto-fill path if single file
-    if (input.files.length === 1) {
-      pathInput.value = 'images/gallery/' + input.files[0].name;
-    } else if (input.files.length > 1) {
-      pathInput.value = 'images/gallery/ (' + input.files.length + ' file)';
-    }
   }
 
-  function uploadPhotos() {
-    const album = document.getElementById('photo-album').value;
-    if (!album) { showToast('Pilih halaman dan panel foto terlebih dahulu.', ''); return; }
+  function handlePhotoFiles(files) {
+    if (!files || files.length === 0) return;
+    _pendingPhotos = [];
+    _isCompressing = true;
 
-    const pathInput = document.getElementById('photo-path').value.trim();
-    const captionId = document.getElementById('photo-caption-id').value.trim();
-    const captionEn = document.getElementById('photo-caption-en').value.trim();
+    var preview = document.getElementById('photo-upload-preview');
+    var progress = document.getElementById('compress-progress');
+    var statusEl = document.getElementById('compress-status');
+    var barEl = document.getElementById('compress-bar');
+    var sizeInfo = document.getElementById('upload-size-info');
+    var btnUpload = document.getElementById('btn-upload');
 
-    // Build list of photos to add
-    var photosToAdd = [];
-    if (_pendingPhotos.length > 0) {
-      // From file picker
-      _pendingPhotos.forEach(function (p) {
-        photosToAdd.push({ src: p.src, name: p.name });
+    preview.innerHTML = '';
+    progress.style.display = 'block';
+    btnUpload.disabled = true; btnUpload.style.opacity = '0.5';
+
+    var fileList = Array.from(files);
+    var total = fileList.length, done = 0, totalOrig = 0, totalComp = 0, errors = [];
+
+    function next() {
+      if (done >= total) {
+        _isCompressing = false;
+        progress.style.display = 'none';
+        btnUpload.disabled = false; btnUpload.style.opacity = '1';
+        if (errors.length > 0) showToast(errors.join('; '), 'error');
+        sizeInfo.innerHTML = total + ' foto — ' + formatFileSize(totalOrig) + ' → <strong>' + formatFileSize(totalComp) + '</strong>';
+        return;
+      }
+      var file = fileList[done];
+      statusEl.textContent = 'Mengompres ' + (done + 1) + '/' + total + ': ' + file.name + '...';
+      barEl.style.width = Math.round((done / total) * 100) + '%';
+
+      compressImage(file).then(function (r) {
+        _pendingPhotos.push({ dataUrl: r.dataUrl, name: r.name, size: r.compressedSize });
+        totalOrig += r.originalSize; totalComp += r.compressedSize;
+
+        var card = document.createElement('div');
+        card.className = 'preview-card';
+        var bc = r.compressed ? 'compressed' : 'original';
+        var bt = r.compressed ? 'Dikompres' : 'OK';
+        card.innerHTML = '<img src="' + r.dataUrl + '"><span class="preview-badge ' + bc + '">' + bt + '</span>' +
+          '<div class="preview-info"><div class="preview-name">' + r.name + '</div>' +
+          '<div class="preview-size">' + formatFileSize(r.originalSize) + ' → ' + formatFileSize(r.compressedSize) + '</div></div>';
+        preview.appendChild(card);
+        done++;
+        barEl.style.width = Math.round((done / total) * 100) + '%';
+        setTimeout(next, 50);
+      }).catch(function (err) {
+        errors.push(err.message); done++; setTimeout(next, 50);
       });
-    } else if (pathInput) {
-      // Manual path entry
-      var fileName = pathInput.split('/').pop();
-      photosToAdd.push({ src: pathInput, name: fileName });
     }
+    next();
+  }
 
-    if (photosToAdd.length === 0) {
-      showToast('Masukkan path foto atau pilih file.', '');
-      return;
-    }
+  // Drag & drop init
+  function initDropZone() {
+    var zone = document.getElementById('upload-drop-zone');
+    if (!zone || zone._dropInit) return;
+    zone._dropInit = true;
+    zone.addEventListener('dragover', function (e) { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', function () { zone.classList.remove('drag-over'); });
+    zone.addEventListener('drop', function (e) {
+      e.preventDefault(); zone.classList.remove('drag-over');
+      if (e.dataTransfer.files.length > 0) handlePhotoFiles(e.dataTransfer.files);
+    });
+  }
+  document.addEventListener('DOMContentLoaded', initDropZone);
 
-    // Check max limit
-    const rec = _albumRecommendations[album] || { suggested: 3, max: 8 };
-    const currentCount = window.GalleryDB.getPhotosByAlbum(album).length;
-    const remaining = rec.max - currentCount;
+  function uploadPhotos() {
+    var album = document.getElementById('photo-album').value;
+    if (!album) { showToast('Pilih halaman dan panel foto terlebih dahulu.', ''); return; }
+    if (_isCompressing) { showToast('Tunggu kompresi selesai...', ''); return; }
+    if (_pendingPhotos.length === 0) { showToast('Pilih foto terlebih dahulu.', ''); return; }
+
+    var captionId = document.getElementById('photo-caption-id').value.trim();
+    var captionEn = document.getElementById('photo-caption-en').value.trim();
+
+    var rec = _albumRecommendations[album] || { suggested: 3, max: 8 };
+    var currentCount = window.GalleryDB.getPhotosByAlbum(album).length;
+    var remaining = rec.max - currentCount;
     if (remaining <= 0) {
-      showToast('Panel ini sudah penuh (maks ' + rec.max + ' foto). Hapus foto lama untuk upload baru.', 'error');
-      return;
+      showToast('Panel ini sudah penuh (maks ' + rec.max + ' foto). Hapus foto lama.', 'error'); return;
     }
-    var toUpload = photosToAdd.slice(0, remaining);
-    if (toUpload.length < photosToAdd.length) {
-      showToast('Hanya ' + toUpload.length + ' dari ' + photosToAdd.length + ' foto yang ditambahkan (batas maks ' + rec.max + ').', '');
+    var toUpload = _pendingPhotos.slice(0, remaining);
+    if (toUpload.length < _pendingPhotos.length) {
+      showToast('Hanya ' + toUpload.length + '/' + _pendingPhotos.length + ' foto ditambahkan (batas maks ' + rec.max + ').', '');
     }
 
     toUpload.forEach(function (p, i) {
@@ -1691,7 +1838,7 @@
         album: album,
         caption_id: captionId || p.name,
         caption_en: captionEn || p.name,
-        src: p.src,
+        src: p.dataUrl,
         order: Date.now() + i
       });
     });
@@ -1699,9 +1846,9 @@
     _pendingPhotos = [];
     document.getElementById('photo-upload-preview').innerHTML = '';
     document.getElementById('photo-file').value = '';
-    document.getElementById('photo-path').value = '';
     document.getElementById('photo-caption-id').value = '';
     document.getElementById('photo-caption-en').value = '';
+    document.getElementById('upload-size-info').innerHTML = '';
     showToast('✓ ' + toUpload.length + ' foto berhasil ditambahkan!', 'success');
     renderGalleryPages();
     onAlbumSelectChange();
