@@ -15,7 +15,12 @@
     /* Hero */
     .hero {
       min-height: 100vh;
-      background: linear-gradient(155deg, #071a10 0%, var(--color-primary-dark) 35%, var(--color-primary) 70%, #245c3d 100%);
+      background-color: #071a10;
+      /* Fallback */
+      background-image: url('https://images.unsplash.com/photo-1599900898495-9b2f6fbfeb4a?q=80&w=2669&auto=format&fit=crop');
+      /* Placeholder image of a corn field */
+      background-size: cover;
+      background-position: center;
       position: relative;
       display: flex;
       align-items: center;
@@ -26,10 +31,9 @@
       content: '';
       position: absolute;
       inset: 0;
-      background:
-        radial-gradient(ellipse 70% 80% at 75% 50%, rgba(201, 147, 42, 0.18) 0%, transparent 65%),
-        radial-gradient(ellipse 50% 60% at 15% 85%, rgba(201, 147, 42, 0.09) 0%, transparent 55%),
-        radial-gradient(ellipse 40% 40% at 50% 10%, rgba(255, 255, 255, 0.03) 0%, transparent 60%);
+      background: linear-gradient(180deg, rgba(8, 28, 17, 0.7) 0%, rgba(8, 28, 17, 0.5) 50%, rgba(8, 28, 17, 0.85) 100%);
+      z-index: 1;
+      /* Overlay layer to darken the image */
     }
 
     .hero-pattern {
@@ -73,14 +77,14 @@
       }
     }
 
-    /* Elegant Animated Ornaments */
+    /* Elegant Animated Ornaments (Layer 3) */
     .hero-ornament {
       position: absolute;
       pointer-events: none;
-      z-index: 5;
-      /* Bring to front, above hero-visual (z-index 0) but below hero-content (z-index 1) */
+      z-index: 2;
+      /* Bring to front, above overlay (1) but below text (3) */
       opacity: 0.8;
-      /* Higher base opacity as requested */
+      /* High visibility */
     }
 
     .hero-ornament path {
@@ -91,25 +95,20 @@
     }
 
     .ornament-1 {
-      top: 5%;
-      right: -10%;
-      /* Move to right side */
-      width: 70%;
-      height: 90%;
-      /* slightly larger */
+      top: -5%;
+      left: 0%;
+      width: 50%;
+      height: 70%;
       animation: ornament-breath 14s infinite alternate ease-in-out;
     }
 
     .ornament-2 {
-      bottom: -5%;
-      right: 5%;
-      /* Move to right side */
-      width: 65%;
+      bottom: -10%;
+      right: -5%;
+      width: 60%;
       height: 80%;
-      /* slightly larger */
       animation: ornament-breath 18s infinite alternate-reverse ease-in-out, ornament-drift 22s infinite alternate ease-in-out;
       opacity: 0.6;
-      /* Higher secondary opacity */
     }
 
     @keyframes ornament-breath {
@@ -136,9 +135,14 @@
 
     .hero-content {
       position: relative;
-      z-index: 1;
+      z-index: 3;
+      /* Top layer */
       padding: 130px 0 90px;
       width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
     }
 
     .hero-badge {
@@ -214,9 +218,9 @@
     .hero-subtitle {
       font-size: clamp(1rem, 2vw, 1.2rem);
       color: rgba(255, 255, 255, 0.75);
-      max-width: 500px;
+      max-width: 600px;
       line-height: 1.7;
-      margin-bottom: 44px;
+      margin: 0 auto 44px;
       font-weight: 400;
       animation: hero-title-in 0.9s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
@@ -225,6 +229,7 @@
       display: flex;
       gap: 16px;
       flex-wrap: wrap;
+      justify-content: center;
       animation: hero-title-in 0.9s 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
@@ -234,6 +239,7 @@
       gap: 32px;
       margin-top: 52px;
       flex-wrap: wrap;
+      justify-content: center;
       animation: hero-title-in 0.9s 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
@@ -258,33 +264,7 @@
       margin-top: 4px;
     }
 
-    .hero-visual {
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      width: 44%;
-      overflow: hidden;
-      pointer-events: none;
-    }
-
-    .hero-visual::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to right, var(--color-primary) 0%, rgba(26, 71, 49, 0.7) 30%, rgba(26, 71, 49, 0.3) 70%);
-      z-index: 1;
-    }
-
-    .hero-corn-bg {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(155deg, #0d2419 0%, #1a4731 50%, #0d2419 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      filter: blur(0.5px);
-    }
+    /* Removed old .hero-visual and .hero-corn-bg as we are using a full-width background now */
 
     /* Decorative floating orbs */
     .hero-orb-1 {
@@ -337,7 +317,7 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       animation: bounce 2.5s ease-in-out infinite;
-      z-index: 2;
+      z-index: 4;
     }
 
     .hero-scroll .scroll-line {
@@ -738,11 +718,7 @@
       <path d="M850,600 C600,650 500,300 300,400 C100,500 0,250 -150,200" style="opacity: 0.6;" />
     </svg>
 
-    <div class="hero-orb-1"></div>
-    <div class="hero-orb-2"></div>
-    <div class="hero-visual">
-      <div class="hero-corn-bg" id="hero-corn-icon"></div>
-    </div>
+    <!-- Removing old hero-orbs and hero-visual split layout -->
     <div class="container hero-content">
       <h1 class="hero-title">
         <span class="gold-text" data-i18n="hero_title1">PT PANGAN</span><br>
