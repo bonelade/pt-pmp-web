@@ -733,7 +733,7 @@
   </div>
 
   <!-- Hero -->
-  <section class="hero">
+  <section class="hero" style="display: flex; flex-direction: column;">
     <div class="hero-pattern"></div>
     <!-- Golden Clouds -->
     <svg class="hero-cloud cloud-1" viewBox="0 0 1200 600" preserveAspectRatio="none"
@@ -770,7 +770,7 @@
     </svg>
 
     <!-- Removing old hero-orbs and hero-visual split layout -->
-    <div class="container hero-content">
+    <div class="container hero-content" style="margin: auto 0;">
       <h1 class="hero-title">
         <span class="gold-text" data-i18n="hero_title1">PT PANGAN</span><br>
         <span class="red" data-i18n="hero_title2">MERAH</span> <span data-i18n="hero_title3">PUTIH</span>
@@ -782,35 +782,34 @@
         <a href="community.html" class="btn btn-outline btn-lg" data-i18n="hero_cta2">Hubungi Kami</a>
       </div>
     </div>
-    <div class="hero-scroll">
-      <div class="scroll-line"></div>
-      <span style="font-size:0.65rem; letter-spacing:0.2em;">SCROLL</span>
-    </div>
-  </section>
 
-  <!-- Stats Bar -->
-  <section class="stat-bar section-sm">
-    <div class="container">
-      <div class="stat-grid">
-        <div class="stat-item animate-on-scroll">
-          <div class="stat-item-icon">🌽</div>
-          <div class="stat-number" data-i18n="stat1_num">17 Juta+</div>
-          <div class="stat-label" data-i18n="stat1_label">Ton Kebutuhan Jagung Nasional/Tahun</div>
-        </div>
-        <div class="stat-item animate-on-scroll animate-delay-1">
-          <div class="stat-item-icon">⚡</div>
-          <div class="stat-number" data-i18n="stat2_num">300 Ton</div>
-          <div class="stat-label" data-i18n="stat2_label">Kapasitas Dryer Per Hari</div>
-        </div>
-        <div class="stat-item animate-on-scroll animate-delay-2">
-          <div class="stat-item-icon">🏭</div>
-          <div class="stat-number" data-i18n="stat3_num">1.000 Ton</div>
-          <div class="stat-label" data-i18n="stat3_label">Kapasitas Penyimpanan Gudang</div>
-        </div>
-        <div class="stat-item animate-on-scroll animate-delay-3">
-          <div class="stat-item-icon">🌾</div>
-          <div class="stat-number" data-i18n="stat4_num">12.000 Ha</div>
-          <div class="stat-label" data-i18n="stat4_label">Lahan Jagung di Kalimantan Barat</div>
+    <!-- Stats Bar (Moved Inside Hero) -->
+    <div class="stat-bar"
+      style="width: 100%; margin-top: auto; position: relative; border-top: 1px solid rgba(255,255,255,0.05); background: linear-gradient(180deg, rgba(8,28,17,0) 0%, rgba(8,28,17,0.7) 100%); z-index: 10;">
+      <div class="stat-particles" id="stat-particles"
+        style="position: absolute; inset: 0; pointer-events: none; overflow: hidden;"></div>
+      <div class="container" style="position: relative; z-index: 2;">
+        <div class="stat-grid">
+          <div class="stat-item animate-on-scroll">
+            <div class="stat-item-icon">🌽</div>
+            <div class="stat-number" data-i18n="stat1_num">17 Juta+</div>
+            <div class="stat-label" data-i18n="stat1_label">Ton Kebutuhan Jagung Nasional/Tahun</div>
+          </div>
+          <div class="stat-item animate-on-scroll animate-delay-1">
+            <div class="stat-item-icon">⚡</div>
+            <div class="stat-number" data-i18n="stat2_num">300 Ton</div>
+            <div class="stat-label" data-i18n="stat2_label">Kapasitas Dryer Per Hari</div>
+          </div>
+          <div class="stat-item animate-on-scroll animate-delay-2">
+            <div class="stat-item-icon">🏭</div>
+            <div class="stat-number" data-i18n="stat3_num">1.000 Ton</div>
+            <div class="stat-label" data-i18n="stat3_label">Kapasitas Penyimpanan Gudang</div>
+          </div>
+          <div class="stat-item animate-on-scroll animate-delay-3">
+            <div class="stat-item-icon">🌾</div>
+            <div class="stat-number" data-i18n="stat4_num">12.000 Ha</div>
+            <div class="stat-label" data-i18n="stat4_label">Lahan Jagung di Kalimantan Barat</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1172,6 +1171,27 @@
         container.appendChild(p);
       }
     })();
+
+    // Stat bar particles
+    (function () {
+      var container = document.getElementById('stat-particles');
+      if (!container) return;
+      var count = 12;
+      for (var i = 0; i < count; i++) {
+        var p = document.createElement('div');
+        p.className = 'hero-particle'; // reuse golden star class
+        var size = Math.random() * 4 + 2;
+        p.style.cssText = [
+          'width:' + size + 'px',
+          'height:' + size + 'px',
+          'left:' + (Math.random() * 100) + '%',
+          'top:' + (Math.random() * 100) + '%',
+          'animation-duration:' + (Math.random() * 3 + 2) + 's',
+          'animation-delay:' + (Math.random() * 3) + 's'
+        ].join(';');
+        container.appendChild(p);
+      }
+    })();
   </script>
   <script src="js/icons.js"></script>
   <script>
@@ -1258,12 +1278,19 @@
             if (isNaN(num)) return;
             var suffix = text.replace(match[0], '').trim();
             var prefix = text.slice(0, text.indexOf(match[0]));
-            var duration = 1400;
+
+            // Slower, delayed counting
+            var duration = 2500;
             var start = null;
             var startVal = 0;
+
+            // Show 0 initially while waiting for the delay
+            el.textContent = prefix + "0 " + suffix.replace(/^\s+/, '');
+
             function step(ts) {
               if (!start) start = ts;
               var prog = Math.min((ts - start) / duration, 1);
+              // Cubic ease out
               var eased = 1 - Math.pow(1 - prog, 3);
               var cur = Math.round(startVal + (num - startVal) * eased);
               var display = cur.toLocaleString('id-ID');
@@ -1271,7 +1298,11 @@
               if (prog < 1) requestAnimationFrame(step);
               else el.textContent = text; // restore original
             }
-            requestAnimationFrame(step);
+
+            // Delay 800ms before starting the counter
+            setTimeout(function () {
+              requestAnimationFrame(step);
+            }, 800);
             statObserver.unobserve(el);
           }
         });
