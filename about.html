@@ -725,14 +725,14 @@
   </script>
   <script>
     (function () {
-      function renderGallery() {
-        if (!window.GalleryDB) return;
-        var photos = window.GalleryDB.getGallery().filter(function (p) { return p.album === 'about_facility' || p.album === 'about_team' || p.album === 'about_activity' || p.album === 'about_slider'; });
-        if (photos.length === 0) return;
+      function renderGallery(photos) {
+        if (!photos || photos.length === 0) return;
+        var filtered = photos.filter(function (p) { return p.album === 'about_facility' || p.album === 'about_team' || p.album === 'about_activity' || p.album === 'about_slider'; });
+        if (filtered.length === 0) return;
         var section = document.getElementById('gallery-section');
         var grid = document.getElementById('gallery-display');
         if (section) section.style.display = 'block';
-        if (grid) grid.innerHTML = photos.map(function (p) {
+        if (grid) grid.innerHTML = filtered.map(function (p) {
           return '<div class="gallery-item animate-on-scroll" onclick="openLightbox(\'' + p.src.replace(/'/g, "&#39;") + '\',\'' + (p.caption_id || '').replace(/'/g, "&#39;") + '\')">' +
             '<img src="' + p.src + '" alt="' + (p.caption_id || '') + '" loading="lazy">' +
             '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + (p.caption_id || '') + '</div></div>' +
@@ -749,8 +749,13 @@
         var lb = document.getElementById('lightbox');
         if (lb) lb.classList.remove('open');
       };
-      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', renderGallery);
-      else renderGallery();
+      function init() {
+        if (window.GalleryDB) {
+          window.GalleryDB.loadGalleryData(renderGallery);
+        }
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+      else init();
     })();
   </script>
   <script>

@@ -1,0 +1,82 @@
+[
+  {
+    "id": "photo-001",
+    "album": "home_hero",
+    "caption_id": "Lahan Jagung Bengkayang",
+    "caption_en": "Bengkayang Corn Field",
+    "src": "images/Corn field.jpg",
+    "order": 1
+  },
+  {
+    "id": "photo-002",
+    "album": "home_gallery",
+    "caption_id": "Peresmian oleh Presiden Prabowo",
+    "caption_en": "Inauguration by President Prabowo",
+    "src": "images/PrabowoPTPMP.jpeg",
+    "order": 2
+  },
+  {
+    "id": "photo-003",
+    "album": "home_gallery",
+    "caption_id": "Lahan Jagung",
+    "caption_en": "Corn Field",
+    "src": "images/Corn field 2.jpg",
+    "order": 3
+  },
+  {
+    "id": "photo-004",
+    "album": "home_gallery",
+    "caption_id": "Lahan Jagung Kalimantan Barat",
+    "caption_en": "West Kalimantan Corn Field",
+    "src": "images/Corn field 3.jpg",
+    "order": 4
+  },
+  {
+    "id": "photo-005",
+    "album": "home_gallery",
+    "caption_id": "Jagung Pakan Berkualitas",
+    "caption_en": "Quality Feed Corn",
+    "src": "images/Corn.jpg",
+    "order": 5
+  },
+  {
+    "id": "photo-006",
+    "album": "home_gallery",
+    "caption_id": "Hasil Panen Jagung",
+    "caption_en": "Corn Harvest",
+    "src": "images/Corn 2.jpg",
+    "order": 6
+  },
+  {
+    "id": "photo-007",
+    "album": "home_gallery",
+    "caption_id": "Biji Jagung Pilihan",
+    "caption_en": "Selected Corn Kernels",
+    "src": "images/corn 3.jpg",
+    "order": 7
+  },
+  {
+    "id": "photo-008",
+    "album": "about_slider",
+    "caption_id": "Lahan Jagung Bengkayang",
+    "caption_en": "Bengkayang Corn Field",
+    "src": "images/Corn field.jpg",
+    "order": 8
+  },
+  {
+    "id": "photo-009",
+    "album": "about_facility",
+    "caption_id": "Area Lahan Jagung",
+    "caption_en": "Corn Field Area",
+    "src": "images/Corn field 2.jpg",
+    "order": 9
+  },
+  {
+    "id": "photo-010",
+    "album": "about_activity",
+    "caption_id": "Peresmian oleh Presiden Prabowo",
+    "caption_en": "Inauguration by President Prabowo",
+    "src": "images/PrabowoPTPMP.jpeg",
+    "order": 10
+  }
+]

@@ -1,12 +1,16 @@
 /* ========================================
-   PT PMP - Gallery / Photo localStorage CRUD
-   Per-page categorized photo management
+   PT PMP - Gallery / Photo Management
+   Loads from data/photos.json (static file)
+   Admin edits saved to localStorage, then exported to JSON
    ======================================== */
 
-const GALLERY_KEY = 'pmp_gallery';
+var GALLERY_KEY = 'pmp_gallery';
+var GALLERY_JSON_URL = 'data/photos.json';
+var _galleryCache = null;
+var _galleryReady = false;
+var _galleryCallbacks = [];
 
 // Album categories organized by page
-// Each album has: key, label, page, description
 var GALLERY_ALBUMS = {
   // Beranda (index.html)
   home_hero:        { label: 'Hero Background',        page: 'Beranda',        desc: 'Foto latar belakang hero di halaman utama' },
@@ -33,14 +37,6 @@ var GALLERY_ALBUMS = {
   harga_quality:     { label: 'Kualitas Jagung',        page: 'Harga Jagung',   desc: 'Foto sampel jagung grade A, B, dan C' }
 };
 
-// Legacy album mapping (old key → new key) for backward compatibility
-var LEGACY_MAP = {
-  hero:     'home_hero',
-  facility: 'about_facility',
-  team:     'about_team',
-  activity: 'about_activity'
-};
-
 // Group albums by page
 function getAlbumsByPage() {
   var pages = {};
@@ -52,21 +48,77 @@ function getAlbumsByPage() {
   return pages;
 }
 
-function getGallery() {
+// Load photos: try localStorage first (admin edits), then fetch JSON
+function loadGalleryData(callback) {
+  // If already loaded, return cache
+  if (_galleryReady) {
+    if (callback) callback(_galleryCache);
+    return;
+  }
+
+  // Queue callback
+  if (callback) _galleryCallbacks.push(callback);
+
+  // If already loading, just wait
+  if (_galleryCallbacks.length > 1) return;
+
+  // Check localStorage for admin overrides
+  var localData = null;
   try {
-    var data = localStorage.getItem(GALLERY_KEY);
-    var photos = data ? JSON.parse(data) : [];
-    // Auto-migrate legacy album keys
-    var migrated = false;
-    photos.forEach(function (p) {
-      if (LEGACY_MAP[p.album]) { p.album = LEGACY_MAP[p.album]; migrated = true; }
-    });
-    if (migrated) saveGallery(photos);
-    return photos;
-  } catch (e) { return []; }
+    var raw = localStorage.getItem(GALLERY_KEY);
+    if (raw) localData = JSON.parse(raw);
+  } catch (e) { /* ignore */ }
+
+  if (localData && localData.length > 0) {
+    _galleryCache = localData;
+    _galleryReady = true;
+    _fireCallbacks();
+    return;
+  }
+
+  // Fetch from JSON file
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', GALLERY_JSON_URL, true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState !== 4) return;
+    if (xhr.status === 200) {
+      try {
+        _galleryCache = JSON.parse(xhr.responseText);
+        // Save to localStorage as working copy
+        localStorage.setItem(GALLERY_KEY, JSON.stringify(_galleryCache));
+      } catch (e) {
+        _galleryCache = [];
+      }
+    } else {
+      _galleryCache = [];
+    }
+    _galleryReady = true;
+    _fireCallbacks();
+  };
+  xhr.send();
+}
+
+function _fireCallbacks() {
+  var cbs = _galleryCallbacks.slice();
+  _galleryCallbacks = [];
+  cbs.forEach(function (cb) { cb(_galleryCache); });
+}
+
+// Sync getter (returns cache or empty - use after loadGalleryData)
+function getGallery() {
+  if (_galleryCache) return _galleryCache;
+  // Fallback: try localStorage sync
+  try {
+    var raw = localStorage.getItem(GALLERY_KEY);
+    _galleryCache = raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    _galleryCache = [];
+  }
+  return _galleryCache;
 }
 
 function saveGallery(photos) {
+  _galleryCache = photos;
   localStorage.setItem(GALLERY_KEY, JSON.stringify(photos));
 }
 
@@ -98,7 +150,23 @@ function generatePhotoId() {
   return 'photo-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
 }
 
+// Export current gallery data as JSON string (for admin to download/save)
+function exportGalleryJSON() {
+  return JSON.stringify(getGallery(), null, 2);
+}
+
+// Reset localStorage to force re-fetch from JSON
+function resetToJSON() {
+  localStorage.removeItem(GALLERY_KEY);
+  _galleryCache = null;
+  _galleryReady = false;
+}
+
+// Auto-load on script init
+loadGalleryData();
+
 window.GalleryDB = {
+  loadGalleryData: loadGalleryData,
   getGallery: getGallery,
   saveGallery: saveGallery,
   getPhotosByAlbum: getPhotosByAlbum,
@@ -106,6 +174,8 @@ window.GalleryDB = {
   upsertPhoto: upsertPhoto,
   deletePhoto: deletePhoto,
   generatePhotoId: generatePhotoId,
+  exportGalleryJSON: exportGalleryJSON,
+  resetToJSON: resetToJSON,
   ALBUMS: GALLERY_ALBUMS,
   getAlbumsByPage: getAlbumsByPage
 };

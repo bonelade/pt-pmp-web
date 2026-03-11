@@ -754,8 +754,24 @@
 
       <!-- ===== GALLERY PAGE ===== -->
       <div class="admin-page" id="page-gallery">
-        <div style="background:#fffbeb; border:1.5px solid var(--color-gold); border-radius:8px; padding:14px 20px; margin-bottom:24px; font-size:0.88rem; color:#92400e;">
-          <span class="admin-icon admin-icon-info"></span> <strong>Petunjuk:</strong> Upload foto untuk berbagai halaman website. Pilih kategori halaman dan panel foto yang sesuai. Foto tersimpan di browser (localStorage), ukuran maksimal 500KB per foto.
+        <!-- Info: how photos work -->
+        <div style="background:#f0fdf4; border:1.5px solid #16a34a; border-radius:8px; padding:16px 20px; margin-bottom:16px; font-size:0.85rem; color:#14532d;">
+          <strong>Cara Kerja Foto:</strong> Foto dimuat dari file <code>data/photos.json</code>. Untuk menambah foto:
+          <ol style="margin:8px 0 0 18px; padding:0; line-height:1.8;">
+            <li>Letakkan file foto di folder <code>images/gallery/</code></li>
+            <li>Pilih halaman & panel, isi keterangan, lalu klik Upload</li>
+            <li>Klik <strong>"Download photos.json"</strong> untuk export data terbaru</li>
+            <li>Replace file <code>data/photos.json</code> dengan hasil download</li>
+            <li>Commit & push ke GitHub → Vercel auto-deploy</li>
+          </ol>
+        </div>
+        <div style="display:flex; gap:10px; margin-bottom:24px; flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="exportPhotosJSON()" style="font-size:0.82rem;">
+            <span class="admin-icon admin-icon-save"></span> Download photos.json
+          </button>
+          <button class="btn btn-outline" onclick="resetGalleryToJSON()" style="font-size:0.82rem;">
+            Reset ke data JSON asli
+          </button>
         </div>
 
         <!-- Upload Panel -->
@@ -795,13 +811,24 @@
               </div>
             </div>
 
-            <!-- Step 3: File -->
-            <div class="form-group" style="margin-bottom:20px;">
-              <label class="upload-label">5. Pilih File Foto</label>
-              <input type="file" id="photo-file" accept="image/*" multiple onchange="previewUploadPhotos(this)">
+            <!-- Step 3: File path or upload -->
+            <div class="form-group" style="margin-bottom:12px;">
+              <label class="upload-label">5. Path File Foto</label>
+              <div style="display:flex; gap:10px; align-items:flex-start;">
+                <div style="flex:1;">
+                  <input type="text" id="photo-path" placeholder="images/gallery/nama-foto.jpg" class="upload-input" style="margin-bottom:6px;">
+                  <small style="color:var(--color-text-muted); font-size:0.72rem;">Masukkan path relatif foto. Letakkan file di folder <code>images/gallery/</code></small>
+                </div>
+                <div style="text-align:center;">
+                  <label style="display:inline-block; padding:10px 16px; background:var(--color-light); border:1.5px solid var(--color-border); border-radius:8px; cursor:pointer; font-size:0.78rem; font-weight:600; color:var(--color-text-muted); transition:all 0.2s;" onmouseover="this.style.borderColor='var(--color-gold)'" onmouseout="this.style.borderColor='var(--color-border)'">
+                    Browse...
+                    <input type="file" id="photo-file" accept="image/*" multiple onchange="previewUploadPhotos(this)" style="display:none;">
+                  </label>
+                </div>
+              </div>
               <div id="photo-upload-preview" style="display:flex; gap:12px; flex-wrap:wrap; margin-top:12px;"></div>
             </div>
-            <button class="btn btn-primary" onclick="uploadPhotos()"><span class="admin-icon admin-icon-upload"></span> Upload Foto</button>
+            <button class="btn btn-primary" onclick="uploadPhotos()"><span class="admin-icon admin-icon-upload"></span> Tambah Foto</button>
           </div>
         </div>
 
@@ -1593,24 +1620,57 @@
   function previewUploadPhotos(input) {
     _pendingPhotos = [];
     const preview = document.getElementById('photo-upload-preview');
+    const pathInput = document.getElementById('photo-path');
     preview.innerHTML = '';
-    Array.from(input.files).forEach(file => {
-      const reader = new FileReader();
-      reader.onload = e => {
-        _pendingPhotos.push({ src: e.target.result, name: file.name });
-        const img = document.createElement('div');
-        img.style.cssText = 'position:relative; width:120px; height:80px; border-radius:6px; overflow:hidden; border:2px solid var(--color-border);';
-        img.innerHTML = '<img src="' + e.target.result + '" style="width:100%;height:100%;object-fit:cover;">';
-        preview.appendChild(img);
+
+    Array.from(input.files).forEach(function (file) {
+      var filePath = 'images/gallery/' + file.name;
+      _pendingPhotos.push({ src: filePath, name: file.name });
+
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        var thumb = document.createElement('div');
+        thumb.style.cssText = 'position:relative; width:120px; border-radius:6px; overflow:hidden; border:2px solid var(--color-border);';
+        thumb.innerHTML = '<img src="' + e.target.result + '" style="width:100%;height:80px;object-fit:cover;">' +
+          '<div style="font-size:0.65rem; padding:4px 6px; color:var(--color-text-muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' + file.name + '</div>';
+        preview.appendChild(thumb);
       };
       reader.readAsDataURL(file);
     });
+
+    // Auto-fill path if single file
+    if (input.files.length === 1) {
+      pathInput.value = 'images/gallery/' + input.files[0].name;
+    } else if (input.files.length > 1) {
+      pathInput.value = 'images/gallery/ (' + input.files.length + ' file)';
+    }
   }
 
   function uploadPhotos() {
-    if (_pendingPhotos.length === 0) { showToast('Pilih foto terlebih dahulu.', ''); return; }
     const album = document.getElementById('photo-album').value;
     if (!album) { showToast('Pilih halaman dan panel foto terlebih dahulu.', ''); return; }
+
+    const pathInput = document.getElementById('photo-path').value.trim();
+    const captionId = document.getElementById('photo-caption-id').value.trim();
+    const captionEn = document.getElementById('photo-caption-en').value.trim();
+
+    // Build list of photos to add
+    var photosToAdd = [];
+    if (_pendingPhotos.length > 0) {
+      // From file picker
+      _pendingPhotos.forEach(function (p) {
+        photosToAdd.push({ src: p.src, name: p.name });
+      });
+    } else if (pathInput) {
+      // Manual path entry
+      var fileName = pathInput.split('/').pop();
+      photosToAdd.push({ src: pathInput, name: fileName });
+    }
+
+    if (photosToAdd.length === 0) {
+      showToast('Masukkan path foto atau pilih file.', '');
+      return;
+    }
 
     // Check max limit
     const rec = _albumRecommendations[album] || { suggested: 3, max: 8 };
@@ -1620,13 +1680,11 @@
       showToast('Panel ini sudah penuh (maks ' + rec.max + ' foto). Hapus foto lama untuk upload baru.', 'error');
       return;
     }
-    const toUpload = _pendingPhotos.slice(0, remaining);
-    if (toUpload.length < _pendingPhotos.length) {
-      showToast('Hanya ' + toUpload.length + ' dari ' + _pendingPhotos.length + ' foto yang diupload (batas maks ' + rec.max + ').', '');
+    var toUpload = photosToAdd.slice(0, remaining);
+    if (toUpload.length < photosToAdd.length) {
+      showToast('Hanya ' + toUpload.length + ' dari ' + photosToAdd.length + ' foto yang ditambahkan (batas maks ' + rec.max + ').', '');
     }
 
-    const captionId = document.getElementById('photo-caption-id').value.trim();
-    const captionEn = document.getElementById('photo-caption-en').value.trim();
     toUpload.forEach(function (p, i) {
       window.GalleryDB.upsertPhoto({
         id: window.GalleryDB.generatePhotoId(),
@@ -1637,20 +1695,49 @@
         order: Date.now() + i
       });
     });
+
     _pendingPhotos = [];
     document.getElementById('photo-upload-preview').innerHTML = '';
     document.getElementById('photo-file').value = '';
+    document.getElementById('photo-path').value = '';
     document.getElementById('photo-caption-id').value = '';
     document.getElementById('photo-caption-en').value = '';
-    showToast('✓ ' + toUpload.length + ' foto berhasil diupload!', 'success');
+    showToast('✓ ' + toUpload.length + ' foto berhasil ditambahkan!', 'success');
     renderGalleryPages();
-    // Refresh info box
     onAlbumSelectChange();
+  }
+
+  // Export photos.json for download
+  function exportPhotosJSON() {
+    var json = window.GalleryDB.exportGalleryJSON();
+    var blob = new Blob([json], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'photos.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('✓ photos.json berhasil didownload! Replace file data/photos.json lalu push ke GitHub.', 'success');
+  }
+
+  // Reset gallery to original JSON data
+  function resetGalleryToJSON() {
+    if (!confirm('Reset galeri ke data JSON asli? Perubahan lokal akan hilang.')) return;
+    window.GalleryDB.resetToJSON();
+    window.GalleryDB.loadGalleryData(function () {
+      loadGalleryPage();
+      showToast('Galeri direset ke data JSON asli.', 'success');
+    });
   }
 
   function loadGalleryPage() {
     initAlbumSelector();
-    renderGalleryPages();
+    // Ensure data is loaded before rendering
+    window.GalleryDB.loadGalleryData(function () {
+      renderGalleryPages();
+    });
   }
 
   function togglePageGroup(el) {
