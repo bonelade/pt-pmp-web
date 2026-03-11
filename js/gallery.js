@@ -1,43 +1,34 @@
 /* ========================================
    PT PMP - Gallery / Photo Management
-   Loads from data/photos.json (static file)
-   Admin edits saved to localStorage, then exported to JSON
+   Storage: IndexedDB (hundreds of MB capacity)
+   Fallback: data/photos.json for initial data
    ======================================== */
 
-var GALLERY_KEY = 'pmp_gallery';
+var GALLERY_DB_NAME = 'pmp_gallery_db';
+var GALLERY_STORE = 'photos';
+var GALLERY_DB_VERSION = 1;
 var GALLERY_JSON_URL = 'data/photos.json';
 var _galleryCache = null;
 var _galleryReady = false;
 var _galleryCallbacks = [];
+var _idb = null; // IndexedDB instance
 
 // Album categories organized by page
 var GALLERY_ALBUMS = {
-  // Beranda (index.html)
   home_hero:        { label: 'Hero Background',        page: 'Beranda',        desc: 'Foto latar belakang hero di halaman utama' },
   home_gallery:     { label: 'Galeri Beranda',          page: 'Beranda',        desc: 'Foto galeri preview di halaman utama (maks 8 foto)' },
-
-  // Tentang Kami (about.html)
   about_slider:     { label: 'Slider Utama',            page: 'Tentang Kami',   desc: 'Foto untuk slider galeri utama di halaman tentang' },
   about_facility:   { label: 'Fasilitas',               page: 'Tentang Kami',   desc: 'Foto fasilitas pabrik, gudang, dan peralatan' },
   about_team:       { label: 'Tim & Manajemen',         page: 'Tentang Kami',   desc: 'Foto tim, manajemen, dan karyawan' },
   about_activity:   { label: 'Kegiatan & Acara',        page: 'Tentang Kami',   desc: 'Foto kegiatan perusahaan dan acara' },
-
-  // Produk & Jasa (products.html)
   products_facility: { label: 'Fasilitas Produksi',     page: 'Produk & Jasa',  desc: 'Foto mesin, proses pengeringan, dan fasilitas produksi' },
   products_corn:     { label: 'Produk Jagung',          page: 'Produk & Jasa',  desc: 'Foto produk jagung berbagai grade' },
-
-  // Keberlanjutan (sustainability.html)
   sustainability_program: { label: 'Program & Dampak',  page: 'Keberlanjutan',  desc: 'Foto program keberlanjutan dan dampak sosial' },
-
-  // Komunitas (community.html)
   community_farmer:  { label: 'Program Petani',         page: 'Komunitas',      desc: 'Foto pemberdayaan dan kemitraan petani' },
   community_event:   { label: 'Acara Komunitas',        page: 'Komunitas',      desc: 'Foto acara dan kegiatan komunitas' },
-
-  // Harga Jagung (harga-jagung.html)
   harga_quality:     { label: 'Kualitas Jagung',        page: 'Harga Jagung',   desc: 'Foto sampel jagung grade A, B, dan C' }
 };
 
-// Group albums by page
 function getAlbumsByPage() {
   var pages = {};
   for (var key in GALLERY_ALBUMS) {
@@ -48,54 +39,155 @@ function getAlbumsByPage() {
   return pages;
 }
 
-// Load photos: try localStorage first (admin edits), then fetch JSON
+// ============================
+// IndexedDB Layer
+// ============================
+function openDB(callback) {
+  if (_idb) { callback(_idb); return; }
+  var request = indexedDB.open(GALLERY_DB_NAME, GALLERY_DB_VERSION);
+  request.onupgradeneeded = function (e) {
+    var db = e.target.result;
+    if (!db.objectStoreNames.contains(GALLERY_STORE)) {
+      var store = db.createObjectStore(GALLERY_STORE, { keyPath: 'id' });
+      store.createIndex('album', 'album', { unique: false });
+      store.createIndex('order', 'order', { unique: false });
+    }
+  };
+  request.onsuccess = function (e) {
+    _idb = e.target.result;
+    callback(_idb);
+  };
+  request.onerror = function () {
+    console.warn('IndexedDB open failed, using memory only');
+    callback(null);
+  };
+}
+
+function idbGetAll(callback) {
+  openDB(function (db) {
+    if (!db) { callback([]); return; }
+    var tx = db.transaction(GALLERY_STORE, 'readonly');
+    var store = tx.objectStore(GALLERY_STORE);
+    var req = store.getAll();
+    req.onsuccess = function () { callback(req.result || []); };
+    req.onerror = function () { callback([]); };
+  });
+}
+
+function idbPut(photo, callback) {
+  openDB(function (db) {
+    if (!db) { if (callback) callback({ error: 'no_db' }); return; }
+    var tx = db.transaction(GALLERY_STORE, 'readwrite');
+    var store = tx.objectStore(GALLERY_STORE);
+    var req = store.put(photo);
+    req.onsuccess = function () { if (callback) callback({ success: true }); };
+    req.onerror = function () { if (callback) callback({ error: 'write_failed' }); };
+  });
+}
+
+function idbDelete(id, callback) {
+  openDB(function (db) {
+    if (!db) { if (callback) callback(); return; }
+    var tx = db.transaction(GALLERY_STORE, 'readwrite');
+    var store = tx.objectStore(GALLERY_STORE);
+    store.delete(id);
+    tx.oncomplete = function () { if (callback) callback(); };
+  });
+}
+
+function idbClear(callback) {
+  openDB(function (db) {
+    if (!db) { if (callback) callback(); return; }
+    var tx = db.transaction(GALLERY_STORE, 'readwrite');
+    var store = tx.objectStore(GALLERY_STORE);
+    store.clear();
+    tx.oncomplete = function () { if (callback) callback(); };
+  });
+}
+
+function idbPutMany(photos, callback) {
+  openDB(function (db) {
+    if (!db) { if (callback) callback(); return; }
+    var tx = db.transaction(GALLERY_STORE, 'readwrite');
+    var store = tx.objectStore(GALLERY_STORE);
+    photos.forEach(function (p) { store.put(p); });
+    tx.oncomplete = function () { if (callback) callback(); };
+    tx.onerror = function () { if (callback) callback(); };
+  });
+}
+
+// ============================
+// Load: IndexedDB → fallback JSON → fallback localStorage (migration)
+// ============================
 function loadGalleryData(callback) {
-  // If already loaded, return cache
   if (_galleryReady) {
     if (callback) callback(_galleryCache);
     return;
   }
-
-  // Queue callback
   if (callback) _galleryCallbacks.push(callback);
-
-  // If already loading, just wait
   if (_galleryCallbacks.length > 1) return;
 
-  // Check localStorage for admin overrides
-  var localData = null;
-  try {
-    var raw = localStorage.getItem(GALLERY_KEY);
-    if (raw) localData = JSON.parse(raw);
-  } catch (e) { /* ignore */ }
+  idbGetAll(function (photos) {
+    if (photos && photos.length > 0) {
+      _galleryCache = photos;
+      _galleryReady = true;
+      _migrateFromLocalStorage(); // clean up old localStorage data
+      _fireCallbacks();
+      return;
+    }
 
-  if (localData && localData.length > 0) {
-    _galleryCache = localData;
-    _galleryReady = true;
-    _fireCallbacks();
-    return;
-  }
+    // Check localStorage for legacy data to migrate
+    var localData = null;
+    try {
+      var raw = localStorage.getItem('pmp_gallery');
+      if (raw) localData = JSON.parse(raw);
+    } catch (e) { /* ignore */ }
 
-  // Fetch from JSON file
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', GALLERY_JSON_URL, true);
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState !== 4) return;
-    if (xhr.status === 200) {
-      try {
-        _galleryCache = JSON.parse(xhr.responseText);
-        // Save to localStorage as working copy
-        localStorage.setItem(GALLERY_KEY, JSON.stringify(_galleryCache));
-      } catch (e) {
+    if (localData && localData.length > 0) {
+      // Migrate localStorage → IndexedDB
+      _galleryCache = localData;
+      idbPutMany(localData, function () {
+        // Clean up localStorage after migration
+        try { localStorage.removeItem('pmp_gallery'); } catch (e) { /* ignore */ }
+        _galleryReady = true;
+        _fireCallbacks();
+      });
+      return;
+    }
+
+    // Fetch from JSON file
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', GALLERY_JSON_URL, true);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState !== 4) return;
+      if (xhr.status === 200) {
+        try {
+          _galleryCache = JSON.parse(xhr.responseText);
+          // Save to IndexedDB
+          idbPutMany(_galleryCache, function () {
+            _galleryReady = true;
+            _fireCallbacks();
+          });
+          return;
+        } catch (e) {
+          _galleryCache = [];
+        }
+      } else {
         _galleryCache = [];
       }
-    } else {
-      _galleryCache = [];
+      _galleryReady = true;
+      _fireCallbacks();
+    };
+    xhr.send();
+  });
+}
+
+function _migrateFromLocalStorage() {
+  try {
+    if (localStorage.getItem('pmp_gallery')) {
+      localStorage.removeItem('pmp_gallery');
     }
-    _galleryReady = true;
-    _fireCallbacks();
-  };
-  xhr.send();
+  } catch (e) { /* ignore */ }
 }
 
 function _fireCallbacks() {
@@ -104,29 +196,20 @@ function _fireCallbacks() {
   cbs.forEach(function (cb) { cb(_galleryCache); });
 }
 
-// Sync getter (returns cache or empty - use after loadGalleryData)
+// ============================
+// Sync API (uses cache, writes to IndexedDB async)
+// ============================
 function getGallery() {
-  if (_galleryCache) return _galleryCache;
-  // Fallback: try localStorage sync
-  try {
-    var raw = localStorage.getItem(GALLERY_KEY);
-    _galleryCache = raw ? JSON.parse(raw) : [];
-  } catch (e) {
-    _galleryCache = [];
-  }
-  return _galleryCache;
+  return _galleryCache || [];
 }
 
 function saveGallery(photos) {
   _galleryCache = photos;
-  try {
-    localStorage.setItem(GALLERY_KEY, JSON.stringify(photos));
-    return { success: true };
-  } catch (e) {
-    // localStorage quota exceeded
-    console.warn('localStorage full:', e.message);
-    return { error: 'storage_full' };
-  }
+  // Write all to IndexedDB (async, non-blocking)
+  idbClear(function () {
+    idbPutMany(photos, function () { /* saved */ });
+  });
+  return { success: true };
 }
 
 function getPhotosByAlbum(album) {
@@ -142,31 +225,53 @@ function getPhotosByPage(pageName) {
 }
 
 function upsertPhoto(photo) {
-  var photos = getGallery();
+  var photos = getGallery().slice(); // copy
   var idx = -1;
   for (var i = 0; i < photos.length; i++) { if (photos[i].id === photo.id) { idx = i; break; } }
   if (idx >= 0) photos[idx] = photo; else photos.push(photo);
-  return saveGallery(photos);
+  _galleryCache = photos;
+  // Write single photo to IndexedDB (fast)
+  idbPut(photo);
+  return { success: true };
 }
 
 function deletePhoto(id) {
-  saveGallery(getGallery().filter(function (p) { return p.id !== id; }));
+  _galleryCache = getGallery().filter(function (p) { return p.id !== id; });
+  idbDelete(id);
 }
 
 function generatePhotoId() {
   return 'photo-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
 }
 
-// Export current gallery data as JSON string (for admin to download/save)
 function exportGalleryJSON() {
   return JSON.stringify(getGallery(), null, 2);
 }
 
-// Reset localStorage to force re-fetch from JSON
 function resetToJSON() {
-  localStorage.removeItem(GALLERY_KEY);
   _galleryCache = null;
   _galleryReady = false;
+  idbClear(function () {
+    // Also clean localStorage legacy
+    try { localStorage.removeItem('pmp_gallery'); } catch (e) { /* ignore */ }
+  });
+}
+
+// Get storage estimate
+function getStorageEstimate(callback) {
+  if (navigator.storage && navigator.storage.estimate) {
+    navigator.storage.estimate().then(function (est) {
+      callback({
+        used: est.usage || 0,
+        quota: est.quota || 0,
+        photos: getGallery().length
+      });
+    }).catch(function () {
+      callback({ used: 0, quota: 0, photos: getGallery().length });
+    });
+  } else {
+    callback({ used: 0, quota: 0, photos: getGallery().length });
+  }
 }
 
 // Auto-load on script init
@@ -183,6 +288,7 @@ window.GalleryDB = {
   generatePhotoId: generatePhotoId,
   exportGalleryJSON: exportGalleryJSON,
   resetToJSON: resetToJSON,
+  getStorageEstimate: getStorageEstimate,
   ALBUMS: GALLERY_ALBUMS,
   getAlbumsByPage: getAlbumsByPage
 };

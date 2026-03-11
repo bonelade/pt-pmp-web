@@ -1674,7 +1674,7 @@
   // Accepts up to 5MB input
   // ============================
   var MAX_INPUT_SIZE = 5 * 1024 * 1024;  // 5MB
-  var TARGET_SIZE = 200 * 1024;           // 200KB target (fit more in localStorage)
+  var TARGET_SIZE = 480 * 1024;           // ~500KB target (IndexedDB has plenty of space)
   var _isCompressing = false;
 
   function formatFileSize(bytes) {
@@ -1896,19 +1896,19 @@
   function updateStorageUsage() {
     var el = document.getElementById('storage-usage');
     if (!el) return;
-    try {
-      var used = 0;
-      for (var key in localStorage) {
-        if (localStorage.hasOwnProperty(key)) {
-          used += localStorage.getItem(key).length * 2; // UTF-16
+    if (window.GalleryDB && window.GalleryDB.getStorageEstimate) {
+      window.GalleryDB.getStorageEstimate(function (est) {
+        var photos = est.photos || 0;
+        if (est.quota > 0) {
+          var usedMB = (est.used / (1024 * 1024)).toFixed(1);
+          var quotaMB = (est.quota / (1024 * 1024)).toFixed(0);
+          var pct = Math.round((est.used / est.quota) * 100);
+          el.innerHTML = photos + ' foto — ' + usedMB + ' MB digunakan (IndexedDB: ' + quotaMB + ' MB tersedia)';
+        } else {
+          el.innerHTML = photos + ' foto tersimpan (IndexedDB)';
         }
-      }
-      var usedMB = (used / (1024 * 1024)).toFixed(1);
-      var maxMB = 5; // typical browser limit
-      var pct = Math.round((used / (maxMB * 1024 * 1024)) * 100);
-      var color = pct > 80 ? 'var(--color-red)' : pct > 50 ? 'var(--color-gold)' : 'var(--color-text-muted)';
-      el.innerHTML = 'Penyimpanan: <strong style="color:' + color + '">' + usedMB + ' MB</strong> / ~' + maxMB + ' MB (' + pct + '%)';
-    } catch (e) { el.textContent = ''; }
+      });
+    }
   }
 
   function togglePageGroup(el) {
