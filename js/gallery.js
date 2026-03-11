@@ -45,6 +45,27 @@ function _supa() {
   return (typeof getSupabase === 'function') ? getSupabase() : null;
 }
 
+// Wait for Supabase CDN to load (max 3 seconds, then fallback)
+function _waitForSupabase(callback) {
+  if (window.supabase && typeof getSupabase === 'function') {
+    callback(_supa());
+    return;
+  }
+  var attempts = 0;
+  var maxAttempts = 30; // 30 x 100ms = 3 seconds
+  var timer = setInterval(function () {
+    attempts++;
+    if (window.supabase && typeof getSupabase === 'function') {
+      clearInterval(timer);
+      callback(_supa());
+    } else if (attempts >= maxAttempts) {
+      clearInterval(timer);
+      console.warn('Supabase CDN not loaded after 3s, using JSON fallback');
+      callback(null);
+    }
+  }, 100);
+}
+
 // ============================
 // Load: Supabase first → fallback to photos.json
 // ============================
@@ -56,35 +77,38 @@ function loadGalleryData(callback) {
   if (callback) _galleryCallbacks.push(callback);
   if (_galleryCallbacks.length > 1) return;
 
-  var sb = _supa();
-  if (sb) {
-    // Try Supabase first
-    sb.from('photos').select('*').order('order', { ascending: true })
-      .then(function (res) {
-        if (res.data && res.data.length > 0) {
-          _galleryCache = res.data;
-          _galleryReady = true;
-          _fireCallbacks();
-        } else {
-          // Supabase empty or error — try JSON fallback then seed Supabase
-          _loadFromJSON(function (photos) {
-            if (photos.length > 0 && sb) {
-              // Auto-seed Supabase with JSON data
-              sb.from('photos').upsert(photos).then(function () {
-                console.log('Supabase seeded with photos.json data');
-              });
-            }
-          });
-        }
-      })
-      .catch(function (err) {
-        console.warn('Supabase fetch failed, using JSON fallback:', err);
-        _loadFromJSON();
-      });
-  } else {
-    // No Supabase client available — use JSON
-    _loadFromJSON();
-  }
+  _waitForSupabase(function (sb) {
+    if (sb) {
+      // Try Supabase first
+      sb.from('photos').select('*').order('order', { ascending: true })
+        .then(function (res) {
+          if (res.data && res.data.length > 0) {
+            _galleryCache = res.data;
+            _galleryReady = true;
+            _fireCallbacks();
+          } else if (res.error) {
+            console.warn('Supabase query error:', res.error.message);
+            _loadFromJSON();
+          } else {
+            // Supabase empty — try JSON fallback then seed Supabase
+            _loadFromJSON(function (photos) {
+              if (photos.length > 0 && sb) {
+                sb.from('photos').upsert(photos).then(function () {
+                  console.log('Supabase seeded with photos.json data');
+                });
+              }
+            });
+          }
+        })
+        .catch(function (err) {
+          console.warn('Supabase fetch failed, using JSON fallback:', err);
+          _loadFromJSON();
+        });
+    } else {
+      // No Supabase client available — use JSON
+      _loadFromJSON();
+    }
+  });
 }
 
 function _loadFromJSON(onDone) {
