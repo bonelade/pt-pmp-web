@@ -250,6 +250,25 @@
     </div>
   </section>
 
+  <!-- Galeri Komunitas -->
+  <section class="section bg-light" id="community-gallery-section" style="display:none; position:relative; overflow:hidden;">
+    <div class="section-ornaments" data-type="float-scatter" data-theme="mix"></div>
+    <div class="container" style="position:relative; z-index:1;">
+      <div class="section-header animate-on-scroll">
+        <span class="label">Galeri</span>
+        <h2>Kegiatan & Program</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="gallery-grid" id="community-gallery-display"></div>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+    <img id="lightbox-img" src="" alt="Lightbox Image">
+  </div>
+
   <!-- Footer -->
   <footer style="position: relative; overflow: hidden;">
     <div class="section-ornaments" data-type="particles" data-theme="gold" data-count="15"></div>
@@ -371,6 +390,39 @@
       }
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', injectIcons);
       else injectIcons();
+    })();
+  </script>
+  <script src="js/gallery.js"></script>
+  <script>
+    (function () {
+      function renderCommunityGallery() {
+        if (!window.GalleryDB) return;
+        window.GalleryDB.loadGalleryData(function (allPhotos) {
+          var photos = allPhotos.filter(function (p) { return p.album === 'community_farmer' || p.album === 'community_event'; });
+          if (photos.length === 0) return;
+          var section = document.getElementById('community-gallery-section');
+          var grid = document.getElementById('community-gallery-display');
+          if (section) section.style.display = 'block';
+          if (grid) grid.innerHTML = photos.map(function (p) {
+            return '<div class="gallery-item animate-on-scroll" onclick="openLightbox(\'' + p.src.replace(/'/g, "&#39;") + '\')">' +
+              '<img src="' + p.src + '" alt="' + (p.caption_id || '') + '" loading="lazy">' +
+              (p.caption_id ? '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + p.caption_id + '</div></div>' : '') +
+              '</div>';
+          }).join('');
+        });
+      }
+      window.openLightbox = function (src) {
+        var lb = document.getElementById('lightbox');
+        var img = document.getElementById('lightbox-img');
+        if (img) img.src = src;
+        if (lb) lb.classList.add('open');
+      };
+      window.closeLightbox = function () {
+        var lb = document.getElementById('lightbox');
+        if (lb) lb.classList.remove('open');
+      };
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', renderCommunityGallery);
+      else renderCommunityGallery();
     })();
   </script>
   <script src="js/stats.js"></script>

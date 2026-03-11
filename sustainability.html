@@ -302,6 +302,19 @@
     </div>
   </section>
 
+  <!-- Galeri Program -->
+  <section class="section bg-light" id="sustain-gallery-section" style="display:none; position:relative; overflow:hidden;">
+    <div class="section-ornaments" data-type="float-scatter" data-theme="mix"></div>
+    <div class="container" style="position:relative; z-index:1;">
+      <div class="section-header animate-on-scroll">
+        <span class="label">Galeri</span>
+        <h2>Program & Dampak</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="gallery-grid" id="sustain-gallery-display"></div>
+    </div>
+  </section>
+
   <!-- Supply Chain Visual -->
   <section class="section bg-dark" style="position: relative; overflow: hidden;">
     <div class="section-ornaments" data-type="float-scatter" data-theme="gold" data-count="14"></div>
@@ -382,6 +395,7 @@
     </div>
   </footer>
 
+  <script src="js/gallery.js"></script>
   <script src="js/icons.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/kontak.js"></script>
@@ -460,6 +474,45 @@
   </script>
   <script src="js/stats.js"></script>
   <script src="js/ornaments.js"></script>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+    <img id="lightbox-img" src="" alt="Lightbox">
+  </div>
+
+  <script>
+  (function () {
+    function renderSustainGallery() {
+      if (!window.GalleryDB) return;
+      window.GalleryDB.loadGalleryData(function (allPhotos) {
+        var photos = allPhotos.filter(function (p) { return p.album === 'sustainability_program'; });
+        if (photos.length === 0) return;
+        var section = document.getElementById('sustain-gallery-section');
+        var grid = document.getElementById('sustain-gallery-display');
+        if (section) section.style.display = 'block';
+        if (grid) grid.innerHTML = photos.map(function (p) {
+          return '<div class="gallery-item animate-on-scroll" onclick="openLightbox(\'' + p.src.replace(/'/g, "&#39;") + '\')">' +
+            '<img src="' + p.src + '" alt="' + (p.caption_id || '') + '" loading="lazy">' +
+            (p.caption_id ? '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + p.caption_id + '</div></div>' : '') +
+            '</div>';
+        }).join('');
+      });
+    }
+    window.openLightbox = function (src) {
+      var lb = document.getElementById('lightbox');
+      var img = document.getElementById('lightbox-img');
+      if (img) img.src = src;
+      if (lb) lb.classList.add('open');
+    };
+    window.closeLightbox = function () {
+      var lb = document.getElementById('lightbox');
+      if (lb) lb.classList.remove('open');
+    };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', renderSustainGallery);
+    else renderSustainGallery();
+  })();
+  </script>
 </body>
 
 </html>

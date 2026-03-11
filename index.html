@@ -1032,15 +1032,31 @@
     </div>
   </section>
 
+  <!-- Video Section -->
+  <section class="section bg-light" id="home-video-section" style="display:none; position:relative; overflow:hidden;">
+    <div class="section-ornaments" data-type="float-scatter" data-theme="mix"></div>
+    <div class="container" style="position:relative; z-index:1;">
+      <div class="section-header animate-on-scroll">
+        <span class="label">Video</span>
+        <h2>Profil Perusahaan</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div id="home-video-display" style="max-width:800px; margin:0 auto;">
+      </div>
+    </div>
+  </section>
+
   <!-- Photo Gallery Preview Section -->
-  <section class="section bg-white" id="home-gallery-section" style="display:none;">
+  <section class="section bg-white" id="home-gallery-section">
     <div class="container">
       <div class="section-header animate-on-scroll">
         <span class="label">Galeri</span>
         <h2>Foto Terbaru</h2>
         <div class="section-divider"></div>
       </div>
-      <div class="gallery-grid" id="home-gallery-display"></div>
+      <div class="gallery-grid" id="home-gallery-display">
+        <p id="home-gallery-placeholder" style="text-align:center; color:#888; grid-column:1/-1;">Belum ada foto untuk ditampilkan.</p>
+      </div>
     </div>
   </section>
 
@@ -1316,17 +1332,56 @@
       // Gallery preview - load async from JSON
       if (window.GalleryDB) {
         window.GalleryDB.loadGalleryData(function (allPhotos) {
-          var galleryPhotos = allPhotos.filter(function(p) { return p.album === 'home_gallery' || p.album === 'home_hero'; });
+          // Gallery photos
+          var galleryPhotos = allPhotos.filter(function(p) { return p.album === 'home_gallery'; });
+          var homeGalleryGrid = document.getElementById('home-gallery-display');
           if (galleryPhotos.length > 0) {
-            var homeGallerySection = document.getElementById('home-gallery-section');
-            var homeGalleryGrid = document.getElementById('home-gallery-display');
-            if (homeGallerySection) homeGallerySection.style.display = 'block';
             if (homeGalleryGrid) homeGalleryGrid.innerHTML = galleryPhotos.slice(0, 8).map(function (p) {
               return '<div class="gallery-item animate-on-scroll" onclick="openLightbox(\'' + p.src.replace(/'/g, "&#39;") + '\')">' +
                 '<img src="' + p.src + '" alt="' + (p.caption_id || '') + '" loading="lazy">' +
                 (p.caption_id ? '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + p.caption_id + '</div></div>' : '') +
                 '</div>';
             }).join('');
+          }
+
+          // Hero background from GalleryDB
+          var heroPhotos = allPhotos.filter(function(p) { return p.album === 'home_hero'; });
+          if (heroPhotos.length > 0) {
+            var heroEl = document.querySelector('.hero');
+            if (heroEl) {
+              heroEl.style.backgroundImage = "url('" + heroPhotos[0].src + "')";
+            }
+          }
+
+          // Video
+          var videos = allPhotos.filter(function(p) { return p.album === 'home_video'; });
+          if (videos.length > 0) {
+            var videoSection = document.getElementById('home-video-section');
+            var videoDisplay = document.getElementById('home-video-display');
+            if (videoSection) videoSection.style.display = 'block';
+            if (videoDisplay) {
+              var vHtml = '';
+              videos.forEach(function (v) {
+                var src = v.src || '';
+                var ytMatch = src.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]+)/);
+                if (ytMatch) {
+                  vHtml += '<div style="position:relative; border-radius:16px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.12); margin-bottom:20px;">' +
+                    '<div style="position:relative; padding-bottom:56.25%; height:0;">' +
+                    '<iframe src="https://www.youtube.com/embed/' + ytMatch[1] + '" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:16px;" allowfullscreen></iframe>' +
+                    '</div>' +
+                    (v.caption_id ? '<div style="padding:12px 16px; background:white; font-size:0.88rem; font-weight:600;">' + v.caption_id + '</div>' : '') +
+                    '</div>';
+                } else {
+                  vHtml += '<div style="position:relative; border-radius:16px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.12); margin-bottom:20px;">' +
+                    '<video controls playsinline style="width:100%; display:block; border-radius:16px;">' +
+                    '<source src="' + src + '" type="video/mp4">' +
+                    '</video>' +
+                    (v.caption_id ? '<div style="padding:12px 16px; background:white; font-size:0.88rem; font-weight:600;">' + v.caption_id + '</div>' : '') +
+                    '</div>';
+                }
+              });
+              videoDisplay.innerHTML = vHtml;
+            }
           }
         });
       }

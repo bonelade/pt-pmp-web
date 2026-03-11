@@ -852,18 +852,17 @@
               </div>
             </div>
 
-            <!-- Step 3: File upload with auto-compress -->
-            <div class="form-group" style="margin-bottom:16px;">
+            <!-- Step 3a: Photo upload (shown for photo albums) -->
+            <div id="upload-photo-panel" class="form-group" style="margin-bottom:16px;">
               <label class="upload-label">5. Upload Foto (Maks 5MB per file — otomatis dikompres)</label>
               <div class="upload-drop-zone" id="upload-drop-zone" onclick="document.getElementById('photo-file').click()">
                 <div class="drop-zone-icon">
                   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                 </div>
                 <div style="font-weight:600; font-size:0.88rem; color:var(--color-text);">Klik atau drag foto ke sini</div>
-                <div style="font-size:0.72rem; color:var(--color-text-muted); margin-top:4px;">JPG, PNG, WebP — Maks 5MB per file — Otomatis dikompres untuk penyimpanan optimal</div>
+                <div style="font-size:0.72rem; color:var(--color-text-muted); margin-top:4px;">JPG, PNG, WebP — Maks 5MB per file — Otomatis dikompres</div>
                 <input type="file" id="photo-file" accept="image/*" multiple onchange="handlePhotoFiles(this.files)" style="display:none;">
               </div>
-              <!-- Compression progress -->
               <div id="compress-progress" style="display:none; margin-top:12px;">
                 <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
                   <div class="compress-spinner"></div>
@@ -873,11 +872,18 @@
                   <div id="compress-bar" style="width:0%; height:100%; background:linear-gradient(90deg, var(--color-primary), var(--color-gold)); border-radius:4px; transition:width 0.3s;"></div>
                 </div>
               </div>
-              <!-- Preview grid -->
               <div id="photo-upload-preview" style="display:flex; gap:12px; flex-wrap:wrap; margin-top:12px;"></div>
             </div>
+
+            <!-- Step 3b: Video URL input (shown for video albums) -->
+            <div id="upload-video-panel" class="form-group" style="display:none; margin-bottom:16px;">
+              <label class="upload-label">5. URL Video</label>
+              <input type="text" id="video-url" placeholder="https://www.youtube.com/watch?v=... atau path video.mp4" class="upload-input" style="margin-bottom:6px;">
+              <small style="color:var(--color-text-muted); font-size:0.72rem;">Masukkan URL YouTube atau path file video MP4 (contoh: videos/profil.mp4)</small>
+            </div>
+
             <div style="display:flex; gap:10px; align-items:center;">
-              <button class="btn btn-primary" onclick="uploadPhotos()" id="btn-upload"><span class="admin-icon admin-icon-upload"></span> Tambah Foto</button>
+              <button class="btn btn-primary" onclick="uploadPhotos()" id="btn-upload"><span class="admin-icon admin-icon-upload"></span> Tambah</button>
               <span id="upload-size-info" style="font-size:0.72rem; color:var(--color-text-muted);"></span>
             </div>
           </div>
@@ -1575,10 +1581,12 @@
   const _albumRecommendations = {
     home_hero:        { suggested: 1, max: 3,  tips: 'Ukuran ideal 1920x1080px. Foto landscape lahan jagung atau fasilitas.' },
     home_gallery:     { suggested: 6, max: 8,  tips: 'Tampil di galeri preview beranda. Pilih foto terbaik dari berbagai kategori.' },
+    home_video:       { suggested: 1, max: 2,  tips: 'Video profil perusahaan. Masukkan URL video MP4 atau link YouTube.' },
     about_slider:     { suggested: 3, max: 5,  tips: 'Foto untuk slider utama halaman Tentang. Ukuran landscape 16:9.' },
     about_facility:   { suggested: 4, max: 10, tips: 'Foto pabrik, gudang, vertical dryer, dan peralatan produksi.' },
     about_team:       { suggested: 4, max: 12, tips: 'Foto tim manajemen, karyawan, dan struktur organisasi.' },
     about_activity:   { suggested: 4, max: 10, tips: 'Foto kegiatan perusahaan, rapat, kunjungan, dan acara.' },
+    about_video:      { suggested: 1, max: 2,  tips: 'Video fasilitas atau kegiatan perusahaan. URL video MP4 atau YouTube.' },
     products_facility:{ suggested: 3, max: 8,  tips: 'Foto mesin pengeringan, proses produksi, dan fasilitas pabrik.' },
     products_corn:    { suggested: 3, max: 6,  tips: 'Foto produk jagung grade A, B, C dan proses pengemasan.' },
     sustainability_program: { suggested: 3, max: 8, tips: 'Foto program CSR, dampak sosial, dan kegiatan keberlanjutan.' },
@@ -1666,6 +1674,12 @@
         '</div>' +
       '</div></div>';
     infoBox.style.display = 'block';
+
+    // Toggle photo/video upload panels
+    var isVideo = albumKey.indexOf('video') !== -1;
+    document.getElementById('upload-photo-panel').style.display = isVideo ? 'none' : 'block';
+    document.getElementById('upload-video-panel').style.display = isVideo ? 'block' : 'none';
+    document.getElementById('btn-upload').innerHTML = '<span class="admin-icon admin-icon-upload"></span> ' + (isVideo ? 'Tambah Video' : 'Tambah');
   }
 
   // ============================
@@ -1816,11 +1830,44 @@
   function uploadPhotos() {
     var album = document.getElementById('photo-album').value;
     if (!album) { showToast('Pilih halaman dan panel foto terlebih dahulu.', ''); return; }
-    if (_isCompressing) { showToast('Tunggu kompresi selesai...', ''); return; }
-    if (_pendingPhotos.length === 0) { showToast('Pilih foto terlebih dahulu.', ''); return; }
 
+    var isVideo = album.indexOf('video') !== -1;
     var captionId = document.getElementById('photo-caption-id').value.trim();
     var captionEn = document.getElementById('photo-caption-en').value.trim();
+
+    // Handle video URL upload
+    if (isVideo) {
+      var videoUrl = document.getElementById('video-url').value.trim();
+      if (!videoUrl) { showToast('Masukkan URL video terlebih dahulu.', ''); return; }
+
+      var rec = _albumRecommendations[album] || { suggested: 1, max: 2 };
+      var currentCount = window.GalleryDB.getPhotosByAlbum(album).length;
+      if (currentCount >= rec.max) {
+        showToast('Panel ini sudah penuh (maks ' + rec.max + ' video). Hapus video lama.', 'error'); return;
+      }
+
+      window.GalleryDB.upsertPhoto({
+        id: window.GalleryDB.generatePhotoId(),
+        album: album,
+        caption_id: captionId || '',
+        caption_en: captionEn || '',
+        src: videoUrl,
+        order: Date.now()
+      });
+
+      document.getElementById('video-url').value = '';
+      document.getElementById('photo-caption-id').value = '';
+      document.getElementById('photo-caption-en').value = '';
+      showToast('✓ Video berhasil ditambahkan!', 'success');
+      renderGalleryPages();
+      onAlbumSelectChange();
+      updateStorageUsage();
+      return;
+    }
+
+    // Handle photo upload
+    if (_isCompressing) { showToast('Tunggu kompresi selesai...', ''); return; }
+    if (_pendingPhotos.length === 0) { showToast('Pilih foto terlebih dahulu.', ''); return; }
 
     var rec = _albumRecommendations[album] || { suggested: 3, max: 8 };
     var currentCount = window.GalleryDB.getPhotosByAlbum(album).length;
@@ -1939,7 +1986,7 @@
       html += '<div class="gallery-page-header' + (pageCount > 0 ? ' open' : '') + '" onclick="togglePageGroup(this)">';
       html += '<div class="page-icon">' + icon + '</div>';
       html += '<h3>' + pageName + '</h3>';
-      html += '<span class="page-count">' + pageCount + ' foto</span>';
+      html += '<span class="page-count">' + pageCount + ' item</span>';
       html += '<span class="chevron-pg">▼</span>';
       html += '</div>';
       html += '<div class="gallery-page-body' + (pageCount > 0 ? ' open' : '') + '">';
@@ -1961,14 +2008,24 @@
         html += '</div>';
 
         if (photos.length === 0) {
-          html += '<div class="gallery-album-empty">Belum ada foto. Disarankan upload <strong>' + rec.suggested + '</strong> foto (maks ' + rec.max + ').</div>';
+          var isVidAlbum = album.key.indexOf('video') !== -1;
+          var itemLabel = isVidAlbum ? 'video' : 'foto';
+          html += '<div class="gallery-album-empty">Belum ada ' + itemLabel + '. Disarankan upload <strong>' + rec.suggested + '</strong> ' + itemLabel + ' (maks ' + rec.max + ').</div>';
         } else {
           html += '<div class="gallery-album-grid">';
           photos.forEach(function (p) {
+            var isVideoItem = album.key.indexOf('video') !== -1;
+            var ytMatch = isVideoItem && p.src ? p.src.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]+)/) : null;
             html += '<div class="gallery-photo-card">';
-            html += '<div class="photo-thumb"><img src="' + p.src + '" alt="' + (p.caption_id || '') + '"></div>';
+            if (isVideoItem && ytMatch) {
+              html += '<div class="photo-thumb" style="background:#000;display:flex;align-items:center;justify-content:center;"><img src="https://img.youtube.com/vi/' + ytMatch[1] + '/hqdefault.jpg" alt="' + (p.caption_id || 'Video') + '" style="width:100%;height:100%;object-fit:cover;"></div>';
+            } else if (isVideoItem) {
+              html += '<div class="photo-thumb" style="background:#1a1a2e;display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;">▶</div>';
+            } else {
+              html += '<div class="photo-thumb"><img src="' + p.src + '" alt="' + (p.caption_id || '') + '"></div>';
+            }
             html += '<div class="photo-info">';
-            html += '<div class="photo-caption">' + (p.caption_id || '—') + '</div>';
+            html += '<div class="photo-caption">' + (p.caption_id || (isVideoItem ? p.src : '—')) + '</div>';
             html += '<div class="photo-actions"><button onclick="deleteGalleryPhoto(\'' + p.id + '\')">' + adminIcon('trash', 13) + ' Hapus</button></div>';
             html += '</div></div>';
           });
