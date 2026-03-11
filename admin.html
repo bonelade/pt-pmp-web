@@ -796,13 +796,12 @@
       <div class="admin-page" id="page-gallery">
         <!-- Info: how photos work -->
         <div style="background:#f0fdf4; border:1.5px solid #16a34a; border-radius:8px; padding:16px 20px; margin-bottom:16px; font-size:0.85rem; color:#14532d;">
-          <strong>Cara Kerja Foto:</strong> Foto dimuat dari file <code>data/photos.json</code>. Untuk menambah foto:
+          <strong>Cara Kerja Foto:</strong> Foto disimpan di <strong>Supabase Cloud</strong> — otomatis tersinkronisasi di semua device.
           <ol style="margin:8px 0 0 18px; padding:0; line-height:1.8;">
-            <li>Letakkan file foto di folder <code>images/gallery/</code></li>
-            <li>Pilih halaman & panel, isi keterangan, lalu klik Upload</li>
-            <li>Klik <strong>"Download photos.json"</strong> untuk export data terbaru</li>
-            <li>Replace file <code>data/photos.json</code> dengan hasil download</li>
-            <li>Commit & push ke GitHub → Vercel auto-deploy</li>
+            <li>Pilih halaman & panel, isi keterangan foto</li>
+            <li>Upload foto — langsung tersimpan di cloud database</li>
+            <li>Foto otomatis muncul di semua device & pengunjung website</li>
+            <li>Tidak perlu commit/push — perubahan langsung live!</li>
           </ol>
         </div>
         <div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap; align-items:center;">
@@ -1056,6 +1055,8 @@
 <script src="js/news.js"></script>
 <script src="js/harga.js"></script>
 <script src="js/kontak.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/supabase-config.js"></script>
 <script src="js/gallery.js"></script>
 <script src="js/stats.js"></script>
 <script src="js/icons.js"></script>
@@ -1881,31 +1882,43 @@
       showToast('Hanya ' + toUpload.length + '/' + _pendingPhotos.length + ' foto ditambahkan (batas maks ' + rec.max + ').', '');
     }
 
-    toUpload.forEach(function (p, i) {
-      var result = window.GalleryDB.upsertPhoto({
-        id: window.GalleryDB.generatePhotoId(),
-        album: album,
-        caption_id: captionId || '',
-        caption_en: captionEn || '',
-        src: p.dataUrl,
-        order: Date.now() + i
-      });
-      if (result && result.error) {
-        showToast('Penyimpanan penuh! Hapus beberapa foto lama atau download photos.json lalu reset.', 'error');
-        return;
-      }
-    });
+    // Upload to Supabase Storage then save metadata
+    var uploaded = 0;
+    var totalToUpload = toUpload.length;
+    showToast('Mengupload ' + totalToUpload + ' foto ke cloud...', '');
 
-    _pendingPhotos = [];
-    document.getElementById('photo-upload-preview').innerHTML = '';
-    document.getElementById('photo-file').value = '';
-    document.getElementById('photo-caption-id').value = '';
-    document.getElementById('photo-caption-en').value = '';
-    document.getElementById('upload-size-info').innerHTML = '';
-    showToast('✓ ' + toUpload.length + ' foto berhasil ditambahkan!', 'success');
-    renderGalleryPages();
-    onAlbumSelectChange();
-    updateStorageUsage();
+    toUpload.forEach(function (p, i) {
+      window.GalleryDB.uploadBase64ToStorage(p.dataUrl, album, function (res) {
+        uploaded++;
+        if (res.error) {
+          console.error('Upload error:', res.error);
+          showToast('Gagal upload foto: ' + res.error, 'error');
+        } else {
+          // Save with Supabase Storage URL (not base64)
+          window.GalleryDB.upsertPhoto({
+            id: window.GalleryDB.generatePhotoId(),
+            album: album,
+            caption_id: captionId || '',
+            caption_en: captionEn || '',
+            src: res.url,
+            order: Date.now() + i
+          });
+        }
+
+        if (uploaded >= totalToUpload) {
+          _pendingPhotos = [];
+          document.getElementById('photo-upload-preview').innerHTML = '';
+          document.getElementById('photo-file').value = '';
+          document.getElementById('photo-caption-id').value = '';
+          document.getElementById('photo-caption-en').value = '';
+          document.getElementById('upload-size-info').innerHTML = '';
+          showToast('✓ ' + totalToUpload + ' foto berhasil diupload ke cloud!', 'success');
+          renderGalleryPages();
+          onAlbumSelectChange();
+          updateStorageUsage();
+        }
+      });
+    });
   }
 
   // Export photos.json for download

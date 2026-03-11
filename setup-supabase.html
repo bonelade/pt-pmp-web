@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Setup Supabase - PT PMP</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; background: #f8f9fa; }
+    h1 { color: #1a4731; }
+    .step { background: white; border-radius: 8px; padding: 20px; margin: 16px 0; border: 1px solid #e2e8f0; }
+    .step h3 { margin-top: 0; color: #1a4731; }
+    button { background: #16a34a; color: white; border: none; padding: 12px 24px; border-radius: 6px; font-size: 1rem; cursor: pointer; margin: 8px 4px 8px 0; }
+    button:hover { background: #15803d; }
+    button:disabled { background: #94a3b8; cursor: not-allowed; }
+    .log { background: #1e293b; color: #e2e8f0; padding: 16px; border-radius: 6px; font-family: monospace; font-size: 0.85rem; max-height: 300px; overflow-y: auto; white-space: pre-wrap; }
+    .success { color: #22c55e; }
+    .error { color: #ef4444; }
+    .warn { color: #f59e0b; }
+    code { background: #e2e8f0; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+    .sql-box { background: #1e293b; color: #a5f3fc; padding: 14px; border-radius: 6px; font-family: monospace; font-size: 0.8rem; white-space: pre-wrap; margin: 10px 0; max-height: 200px; overflow-y: auto; }
+  </style>
+</head>
+<body>
+  <h1>Setup Supabase untuk PT PMP</h1>
+
+  <div class="step">
+    <h3>Step 1: Buat Table & Storage di Supabase SQL Editor</h3>
+    <p>Buka <a href="https://supabase.com/dashboard/project/hlpulsseqeqcfzqsoypg/sql/new" target="_blank">SQL Editor di Supabase Dashboard</a>, lalu copy-paste dan jalankan SQL ini:</p>
+    <div class="sql-box" id="sql-code">-- Create photos table
+CREATE TABLE IF NOT EXISTS public.photos (
+  id          TEXT PRIMARY KEY,
+  album       TEXT NOT NULL,
+  caption_id  TEXT DEFAULT '',
+  caption_en  TEXT DEFAULT '',
+  src         TEXT NOT NULL,
+  "order"     INTEGER DEFAULT 0,
+  type        TEXT DEFAULT NULL,
+  created_at  TIMESTAMPTZ DEFAULT now(),
+  updated_at  TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_photos_album ON public.photos (album);
+
+-- Enable RLS
+ALTER TABLE public.photos ENABLE ROW LEVEL SECURITY;
+
+-- Everyone can read
+CREATE POLICY "Public read" ON public.photos FOR SELECT USING (true);
+-- Everyone can insert
+CREATE POLICY "Public insert" ON public.photos FOR INSERT WITH CHECK (true);
+-- Everyone can update
+CREATE POLICY "Public update" ON public.photos FOR UPDATE USING (true);
+-- Everyone can delete
+CREATE POLICY "Public delete" ON public.photos FOR DELETE USING (true);
+
+-- Create storage bucket
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('gallery', 'gallery', true)
+ON CONFLICT (id) DO NOTHING;
+
+-- Storage: public read
+CREATE POLICY "Public read gallery" ON storage.objects FOR SELECT
+USING (bucket_id = 'gallery');
+-- Storage: public upload
+CREATE POLICY "Public upload gallery" ON storage.objects FOR INSERT
+WITH CHECK (bucket_id = 'gallery');
+-- Storage: public update
+CREATE POLICY "Public update gallery" ON storage.objects FOR UPDATE
+USING (bucket_id = 'gallery');
+-- Storage: public delete
+CREATE POLICY "Public delete gallery" ON storage.objects FOR DELETE
+USING (bucket_id = 'gallery');</div>
+    <button onclick="copySql()">Copy SQL</button>
+  </div>
+
+  <div class="step">
+    <h3>Step 2: Verifikasi & Seed Data</h3>
+    <p>Setelah SQL di atas berhasil dijalankan, klik tombol di bawah untuk verifikasi dan seed data awal.</p>
+    <button onclick="checkTable()" id="btn-check">Cek Koneksi & Table</button>
+    <button onclick="seedData()" id="btn-seed" disabled>Seed Data dari photos.json</button>
+    <button onclick="checkData()" id="btn-check-data" disabled>Cek Data</button>
+  </div>
+
+  <div class="step">
+    <h3>Log</h3>
+    <div class="log" id="log">Menunggu aksi...</div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script>
+    var SUPA_URL = 'https://hlpulsseqeqcfzqsoypg.supabase.co';
+    var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhscHVsc3NlcWVxY2Z6cXNveXBnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzI0NTk1OSwiZXhwIjoyMDg4ODIxOTU5fQ.RVueMzRa7xxMAhInw8bYNqirAIDy4PHjdCE-R0PeLZo';
+    var sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+
+    function log(msg, cls) {
+      var el = document.getElementById('log');
+      el.innerHTML += '<span class="' + (cls || '') + '">' + msg + '</span>\n';
+      el.scrollTop = el.scrollHeight;
+    }
+
+    function copySql() {
+      var sql = document.getElementById('sql-code').textContent;
+      navigator.clipboard.writeText(sql).then(function() {
+        log('SQL berhasil di-copy ke clipboard!', 'success');
+      });
+    }
+
+    async function checkTable() {
+      log('\n--- Cek Koneksi ---');
+      try {
+        var res = await sb.from('photos').select('id').limit(1);
+        if (res.error) {
+          log('Table belum ada: ' + res.error.message, 'error');
+          log('Jalankan SQL di Step 1 dulu!', 'warn');
+        } else {
+          log('Table photos OK!', 'success');
+          document.getElementById('btn-seed').disabled = false;
+          document.getElementById('btn-check-data').disabled = false;
+
+          // Check storage bucket
+          var bucketRes = await sb.storage.getBucket('gallery');
+          if (bucketRes.error) {
+            log('Storage bucket belum ada: ' + bucketRes.error.message, 'error');
+          } else {
+            log('Storage bucket gallery OK!', 'success');
+          }
+        }
+      } catch(e) {
+        log('Error: ' + e.message, 'error');
+      }
+    }
+
+    async function seedData() {
+      log('\n--- Seed Data ---');
+      try {
+        // Check if already has data
+        var existing = await sb.from('photos').select('id');
+        if (existing.data && existing.data.length > 0) {
+          log('Sudah ada ' + existing.data.length + ' foto di database.', 'warn');
+          if (!confirm('Database sudah ada data (' + existing.data.length + ' foto). Hapus dan seed ulang?')) {
+            log('Seed dibatalkan.', 'warn');
+            return;
+          }
+          // Delete all
+          await sb.from('photos').delete().neq('id', '');
+          log('Data lama dihapus.', 'warn');
+        }
+
+        // Fetch photos.json
+        var resp = await fetch('data/photos.json');
+        var photos = await resp.json();
+        log('Memuat ' + photos.length + ' foto dari photos.json...', '');
+
+        // Insert in batches of 10
+        for (var i = 0; i < photos.length; i += 10) {
+          var batch = photos.slice(i, i + 10).map(function(p) {
+            return {
+              id: p.id,
+              album: p.album,
+              caption_id: p.caption_id || '',
+              caption_en: p.caption_en || '',
+              src: p.src,
+              order: p.order || 0,
+              type: p.type || null
+            };
+          });
+          var res = await sb.from('photos').upsert(batch);
+          if (res.error) {
+            log('Error batch ' + i + ': ' + res.error.message, 'error');
+          } else {
+            log('Batch ' + (i+1) + '-' + Math.min(i+10, photos.length) + ' OK', 'success');
+          }
+        }
+
+        log('Seed selesai! ' + photos.length + ' foto berhasil dimasukkan.', 'success');
+      } catch(e) {
+        log('Error: ' + e.message, 'error');
+      }
+    }
+
+    async function checkData() {
+      log('\n--- Cek Data ---');
+      try {
+        var res = await sb.from('photos').select('*').order('order');
+        if (res.error) {
+          log('Error: ' + res.error.message, 'error');
+        } else {
+          log('Total foto di database: ' + res.data.length, 'success');
+          var albums = {};
+          res.data.forEach(function(p) {
+            albums[p.album] = (albums[p.album] || 0) + 1;
+          });
+          for (var a in albums) {
+            log('  ' + a + ': ' + albums[a] + ' item');
+          }
+        }
+      } catch(e) {
+        log('Error: ' + e.message, 'error');
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,17 +1,13 @@
 /* ========================================
    PT PMP - Gallery / Photo Management
-   Storage: IndexedDB (hundreds of MB capacity)
-   Fallback: data/photos.json for initial data
+   Primary: Supabase (shared cloud database)
+   Fallback: data/photos.json (static)
    ======================================== */
 
-var GALLERY_DB_NAME = 'pmp_gallery_db';
-var GALLERY_STORE = 'photos';
-var GALLERY_DB_VERSION = 1;
 var GALLERY_JSON_URL = 'data/photos.json';
 var _galleryCache = null;
 var _galleryReady = false;
 var _galleryCallbacks = [];
-var _idb = null; // IndexedDB instance
 
 // Album categories organized by page
 var GALLERY_ALBUMS = {
@@ -43,86 +39,14 @@ function getAlbumsByPage() {
 }
 
 // ============================
-// IndexedDB Layer
+// Supabase Helpers
 // ============================
-function openDB(callback) {
-  if (_idb) { callback(_idb); return; }
-  var request = indexedDB.open(GALLERY_DB_NAME, GALLERY_DB_VERSION);
-  request.onupgradeneeded = function (e) {
-    var db = e.target.result;
-    if (!db.objectStoreNames.contains(GALLERY_STORE)) {
-      var store = db.createObjectStore(GALLERY_STORE, { keyPath: 'id' });
-      store.createIndex('album', 'album', { unique: false });
-      store.createIndex('order', 'order', { unique: false });
-    }
-  };
-  request.onsuccess = function (e) {
-    _idb = e.target.result;
-    callback(_idb);
-  };
-  request.onerror = function () {
-    console.warn('IndexedDB open failed, using memory only');
-    callback(null);
-  };
-}
-
-function idbGetAll(callback) {
-  openDB(function (db) {
-    if (!db) { callback([]); return; }
-    var tx = db.transaction(GALLERY_STORE, 'readonly');
-    var store = tx.objectStore(GALLERY_STORE);
-    var req = store.getAll();
-    req.onsuccess = function () { callback(req.result || []); };
-    req.onerror = function () { callback([]); };
-  });
-}
-
-function idbPut(photo, callback) {
-  openDB(function (db) {
-    if (!db) { if (callback) callback({ error: 'no_db' }); return; }
-    var tx = db.transaction(GALLERY_STORE, 'readwrite');
-    var store = tx.objectStore(GALLERY_STORE);
-    var req = store.put(photo);
-    req.onsuccess = function () { if (callback) callback({ success: true }); };
-    req.onerror = function () { if (callback) callback({ error: 'write_failed' }); };
-  });
-}
-
-function idbDelete(id, callback) {
-  openDB(function (db) {
-    if (!db) { if (callback) callback(); return; }
-    var tx = db.transaction(GALLERY_STORE, 'readwrite');
-    var store = tx.objectStore(GALLERY_STORE);
-    store.delete(id);
-    tx.oncomplete = function () { if (callback) callback(); };
-  });
-}
-
-function idbClear(callback) {
-  openDB(function (db) {
-    if (!db) { if (callback) callback(); return; }
-    var tx = db.transaction(GALLERY_STORE, 'readwrite');
-    var store = tx.objectStore(GALLERY_STORE);
-    store.clear();
-    tx.oncomplete = function () { if (callback) callback(); };
-  });
-}
-
-function idbPutMany(photos, callback) {
-  openDB(function (db) {
-    if (!db) { if (callback) callback(); return; }
-    var tx = db.transaction(GALLERY_STORE, 'readwrite');
-    var store = tx.objectStore(GALLERY_STORE);
-    photos.forEach(function (p) { store.put(p); });
-    tx.oncomplete = function () { if (callback) callback(); };
-    tx.onerror = function () { if (callback) callback(); };
-  });
+function _supa() {
+  return (typeof getSupabase === 'function') ? getSupabase() : null;
 }
 
 // ============================
-// Load: JSON first (primary source) → merge with IndexedDB admin additions
-// For static deployment (Vercel), photos.json is the single source of truth.
-// IndexedDB only stores admin-added extras that supplement the JSON data.
+// Load: Supabase first → fallback to photos.json
 // ============================
 function loadGalleryData(callback) {
   if (_galleryReady) {
@@ -132,78 +56,56 @@ function loadGalleryData(callback) {
   if (callback) _galleryCallbacks.push(callback);
   if (_galleryCallbacks.length > 1) return;
 
-  // Always fetch photos.json as primary source
+  var sb = _supa();
+  if (sb) {
+    // Try Supabase first
+    sb.from('photos').select('*').order('order', { ascending: true })
+      .then(function (res) {
+        if (res.data && res.data.length > 0) {
+          _galleryCache = res.data;
+          _galleryReady = true;
+          _fireCallbacks();
+        } else {
+          // Supabase empty or error — try JSON fallback then seed Supabase
+          _loadFromJSON(function (photos) {
+            if (photos.length > 0 && sb) {
+              // Auto-seed Supabase with JSON data
+              sb.from('photos').upsert(photos).then(function () {
+                console.log('Supabase seeded with photos.json data');
+              });
+            }
+          });
+        }
+      })
+      .catch(function (err) {
+        console.warn('Supabase fetch failed, using JSON fallback:', err);
+        _loadFromJSON();
+      });
+  } else {
+    // No Supabase client available — use JSON
+    _loadFromJSON();
+  }
+}
+
+function _loadFromJSON(onDone) {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', GALLERY_JSON_URL, true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState !== 4) return;
-
-    var jsonPhotos = [];
     if (xhr.status === 200 || xhr.status === 0) {
       try {
-        jsonPhotos = JSON.parse(xhr.responseText);
-      } catch (e) { jsonPhotos = []; }
-    }
-
-    // Then check IndexedDB for any admin-added photos (supplements JSON)
-    idbGetAll(function (idbPhotos) {
-      if (jsonPhotos.length > 0) {
-        // Build a map of JSON photo IDs
-        var jsonIds = {};
-        jsonPhotos.forEach(function (p) { jsonIds[p.id] = true; });
-
-        // Merge: JSON photos + any IndexedDB photos NOT already in JSON
-        var extras = (idbPhotos || []).filter(function (p) {
-          return !jsonIds[p.id];
-        });
-        _galleryCache = jsonPhotos.concat(extras);
-
-        // Sync merged data back to IndexedDB for admin panel use
-        idbClear(function () {
-          idbPutMany(_galleryCache, function () {
-            _galleryReady = true;
-            _migrateFromLocalStorage();
-            _fireCallbacks();
-          });
-        });
-      } else if (idbPhotos && idbPhotos.length > 0) {
-        // JSON unavailable — fallback to IndexedDB (offline/admin scenario)
-        _galleryCache = idbPhotos;
-        _galleryReady = true;
-        _migrateFromLocalStorage();
-        _fireCallbacks();
-      } else {
-        // Check localStorage for legacy migration
-        var localData = null;
-        try {
-          var raw = localStorage.getItem('pmp_gallery');
-          if (raw) localData = JSON.parse(raw);
-        } catch (e) { /* ignore */ }
-
-        if (localData && localData.length > 0) {
-          _galleryCache = localData;
-          idbPutMany(localData, function () {
-            try { localStorage.removeItem('pmp_gallery'); } catch (e) { /* ignore */ }
-            _galleryReady = true;
-            _fireCallbacks();
-          });
-        } else {
-          _galleryCache = [];
-          _galleryReady = true;
-          _fireCallbacks();
-        }
+        _galleryCache = JSON.parse(xhr.responseText);
+      } catch (e) {
+        _galleryCache = [];
       }
-    });
+    } else {
+      _galleryCache = [];
+    }
+    _galleryReady = true;
+    _fireCallbacks();
+    if (onDone) onDone(_galleryCache);
   };
   xhr.send();
-}
-
-function _migrateFromLocalStorage() {
-  try {
-    if (localStorage.getItem('pmp_gallery')) {
-      localStorage.removeItem('pmp_gallery');
-    }
-  } catch (e) { /* ignore */ }
 }
 
 function _fireCallbacks() {
@@ -213,23 +115,15 @@ function _fireCallbacks() {
 }
 
 // ============================
-// Sync API (uses cache, writes to IndexedDB async)
+// Read API (from cache)
 // ============================
 function getGallery() {
   return _galleryCache || [];
 }
 
-function saveGallery(photos) {
-  _galleryCache = photos;
-  // Write all to IndexedDB (async, non-blocking)
-  idbClear(function () {
-    idbPutMany(photos, function () { /* saved */ });
-  });
-  return { success: true };
-}
-
 function getPhotosByAlbum(album) {
-  return getGallery().filter(function (p) { return p.album === album; }).sort(function (a, b) { return (a.order || 0) - (b.order || 0); });
+  return getGallery().filter(function (p) { return p.album === album; })
+    .sort(function (a, b) { return (a.order || 0) - (b.order || 0); });
 }
 
 function getPhotosByPage(pageName) {
@@ -237,25 +131,167 @@ function getPhotosByPage(pageName) {
   for (var key in GALLERY_ALBUMS) {
     if (GALLERY_ALBUMS[key].page === pageName) albumKeys.push(key);
   }
-  return getGallery().filter(function (p) { return albumKeys.indexOf(p.album) !== -1; }).sort(function (a, b) { return (a.order || 0) - (b.order || 0); });
+  return getGallery().filter(function (p) { return albumKeys.indexOf(p.album) !== -1; })
+    .sort(function (a, b) { return (a.order || 0) - (b.order || 0); });
 }
 
-function upsertPhoto(photo) {
-  var photos = getGallery().slice(); // copy
+// ============================
+// Write API (cache + Supabase)
+// ============================
+function upsertPhoto(photo, callback) {
+  // Update local cache immediately
+  var photos = getGallery().slice();
   var idx = -1;
-  for (var i = 0; i < photos.length; i++) { if (photos[i].id === photo.id) { idx = i; break; } }
+  for (var i = 0; i < photos.length; i++) {
+    if (photos[i].id === photo.id) { idx = i; break; }
+  }
   if (idx >= 0) photos[idx] = photo; else photos.push(photo);
   _galleryCache = photos;
-  // Write single photo to IndexedDB (fast)
-  idbPut(photo);
+
+  // Write to Supabase
+  var sb = _supa();
+  if (sb) {
+    var row = {
+      id: photo.id,
+      album: photo.album,
+      caption_id: photo.caption_id || '',
+      caption_en: photo.caption_en || '',
+      src: photo.src,
+      order: photo.order || 0,
+      type: photo.type || null,
+      updated_at: new Date().toISOString()
+    };
+    sb.from('photos').upsert(row).then(function (res) {
+      if (res.error) {
+        console.error('Supabase upsert error:', res.error);
+        if (callback) callback({ error: res.error.message });
+      } else {
+        if (callback) callback({ success: true });
+      }
+    });
+  } else {
+    if (callback) callback({ success: true });
+  }
   return { success: true };
 }
 
-function deletePhoto(id) {
-  _galleryCache = getGallery().filter(function (p) { return p.id !== id; });
-  idbDelete(id);
+function deletePhoto(id, callback) {
+  // Get photo info before deleting (to clean up storage)
+  var photo = null;
+  var photos = getGallery();
+  for (var i = 0; i < photos.length; i++) {
+    if (photos[i].id === id) { photo = photos[i]; break; }
+  }
+
+  // Remove from cache
+  _galleryCache = photos.filter(function (p) { return p.id !== id; });
+
+  var sb = _supa();
+  if (sb) {
+    // Delete from Supabase database
+    sb.from('photos').delete().eq('id', id).then(function (res) {
+      if (res.error) console.error('Supabase delete error:', res.error);
+      if (callback) callback();
+    });
+
+    // If src is a Supabase Storage URL, also delete the file
+    if (photo && photo.src && photo.src.indexOf('/storage/v1/object/public/gallery/') !== -1) {
+      var filePath = photo.src.split('/storage/v1/object/public/gallery/')[1];
+      if (filePath) {
+        sb.storage.from('gallery').remove([decodeURIComponent(filePath)]).then(function (res) {
+          if (res.error) console.warn('Storage cleanup error:', res.error);
+        });
+      }
+    }
+  } else {
+    if (callback) callback();
+  }
 }
 
+function saveGallery(photos, callback) {
+  _galleryCache = photos;
+  var sb = _supa();
+  if (sb) {
+    sb.from('photos').upsert(photos.map(function (p) {
+      return {
+        id: p.id, album: p.album,
+        caption_id: p.caption_id || '', caption_en: p.caption_en || '',
+        src: p.src, order: p.order || 0,
+        type: p.type || null, updated_at: new Date().toISOString()
+      };
+    })).then(function (res) {
+      if (res.error) console.error('Supabase saveGallery error:', res.error);
+      if (callback) callback({ success: !res.error });
+    });
+  } else {
+    if (callback) callback({ success: true });
+  }
+  return { success: true };
+}
+
+// ============================
+// Upload to Supabase Storage
+// ============================
+function uploadToStorage(file, album, callback) {
+  var sb = _supa();
+  if (!sb) {
+    callback({ error: 'Supabase not available' });
+    return;
+  }
+
+  var ext = file.name ? file.name.split('.').pop().toLowerCase() : 'jpg';
+  var fileName = album + '/' + Date.now() + '-' + Math.random().toString(36).substr(2, 5) + '.' + ext;
+
+  sb.storage.from('gallery').upload(fileName, file, {
+    cacheControl: '3600',
+    upsert: false,
+    contentType: file.type || 'image/jpeg'
+  }).then(function (res) {
+    if (res.error) {
+      callback({ error: res.error.message });
+    } else {
+      var publicUrl = getStoragePublicUrl(fileName);
+      callback({ success: true, url: publicUrl, path: fileName });
+    }
+  });
+}
+
+// Upload from base64/dataURL
+function uploadBase64ToStorage(dataUrl, album, callback) {
+  var sb = _supa();
+  if (!sb) {
+    callback({ error: 'Supabase not available' });
+    return;
+  }
+
+  // Convert data URL to Blob
+  var parts = dataUrl.split(',');
+  var mime = parts[0].match(/:(.*?);/)[1];
+  var ext = mime.split('/')[1] === 'jpeg' ? 'jpg' : mime.split('/')[1];
+  var bstr = atob(parts[1]);
+  var arr = new Uint8Array(bstr.length);
+  for (var i = 0; i < bstr.length; i++) arr[i] = bstr.charCodeAt(i);
+  var blob = new Blob([arr], { type: mime });
+
+  var fileName = album + '/' + Date.now() + '-' + Math.random().toString(36).substr(2, 5) + '.' + ext;
+
+  sb.storage.from('gallery').upload(fileName, blob, {
+    cacheControl: '3600',
+    upsert: false,
+    contentType: mime
+  }).then(function (res) {
+    if (res.error) {
+      callback({ error: res.error.message });
+    } else {
+      var publicUrl = getStoragePublicUrl(fileName);
+      callback({ success: true, url: publicUrl, path: fileName });
+    }
+  });
+}
+
+// ============================
+// Utilities
+// ============================
 function generatePhotoId() {
   return 'photo-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
 }
@@ -267,26 +303,26 @@ function exportGalleryJSON() {
 function resetToJSON() {
   _galleryCache = null;
   _galleryReady = false;
-  idbClear(function () {
-    // Also clean localStorage legacy
-    try { localStorage.removeItem('pmp_gallery'); } catch (e) { /* ignore */ }
-  });
+  var sb = _supa();
+  if (sb) {
+    // Delete all from Supabase, then reload from JSON
+    sb.from('photos').delete().neq('id', '').then(function () {
+      loadGalleryData();
+    });
+  }
 }
 
-// Get storage estimate
 function getStorageEstimate(callback) {
-  if (navigator.storage && navigator.storage.estimate) {
-    navigator.storage.estimate().then(function (est) {
-      callback({
-        used: est.usage || 0,
-        quota: est.quota || 0,
-        photos: getGallery().length
-      });
+  var sb = _supa();
+  if (sb) {
+    sb.storage.from('gallery').list('', { limit: 1000 }).then(function (res) {
+      var fileCount = (res.data || []).length;
+      callback({ used: 0, quota: 1073741824, photos: getGallery().length, files: fileCount, source: 'supabase' });
     }).catch(function () {
-      callback({ used: 0, quota: 0, photos: getGallery().length });
+      callback({ used: 0, quota: 0, photos: getGallery().length, source: 'unknown' });
     });
   } else {
-    callback({ used: 0, quota: 0, photos: getGallery().length });
+    callback({ used: 0, quota: 0, photos: getGallery().length, source: 'json' });
   }
 }
 
@@ -305,6 +341,8 @@ window.GalleryDB = {
   exportGalleryJSON: exportGalleryJSON,
   resetToJSON: resetToJSON,
   getStorageEstimate: getStorageEstimate,
+  uploadToStorage: uploadToStorage,
+  uploadBase64ToStorage: uploadBase64ToStorage,
   ALBUMS: GALLERY_ALBUMS,
   getAlbumsByPage: getAlbumsByPage
 };
