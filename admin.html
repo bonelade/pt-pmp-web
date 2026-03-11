@@ -426,8 +426,12 @@
 
   <!-- Main Content -->
   <main class="admin-main">
+    <div class="admin-sidebar-overlay" onclick="toggleAdminSidebar()"></div>
     <div class="admin-topbar">
-      <h1 id="page-title">Dashboard</h1>
+      <div style="display:flex;align-items:center;">
+        <button class="admin-menu-toggle" onclick="toggleAdminSidebar()">☰</button>
+        <h1 id="page-title">Dashboard</h1>
+      </div>
       <div class="admin-topbar-right">
         <div class="admin-user-badge">
           <div class="admin-avatar">A</div>
@@ -723,7 +727,7 @@
           <div class="admin-card-header">
             <h3><span class="admin-icon" id="icon-whatsapp"></span> WhatsApp</h3>
           </div>
-          <div style="padding:24px; display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+          <div style="padding:24px; display:grid; gap:20px;" class="admin-grid-2">
             <div class="form-group">
               <label>Nomor WhatsApp</label>
               <div style="display:flex; align-items:center; gap:0;">
@@ -742,7 +746,7 @@
           <div class="admin-card-header">
             <h3><span class="admin-icon" id="icon-instagram"></span> Instagram</h3>
           </div>
-          <div style="padding:24px; display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+          <div style="padding:24px; display:grid; gap:20px;" class="admin-grid-2">
             <div class="form-group">
               <label>Username Instagram</label>
               <div style="display:flex; align-items:center; gap:0;">
@@ -760,7 +764,7 @@
           <div class="admin-card-header">
             <h3><span class="admin-icon" id="icon-facebook"></span> Facebook</h3>
           </div>
-          <div style="padding:24px; display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+          <div style="padding:24px; display:grid; gap:20px;" class="admin-grid-2">
             <div class="form-group">
               <label>URL / Username Facebook</label>
               <input type="text" id="kontak-facebook" placeholder="ptpanganmerahputih" style="width:100%; padding:10px 14px; border:1.5px solid var(--color-border); border-radius:4px; font-family:var(--font-body); font-size:0.9rem; outline:none;">
@@ -776,7 +780,7 @@
           <div class="admin-card-header">
             <h3><span class="admin-icon" id="icon-email"></span> Email</h3>
           </div>
-          <div style="padding:24px; display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+          <div style="padding:24px; display:grid; gap:20px;" class="admin-grid-2">
             <div class="form-group">
               <label>Alamat Email</label>
               <input type="email" id="kontak-email" placeholder="info@ptpmp.co.id" style="width:100%; padding:10px 14px; border:1.5px solid var(--color-border); border-radius:4px; font-family:var(--font-body); font-size:0.9rem; outline:none;">
@@ -821,7 +825,7 @@
           </div>
           <div style="padding:24px;">
             <!-- Step 1: Page & Panel Dropdowns -->
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:16px;">
+            <div style="display:grid; gap:20px; margin-bottom:16px;" class="admin-grid-2">
               <div class="form-group">
                 <label class="upload-label">1. Pilih Halaman</label>
                 <select id="upload-page-select" class="upload-select" onchange="onPageSelectChange()">
@@ -840,7 +844,7 @@
             <input type="hidden" id="photo-album" value="">
 
             <!-- Step 2: Captions -->
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
+            <div style="display:grid; gap:20px; margin-bottom:20px;" class="admin-grid-2">
               <div class="form-group">
                 <label class="upload-label">3. Keterangan (ID)</label>
                 <input type="text" id="photo-caption-id" placeholder="Keterangan foto..." class="upload-input">
@@ -1202,6 +1206,16 @@
   });
 
   // ============================
+  // Mobile Sidebar Toggle
+  // ============================
+  function toggleAdminSidebar() {
+    var sidebar = document.querySelector('.admin-sidebar');
+    var overlay = document.querySelector('.admin-sidebar-overlay');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('open');
+  }
+
+  // ============================
   // Pages
   // ============================
   function showPage(page, el) {
@@ -1211,6 +1225,11 @@
     if (el) el.classList.add('active');
     const titles = { dashboard: 'Dashboard', articles: 'Kelola Berita', harga: 'Update Harga Jagung', kontak: 'Kontak & Sosial Media', gallery: 'Kelola Foto & Galeri', stats: 'Statistik Pengunjung' };
     document.getElementById('page-title').textContent = titles[page] || page;
+    // Close sidebar on mobile after navigation
+    if (window.innerWidth <= 768) {
+      document.querySelector('.admin-sidebar').classList.remove('open');
+      document.querySelector('.admin-sidebar-overlay').classList.remove('open');
+    }
     if (page === 'articles') renderArticleTable();
     if (page === 'dashboard') refreshDashboard();
     if (page === 'harga') loadHargaForm();
@@ -1882,41 +1901,54 @@
       showToast('Hanya ' + toUpload.length + '/' + _pendingPhotos.length + ' foto ditambahkan (batas maks ' + rec.max + ').', '');
     }
 
-    // Upload to Supabase Storage then save metadata
+    // Upload to Supabase Storage, fallback to base64 in DB if storage fails
     var uploaded = 0;
+    var successCount = 0;
     var totalToUpload = toUpload.length;
     showToast('Mengupload ' + totalToUpload + ' foto ke cloud...', '');
 
+    function finishUpload() {
+      _pendingPhotos = [];
+      document.getElementById('photo-upload-preview').innerHTML = '';
+      document.getElementById('photo-file').value = '';
+      document.getElementById('photo-caption-id').value = '';
+      document.getElementById('photo-caption-en').value = '';
+      document.getElementById('upload-size-info').innerHTML = '';
+      showToast('✓ ' + successCount + '/' + totalToUpload + ' foto berhasil diupload!', 'success');
+      renderGalleryPages();
+      onAlbumSelectChange();
+      updateStorageUsage();
+    }
+
+    function savePhotoEntry(srcUrl, idx) {
+      window.GalleryDB.upsertPhoto({
+        id: window.GalleryDB.generatePhotoId(),
+        album: album,
+        caption_id: captionId || '',
+        caption_en: captionEn || '',
+        src: srcUrl,
+        order: Date.now() + idx
+      }, function(result) {
+        if (result && result.error) {
+          console.error('DB save error:', result.error);
+        }
+      });
+      successCount++;
+    }
+
     toUpload.forEach(function (p, i) {
+      // Try Supabase Storage first
       window.GalleryDB.uploadBase64ToStorage(p.dataUrl, album, function (res) {
         uploaded++;
         if (res.error) {
-          console.error('Upload error:', res.error);
-          showToast('Gagal upload foto: ' + res.error, 'error');
+          console.warn('Storage upload failed, saving base64 to DB:', res.error);
+          // Fallback: save base64 directly to Supabase DB (works but larger)
+          savePhotoEntry(p.dataUrl, i);
         } else {
-          // Save with Supabase Storage URL (not base64)
-          window.GalleryDB.upsertPhoto({
-            id: window.GalleryDB.generatePhotoId(),
-            album: album,
-            caption_id: captionId || '',
-            caption_en: captionEn || '',
-            src: res.url,
-            order: Date.now() + i
-          });
+          // Save with Supabase Storage URL
+          savePhotoEntry(res.url, i);
         }
-
-        if (uploaded >= totalToUpload) {
-          _pendingPhotos = [];
-          document.getElementById('photo-upload-preview').innerHTML = '';
-          document.getElementById('photo-file').value = '';
-          document.getElementById('photo-caption-id').value = '';
-          document.getElementById('photo-caption-en').value = '';
-          document.getElementById('upload-size-info').innerHTML = '';
-          showToast('✓ ' + totalToUpload + ' foto berhasil diupload ke cloud!', 'success');
-          renderGalleryPages();
-          onAlbumSelectChange();
-          updateStorageUsage();
-        }
+        if (uploaded >= totalToUpload) finishUpload();
       });
     });
   }
