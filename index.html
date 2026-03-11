@@ -1369,12 +1369,12 @@
       };
 
       var configs = [
-        { id: 'about-ornaments', colorClass: 'shape-green', mix: [shapes.leaf, shapes.dot, shapes.ring], count: 12 },
-        { id: 'services-ornaments', colorClass: 'shape-green', mix: [shapes.leaf, shapes.dot, shapes.ring], count: 12 },
-        { id: 'adv-ornaments', colorClass: 'shape-green', mix: [shapes.square, shapes.plus, shapes.dot], count: 10 },
-        { id: 'cta-ornaments', colorClass: 'shape-gold', mix: [shapes.diamond, shapes.ring, shapes.plus], count: 8 },
-        { id: 'social-ornaments', colorClass: 'shape-white', mix: [shapes.leaf, shapes.dot, shapes.diamond], count: 12 },
-        { id: 'footer-ornaments', colorClass: 'shape-gold', mix: [shapes.square, shapes.dot, shapes.ring], count: 15 }
+        { id: 'about-ornaments', colorClass: 'shape-green', type: 'lines' },
+        { id: 'services-ornaments', colorClass: 'shape-green', type: 'lines' },
+        { id: 'adv-ornaments', colorClass: 'shape-green', type: 'lines' },
+        { id: 'cta-ornaments', colorClass: 'shape-gold', type: 'particles', mix: [shapes.diamond, shapes.ring, shapes.plus], count: 8 },
+        { id: 'social-ornaments', colorClass: 'shape-white', type: 'particles', mix: [shapes.leaf, shapes.dot, shapes.diamond], count: 12 },
+        { id: 'footer-ornaments', colorClass: 'shape-gold', type: 'particles', mix: [shapes.square, shapes.dot, shapes.ring], count: 15 }
       ];
 
       var animClasses = ['shape-float', 'shape-rotate', 'shape-pulse', ''];
@@ -1383,25 +1383,42 @@
         configs.forEach(function (cfg) {
           var cont = document.getElementById(cfg.id);
           if (!cont) return;
-          for (var i = 0; i < cfg.count; i++) {
-            var el = document.createElement('div');
-            var anim = animClasses[Math.floor(Math.random() * animClasses.length)];
-            el.className = 'lower-shape ' + cfg.colorClass + ' ' + anim;
 
-            // Randomize size between 14px and 40px
-            var size = Math.random() * 26 + 14;
-            el.style.cssText = [
-              'width:' + size + 'px',
-              'height:' + size + 'px',
-              'left:' + (Math.random() * 96 + 2) + '%',
-              'top:' + (Math.random() * 90 + 5) + '%',
-              'animation-duration:' + (Math.random() * 5 + 4) + 's',
-              'animation-delay:' + (Math.random() * 3) + 's'
-            ].join(';');
+          if (cfg.type === 'lines') {
+            // Elegant flowing moving lines (drifting left/right)
+            var el1 = document.createElement('div');
+            el1.className = 'lower-shape ' + cfg.colorClass + ' ornament-1';
+            el1.style.cssText = 'width:120%; height:100%; left:-10%; top:0;';
+            el1.innerHTML = '<svg viewBox="0 0 1200 600" preserveAspectRatio="xMinYMid slice" style="width:100%; height:100%;"><path d="M-200,400 C100,200 400,600 800,400 C1200,200 1400,500 1600,400" stroke="currentColor" stroke-width="2" fill="none" vector-effect="non-scaling-stroke"/></svg>';
+            cont.appendChild(el1);
 
-            var shapeSvg = cfg.mix[Math.floor(Math.random() * cfg.mix.length)];
-            el.innerHTML = '<svg viewBox="0 0 24 24" width="100%" height="100%">' + shapeSvg + '</svg>';
-            cont.appendChild(el);
+            var el2 = document.createElement('div');
+            el2.className = 'lower-shape ' + cfg.colorClass + ' ornament-2';
+            el2.style.cssText = 'width:120%; height:100%; left:-10%; top:0;';
+            el2.innerHTML = '<svg viewBox="0 0 1200 600" preserveAspectRatio="xMinYMid slice" style="width:100%; height:100%; opacity:0.6;"><path d="M-200,300 C150,500 350,200 700,400 C1050,600 1250,300 1600,500" stroke="currentColor" stroke-width="2" fill="none" vector-effect="non-scaling-stroke"/></svg>';
+            cont.appendChild(el2);
+          } else {
+            // Scattered particles
+            for (var i = 0; i < cfg.count; i++) {
+              var el = document.createElement('div');
+              var anim = animClasses[Math.floor(Math.random() * animClasses.length)];
+              el.className = 'lower-shape ' + cfg.colorClass + ' ' + anim;
+
+              // Randomize size between 14px and 40px
+              var size = Math.random() * 26 + 14;
+              el.style.cssText = [
+                'width:' + size + 'px',
+                'height:' + size + 'px',
+                'left:' + (Math.random() * 96 + 2) + '%',
+                'top:' + (Math.random() * 90 + 5) + '%',
+                'animation-duration:' + (Math.random() * 5 + 4) + 's',
+                'animation-delay:' + (Math.random() * 3) + 's'
+              ].join(';');
+
+              var shapeSvg = cfg.mix[Math.floor(Math.random() * cfg.mix.length)];
+              el.innerHTML = '<svg viewBox="0 0 24 24" width="100%" height="100%">' + shapeSvg + '</svg>';
+              cont.appendChild(el);
+            }
           }
         });
       }
