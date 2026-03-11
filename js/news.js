@@ -160,7 +160,22 @@ function upsertArticle(article) {
   localStorage.setItem(NEWS_KEY, JSON.stringify(articles));
   var sb = _newsSupa();
   if (sb) {
-    sb.from('articles').upsert(article);
+    sb.from('articles').upsert({
+      id: article.id,
+      title_id: article.title_id || '',
+      title_en: article.title_en || '',
+      body_id: article.body_id || '',
+      body_en: article.body_en || '',
+      date: article.date || '',
+      category: article.category || '',
+      thumbnail: article.thumbnail || ''
+    }).then(function(res) {
+      if (res.error) {
+        console.error('Supabase upsert article error:', res.error);
+      } else {
+        console.log('Article saved to Supabase:', article.id);
+      }
+    });
   }
 }
 

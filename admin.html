@@ -1474,8 +1474,6 @@
       document.getElementById('thumb-preview').innerHTML = '<span class="placeholder admin-icon-image"></span>';
       document.getElementById('art-thumbnail').value = '';
       window._editThumbnail = '';
-      window._editThumbnailPreview = '';
-      window._thumbFile = null;
     }
     switchLangTab('id', document.querySelector('.form-tab-btn'));
     modal.classList.add('open');
@@ -1492,8 +1490,6 @@
     document.getElementById('art-category').value = art.category || 'company';
     document.getElementById('art-date').value = art.date || '';
     window._editThumbnail = art.thumbnail || '';
-    window._thumbFile = null;
-    window._editThumbnailPreview = '';
     document.getElementById('thumb-preview').innerHTML = art.thumbnail
       ? `<img src="${art.thumbnail}" alt="thumbnail">`
       : '<span class="placeholder admin-icon-image"></span>';
@@ -1513,28 +1509,23 @@
   function previewThumbnail(input) {
     if (input.files && input.files[0]) {
       var file = input.files[0];
-      // Show original preview immediately
-      var reader = new FileReader();
-      reader.onload = function(e) {
-        document.getElementById('thumb-preview').innerHTML = '<img src="' + e.target.result + '" alt="preview">';
-      };
-      reader.readAsDataURL(file);
+      // Show loading state
+      document.getElementById('thumb-preview').innerHTML = '<span style="font-size:0.8rem;color:var(--color-text-muted);">Mengompres...</span>';
       // Compress thumbnail (reuse gallery compressor)
       compressImage(file).then(function(r) {
-        // Convert compressed dataUrl back to a File/Blob for storage upload
-        var parts = r.dataUrl.split(',');
-        var mime = parts[0].match(/:(.*?);/)[1];
-        var bstr = atob(parts[1]);
-        var arr = new Uint8Array(bstr.length);
-        for (var i = 0; i < bstr.length; i++) arr[i] = bstr.charCodeAt(i);
-        window._thumbFile = new File([new Uint8Array(arr)], file.name, { type: mime });
-        window._editThumbnailPreview = r.dataUrl;
-        // Update preview with compressed version
+        window._editThumbnail = r.dataUrl;
+        window._thumbFile = null; // use dataUrl directly, not file upload
         document.getElementById('thumb-preview').innerHTML = '<img src="' + r.dataUrl + '" alt="preview">';
       }).catch(function(err) {
-        // Fallback: use original file
-        window._thumbFile = file;
+        // Fallback: read as-is
         console.warn('Thumbnail compress failed:', err);
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          window._editThumbnail = e.target.result;
+          window._thumbFile = null;
+          document.getElementById('thumb-preview').innerHTML = '<img src="' + e.target.result + '" alt="preview">';
+        };
+        reader.readAsDataURL(file);
       });
     }
   }
@@ -1547,40 +1538,20 @@
     const editId = document.getElementById('edit-id').value;
     const articleId = editId || window.NewsDB.generateId();
 
-    function doSave(thumbnailUrl) {
-      window.NewsDB.upsertArticle({
-        id: articleId,
-        title_id: titleId,
-        title_en: document.getElementById('title-en').value.trim(),
-        body_id: bodyId,
-        body_en: document.getElementById('body-en').value.trim(),
-        category: document.getElementById('art-category').value,
-        date: document.getElementById('art-date').value || new Date().toISOString().split('T')[0],
-        thumbnail: thumbnailUrl
-      });
-      closeModal();
-      refreshDashboard();
-      renderArticleTable();
-      showToast(editId ? '✓ Artikel berhasil diperbarui!' : '✓ Artikel berhasil dipublikasikan!', 'success');
-    }
-
-    // If a new file was selected, upload to Supabase Storage
-    if (window._thumbFile) {
-      showToast('Mengupload thumbnail...', 'success');
-      window.GalleryDB.uploadToStorage(window._thumbFile, 'thumbnails', function(res) {
-        if (res.success && res.url) {
-          window._thumbFile = null;
-          doSave(res.url);
-        } else {
-          // Fallback: use base64 preview if storage upload fails
-          console.warn('Thumbnail upload failed, using base64 fallback:', res.error);
-          window._thumbFile = null;
-          doSave(window._editThumbnailPreview || window._editThumbnail || '');
-        }
-      });
-    } else {
-      doSave(window._editThumbnail || '');
-    }
+    window.NewsDB.upsertArticle({
+      id: articleId,
+      title_id: titleId,
+      title_en: document.getElementById('title-en').value.trim(),
+      body_id: bodyId,
+      body_en: document.getElementById('body-en').value.trim(),
+      category: document.getElementById('art-category').value,
+      date: document.getElementById('art-date').value || new Date().toISOString().split('T')[0],
+      thumbnail: window._editThumbnail || ''
+    });
+    closeModal();
+    refreshDashboard();
+    renderArticleTable();
+    showToast(editId ? '✓ Artikel berhasil diperbarui!' : '✓ Artikel berhasil dipublikasikan!', 'success');
   }
 
   // ============================
