@@ -21,7 +21,7 @@
     "caption_id": "Peresmian oleh Presiden Prabowo",
     "caption_en": "Inauguration by President Prabowo",
     "src": "images/gallery/PrabowoPTPMP.jpeg",
-    "order": 2
+    "order": 1
   },
   {
     "id": "photo-003",
@@ -29,7 +29,7 @@
     "caption_id": "Lahan Jagung",
     "caption_en": "Corn Field",
     "src": "images/gallery/Corn field 2.jpg",
-    "order": 3
+    "order": 2
   },
   {
     "id": "photo-004",
@@ -37,7 +37,7 @@
     "caption_id": "Lahan Jagung Kalimantan Barat",
     "caption_en": "West Kalimantan Corn Field",
     "src": "images/gallery/Corn field 3.jpg",
-    "order": 4
+    "order": 3
   },
   {
     "id": "photo-005",
@@ -45,7 +45,7 @@
     "caption_id": "Jagung Pakan Berkualitas",
     "caption_en": "Quality Feed Corn",
     "src": "images/gallery/Corn.jpg",
-    "order": 5
+    "order": 4
   },
   {
     "id": "photo-006",
@@ -53,7 +53,7 @@
     "caption_id": "Hasil Panen Jagung",
     "caption_en": "Corn Harvest",
     "src": "images/gallery/Corn 2.jpg",
-    "order": 6
+    "order": 5
   },
   {
     "id": "photo-007",
@@ -61,46 +61,240 @@
     "caption_id": "Biji Jagung Pilihan",
     "caption_en": "Selected Corn Kernels",
     "src": "images/gallery/corn 3.jpg",
-    "order": 7
+    "order": 6
   },
   {
     "id": "photo-008",
+    "album": "home_gallery",
+    "caption_id": "Gudang PT Pangan Merah Putih",
+    "caption_en": "PT Pangan Merah Putih Warehouse",
+    "src": "images/gallery/WhatsApp Image 2026-03-11 at 17.56.24 (6).jpeg",
+    "order": 7
+  },
+  {
+    "id": "photo-009",
+    "album": "home_gallery",
+    "caption_id": "Mesin Pengering Jagung",
+    "caption_en": "Corn Dryer Machine",
+    "src": "images/gallery/WhatsApp Image 2026-03-11 at 17.56.24 (3).jpeg",
+    "order": 8
+  },
+  {
+    "id": "photo-020",
     "album": "about_slider",
     "caption_id": "Lahan Jagung Bengkayang",
     "caption_en": "Bengkayang Corn Field",
     "src": "images/gallery/Corn field.jpg",
-    "order": 8
+    "order": 1
   },
   {
-    "id": "photo-012",
+    "id": "photo-021",
     "album": "about_slider",
     "caption_id": "Jagung Pakan Berkualitas",
     "caption_en": "Quality Feed Corn",
     "src": "images/gallery/Corn.jpg",
-    "order": 9
+    "order": 2
   },
   {
-    "id": "photo-013",
+    "id": "photo-022",
     "album": "about_slider",
     "caption_id": "Peresmian PT PMP",
     "caption_en": "PT PMP Inauguration",
     "src": "images/gallery/PrabowoPTPMP.jpeg",
-    "order": 10
+    "order": 3
   },
   {
-    "id": "photo-009",
+    "id": "photo-023",
+    "album": "about_slider",
+    "caption_id": "Gudang PT Pangan Merah Putih",
+    "caption_en": "PT Pangan Merah Putih Warehouse",
+    "src": "images/gallery/WhatsApp Image 2026-03-11 at 17.56.24 (6).jpeg",
+    "order": 4
+  },
+  {
+    "id": "photo-030",
     "album": "about_facility",
     "caption_id": "Area Lahan Jagung",
     "caption_en": "Corn Field Area",
     "src": "images/gallery/Corn field 2.jpg",
-    "order": 9
+    "order": 1
   },
   {
-    "id": "photo-010",
+    "id": "photo-031",
+    "album": "about_facility",
+    "caption_id": "Gudang dan Area Loading PT PMP",
+    "caption_en": "PT PMP Warehouse and Loading Area",
+    "src": "images/gallery/WhatsApp Image 2026-03-11 at 17.56.24 (6).jpeg",
+    "order": 2
+  },
+  {
+    "id": "photo-032",
+    "album": "about_facility",
+    "caption_id": "Interior Gudang dan Mesin Pengering",
+    "caption_en": "Warehouse Interior and Dryer Machine",
+    "src": "images/gallery/WhatsApp Image 2026-03-11 at 17.56.24 (2).jpeg",
+    "order": 3
+  },
+  {
+    "id": "photo-033",
+    "album": "about_facility",
+    "caption_id": "Mesin Pengering Jagung Kapasitas Besar",
+    "caption_en": "Large Capacity Corn Dryer Machine",
+    "src": "images/gallery/WhatsApp Image 2026-03-11 at 17.56.24 (3).jpeg",
+    "order": 4
+  },
+  {
+    "id": "photo-034",
+    "album": "about_facility",
+    "caption_id": "Proses Loading dengan Forklift",
+    "caption_en": "Loading Process with Forklift",
+    "src": "images/gallery/WhatsApp Image 2026-03-11 at 17.56.24 (5).jpeg",
+    "order": 5
+  },
+  {
+    "id": "photo-040",
+    "album": "about_team",
+    "caption_id": "Tim PT Pangan Merah Putih",
+    "caption_en": "PT Pangan Merah Putih Team",
+    "src": "images/gallery/WhatsApp Image 2026-03-11 at 17.56.23.jpeg",
+    "order": 1
+  },
+  {
+    "id": "photo-050",
     "album": "about_activity",
     "caption_id": "Peresmian oleh Presiden Prabowo",
     "caption_en": "Inauguration by President Prabowo",
     "src": "images/gallery/PrabowoPTPMP.jpeg",
-    "order": 10
+    "order": 1
+  },
+  {
+    "id": "photo-051",
+    "album": "about_activity",
+    "caption_id": "Inspeksi Kualitas Jagung oleh Kepolisian",
+    "caption_en": "Corn Quality Inspection by Police",
+    "src": "images/gallery/WhatsApp Image 2026-03-11 at 17.56.24.jpeg",
+    "order": 2
+  },
+  {
+    "id": "photo-052",
+    "album": "about_activity",
+    "caption_id": "Kunjungan Pejabat ke Gudang PT PMP",
+    "caption_en": "Officials Visit to PT PMP Warehouse",
+    "src": "images/gallery/WhatsApp Image 2026-03-11 at 17.56.24 (4).jpeg",
+    "order": 3
+  },
+  {
+    "id": "photo-053",
+    "album": "about_activity",
+    "caption_id": "Pemeriksaan dan Sortir Produk",
+    "caption_en": "Product Inspection and Sorting",
+    "src": "images/gallery/WhatsApp Image 2026-03-11 at 17.56.24 (7).jpeg",
+    "order": 4
+  },
+  {
+    "id": "photo-054",
+    "album": "about_activity",
+    "caption_id": "Kunjungan Fasilitas oleh Tamu",
+    "caption_en": "Facility Tour by Visitors",
+    "src": "images/gallery/WhatsApp Image 2026-03-11 at 17.56.24 (1).jpeg",
+    "order": 5
+  },
+  {
+    "id": "photo-060",
+    "album": "products_facility",
+    "caption_id": "Mesin Pengering Jagung",
+    "caption_en": "Corn Dryer Machine",
+    "src": "images/gallery/WhatsApp Image 2026-03-11 at 17.56.24 (3).jpeg",
+    "order": 1
+  },
+  {
+    "id": "photo-061",
+    "album": "products_facility",
+    "caption_id": "Gudang Penyimpanan PT PMP",
+    "caption_en": "PT PMP Storage Warehouse",
+    "src": "images/gallery/WhatsApp Image 2026-03-11 at 17.56.24 (2).jpeg",
+    "order": 2
+  },
+  {
+    "id": "photo-062",
+    "album": "products_facility",
+    "caption_id": "Proses Loading Jagung",
+    "caption_en": "Corn Loading Process",
+    "src": "images/gallery/WhatsApp Image 2026-03-11 at 17.56.24 (5).jpeg",
+    "order": 3
+  },
+  {
+    "id": "photo-070",
+    "album": "products_corn",
+    "caption_id": "Jagung Pakan Berkualitas",
+    "caption_en": "Quality Feed Corn",
+    "src": "images/gallery/Corn.jpg",
+    "order": 1
+  },
+  {
+    "id": "photo-071",
+    "album": "products_corn",
+    "caption_id": "Hasil Panen Jagung",
+    "caption_en": "Corn Harvest",
+    "src": "images/gallery/Corn 2.jpg",
+    "order": 2
+  },
+  {
+    "id": "photo-072",
+    "album": "products_corn",
+    "caption_id": "Biji Jagung Pilihan",
+    "caption_en": "Selected Corn Kernels",
+    "src": "images/gallery/corn 3.jpg",
+    "order": 3
+  },
+  {
+    "id": "photo-080",
+    "album": "community_event",
+    "caption_id": "Kunjungan Pejabat Kepolisian",
+    "caption_en": "Police Officials Visit",
+    "src": "images/gallery/WhatsApp Image 2026-03-11 at 17.56.24 (4).jpeg",
+    "order": 1
+  },
+  {
+    "id": "photo-081",
+    "album": "community_event",
+    "caption_id": "Pemeriksaan Produk di Gudang",
+    "caption_en": "Product Inspection at Warehouse",
+    "src": "images/gallery/WhatsApp Image 2026-03-11 at 17.56.24 (7).jpeg",
+    "order": 2
+  },
+  {
+    "id": "photo-090",
+    "album": "harga_quality",
+    "caption_id": "Jagung Pakan Grade A",
+    "caption_en": "Grade A Feed Corn",
+    "src": "images/gallery/Corn.jpg",
+    "order": 1
+  },
+  {
+    "id": "photo-091",
+    "album": "harga_quality",
+    "caption_id": "Biji Jagung Kering",
+    "caption_en": "Dried Corn Kernels",
+    "src": "images/gallery/corn 3.jpg",
+    "order": 2
+  },
+  {
+    "id": "video-001",
+    "album": "home_video",
+    "caption_id": "Video Profil PT PMP",
+    "caption_en": "PT PMP Profile Video",
+    "src": "images/gallery/WhatsApp Video 2026-03-11 at 17.56.25.mp4",
+    "type": "video",
+    "order": 1
+  },
+  {
+    "id": "video-002",
+    "album": "about_video",
+    "caption_id": "Video Fasilitas dan Kegiatan PT PMP",
+    "caption_en": "PT PMP Facility and Activity Video",
+    "src": "images/gallery/WhatsApp Video 2026-03-11 at 17.56.30.mp4",
+    "type": "video",
+    "order": 1
   }
 ]

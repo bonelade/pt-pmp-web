@@ -120,7 +120,9 @@ function idbPutMany(photos, callback) {
 }
 
 // ============================
-// Load: IndexedDB → fallback JSON → fallback localStorage (migration)
+// Load: JSON first (primary source) → merge with IndexedDB admin additions
+// For static deployment (Vercel), photos.json is the single source of truth.
+// IndexedDB only stores admin-added extras that supplement the JSON data.
 // ============================
 function loadGalleryData(callback) {
   if (_galleryReady) {
@@ -130,59 +132,70 @@ function loadGalleryData(callback) {
   if (callback) _galleryCallbacks.push(callback);
   if (_galleryCallbacks.length > 1) return;
 
-  idbGetAll(function (photos) {
-    if (photos && photos.length > 0) {
-      _galleryCache = photos;
-      _galleryReady = true;
-      _migrateFromLocalStorage(); // clean up old localStorage data
-      _fireCallbacks();
-      return;
+  // Always fetch photos.json as primary source
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', GALLERY_JSON_URL, true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState !== 4) return;
+
+    var jsonPhotos = [];
+    if (xhr.status === 200 || xhr.status === 0) {
+      try {
+        jsonPhotos = JSON.parse(xhr.responseText);
+      } catch (e) { jsonPhotos = []; }
     }
 
-    // Check localStorage for legacy data to migrate
-    var localData = null;
-    try {
-      var raw = localStorage.getItem('pmp_gallery');
-      if (raw) localData = JSON.parse(raw);
-    } catch (e) { /* ignore */ }
+    // Then check IndexedDB for any admin-added photos (supplements JSON)
+    idbGetAll(function (idbPhotos) {
+      if (jsonPhotos.length > 0) {
+        // Build a map of JSON photo IDs
+        var jsonIds = {};
+        jsonPhotos.forEach(function (p) { jsonIds[p.id] = true; });
 
-    if (localData && localData.length > 0) {
-      // Migrate localStorage → IndexedDB
-      _galleryCache = localData;
-      idbPutMany(localData, function () {
-        // Clean up localStorage after migration
-        try { localStorage.removeItem('pmp_gallery'); } catch (e) { /* ignore */ }
-        _galleryReady = true;
-        _fireCallbacks();
-      });
-      return;
-    }
+        // Merge: JSON photos + any IndexedDB photos NOT already in JSON
+        var extras = (idbPhotos || []).filter(function (p) {
+          return !jsonIds[p.id];
+        });
+        _galleryCache = jsonPhotos.concat(extras);
 
-    // Fetch from JSON file
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', GALLERY_JSON_URL, true);
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState !== 4) return;
-      if (xhr.status === 200) {
-        try {
-          _galleryCache = JSON.parse(xhr.responseText);
-          // Save to IndexedDB
+        // Sync merged data back to IndexedDB for admin panel use
+        idbClear(function () {
           idbPutMany(_galleryCache, function () {
+            _galleryReady = true;
+            _migrateFromLocalStorage();
+            _fireCallbacks();
+          });
+        });
+      } else if (idbPhotos && idbPhotos.length > 0) {
+        // JSON unavailable — fallback to IndexedDB (offline/admin scenario)
+        _galleryCache = idbPhotos;
+        _galleryReady = true;
+        _migrateFromLocalStorage();
+        _fireCallbacks();
+      } else {
+        // Check localStorage for legacy migration
+        var localData = null;
+        try {
+          var raw = localStorage.getItem('pmp_gallery');
+          if (raw) localData = JSON.parse(raw);
+        } catch (e) { /* ignore */ }
+
+        if (localData && localData.length > 0) {
+          _galleryCache = localData;
+          idbPutMany(localData, function () {
+            try { localStorage.removeItem('pmp_gallery'); } catch (e) { /* ignore */ }
             _galleryReady = true;
             _fireCallbacks();
           });
-          return;
-        } catch (e) {
+        } else {
           _galleryCache = [];
+          _galleryReady = true;
+          _fireCallbacks();
         }
-      } else {
-        _galleryCache = [];
       }
-      _galleryReady = true;
-      _fireCallbacks();
-    };
-    xhr.send();
-  });
+    });
+  };
+  xhr.send();
 }
 
 function _migrateFromLocalStorage() {
