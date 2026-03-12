@@ -81,6 +81,46 @@ document.addEventListener('DOMContentLoaded', () => {
   // === Active nav re-scan after i18n ===
   // Already handled in nav.js
 
+  // === Gallery Carousel (auto-scroll train for >3 photos) ===
+  window.initGalleryCarousel = function(gridEl) {
+    if (!gridEl) return;
+    var items = gridEl.querySelectorAll('.gallery-item');
+    if (items.length <= 3) return; // keep grid if 3 or fewer
+
+    // Convert grid to carousel
+    gridEl.classList.remove('gallery-grid');
+    gridEl.classList.add('gallery-carousel');
+
+    // Create track with duplicated items for seamless loop
+    var track = document.createElement('div');
+    track.className = 'gallery-track';
+
+    // Add original items
+    items.forEach(function(item) { track.appendChild(item); });
+    // Duplicate all items for seamless infinite scroll
+    items.forEach(function(item) { track.appendChild(item.cloneNode(true)); });
+
+    gridEl.innerHTML = '';
+    gridEl.appendChild(track);
+
+    // Set duration based on item count (more items = slower)
+    var duration = Math.max(20, items.length * 5);
+    gridEl.style.setProperty('--scroll-duration', duration + 's');
+
+    // Re-bind lightbox click on cloned items
+    track.querySelectorAll('.gallery-item').forEach(function(item) {
+      item.addEventListener('click', function() {
+        var img = item.querySelector('img');
+        if (img && typeof window.openLightbox === 'function') {
+          window.openLightbox(img.src);
+        }
+      });
+    });
+
+    // Observe animations on new items
+    if (window.observeNewAnimations) window.observeNewAnimations(track);
+  };
+
   // === Offline / connection lost detection ===
   window.addEventListener('offline', function () {
     window.showToast('Tidak ada koneksi internet', 'error');

@@ -888,12 +888,15 @@
         var section = document.getElementById('harga-gallery-section');
         var grid = document.getElementById('harga-gallery-display');
         if (section) section.style.display = 'block';
-        if (grid) grid.innerHTML = photos.map(function (p) {
-          return '<div class="gallery-item animate-on-scroll" onclick="openLightbox(\'' + p.src.replace(/'/g, "&#39;") + '\')">' +
-            '<img src="' + p.src + '" alt="' + (p.caption_id || '') + '" loading="lazy">' +
-            (p.caption_id ? '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + p.caption_id + '</div></div>' : '') +
-            '</div>';
-        }).join('');
+        if (grid) {
+          grid.innerHTML = photos.map(function (p) {
+            return '<div class="gallery-item animate-on-scroll" onclick="openLightbox(\'' + p.src.replace(/'/g, "&#39;") + '\')">' +
+              '<img src="' + p.src + '" alt="' + (p.caption_id || '') + '" loading="lazy">' +
+              (p.caption_id ? '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + p.caption_id + '</div></div>' : '') +
+              '</div>';
+          }).join('');
+          if (window.initGalleryCarousel) window.initGalleryCarousel(grid);
+        }
         if (window.observeNewAnimations) window.observeNewAnimations();
       });
     }

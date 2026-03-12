@@ -1355,13 +1355,14 @@
           // Gallery photos
           var galleryPhotos = allPhotos.filter(function(p) { return p.album === 'home_gallery'; });
           var homeGalleryGrid = document.getElementById('home-gallery-display');
-          if (galleryPhotos.length > 0) {
-            if (homeGalleryGrid) homeGalleryGrid.innerHTML = galleryPhotos.slice(0, 8).map(function (p) {
+          if (galleryPhotos.length > 0 && homeGalleryGrid) {
+            homeGalleryGrid.innerHTML = galleryPhotos.slice(0, 8).map(function (p) {
               return '<div class="gallery-item animate-on-scroll" onclick="openLightbox(\'' + p.src.replace(/'/g, "&#39;") + '\')">' +
                 '<img src="' + p.src + '" alt="' + (p.caption_id || '') + '" loading="lazy">' +
                 (p.caption_id ? '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + p.caption_id + '</div></div>' : '') +
                 '</div>';
             }).join('');
+            if (window.initGalleryCarousel) window.initGalleryCarousel(homeGalleryGrid);
           }
 
           // Hero background from GalleryDB
@@ -1420,7 +1421,11 @@
       var _lbIdx = 0;
       function _getLightboxSrcs() {
         var items = document.querySelectorAll('#home-gallery-display .gallery-item img');
-        return Array.prototype.map.call(items, function(i) { return i.src; });
+        var srcs = [];
+        Array.prototype.forEach.call(items, function(i) {
+          if (srcs.indexOf(i.src) === -1) srcs.push(i.src);
+        });
+        return srcs;
       }
       window.openLightbox = function (src) {
         _lbSrcs = _getLightboxSrcs();
