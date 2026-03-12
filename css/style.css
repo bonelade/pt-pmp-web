@@ -1290,7 +1290,7 @@ footer::before {
 /* === Breadcrumb === */
 .page-hero {
   background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 60%, var(--color-primary-light) 100%);
-  padding: clamp(70px, 8vw, 90px) 0 clamp(36px, 5vw, 64px);
+  padding: clamp(119px, 13.6vw, 153px) 0 clamp(61px, 8.5vw, 109px);
   position: relative;
   overflow: hidden;
 }
@@ -1332,7 +1332,7 @@ footer::before {
 /* Page hero responsive */
 @media (max-width: 768px) {
   .page-hero {
-    padding: clamp(60px, 7vw, 80px) 0 clamp(28px, 4vw, 48px);
+    padding: clamp(102px, 11.9vw, 136px) 0 clamp(48px, 6.8vw, 82px);
   }
 
   .page-hero h1 {
@@ -1351,7 +1351,7 @@ footer::before {
 
 @media (max-width: 480px) {
   .page-hero {
-    padding: 56px 0 24px;
+    padding: 95px 0 41px;
   }
 
   .page-hero h1 {
@@ -1369,7 +1369,7 @@ footer::before {
 
 @media (max-width: 360px) {
   .page-hero {
-    padding: 50px 0 20px;
+    padding: 85px 0 34px;
   }
 
   .page-hero h1 {
