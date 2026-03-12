@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tentang Kami - PT Pangan Merah Putih</title>
   <meta name="description" content="Profil PT Pangan Merah Putih (PT PMP) - perusahaan pengeringan dan distribusi jagung pakan di Bengkayang, Kalimantan Barat. Visi, misi, dan sejarah perusahaan.">
-  <script>(function () { var l = localStorage.getItem('pmp_lang') || 'id'; document.documentElement.setAttribute('lang', l); document.documentElement.setAttribute('data-lang', l); var t = localStorage.getItem('pmp_theme') || 'light'; document.documentElement.setAttribute('data-theme', t); })()</script>
+  <script>(function () { var l = localStorage.getItem('pmp_lang') || 'id'; document.documentElement.setAttribute('lang', l); document.documentElement.setAttribute('data-lang', l); var t = localStorage.getItem('pmp_theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); document.documentElement.setAttribute('data-theme', t); })()</script>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/nav.css">
   <link rel="stylesheet" href="css/components.css">
@@ -425,6 +425,13 @@
       .info-label { min-width: 80px; }
       .vm-card { padding: 24px 18px; }
     }
+
+    /* Dark mode overrides */
+    [data-theme="dark"] .vm-ornament-lines::after,
+    [data-theme="dark"] .vm-ornament-lines::before { background: rgba(212, 175, 55, 0.3); }
+    [data-theme="dark"] .vm-card { background: #222220; border-color: var(--color-border); }
+    [data-theme="dark"] .about-stat-cell { border-color: var(--color-border); }
+    [data-theme="dark"] .profile-info-row { border-color: var(--color-border); }
   </style>
 </head>
 
@@ -775,14 +782,14 @@
                 '<div style="position:relative; padding-bottom:56.25%; height:0;">' +
                 '<iframe src="https://www.youtube.com/embed/' + ytMatch[1] + '" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:16px;" allowfullscreen></iframe>' +
                 '</div>' +
-                (v.caption_id ? '<div style="padding:12px 16px; background:white; font-size:0.88rem; font-weight:600;">' + v.caption_id + '</div>' : '') +
+                (v.caption_id ? '<div style="padding:12px 16px; font-size:0.88rem; font-weight:600; background:var(--color-white); color:var(--color-text);">' + v.caption_id + '</div>' : '') +
                 '</div>';
             } else {
               html += '<div style="position:relative; border-radius:16px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.12); margin-bottom:20px;">' +
                 '<video controls playsinline style="width:100%; display:block; border-radius:16px;">' +
                 '<source src="' + src + '" type="video/mp4">' +
                 '</video>' +
-                (v.caption_id ? '<div style="padding:12px 16px; background:white; font-size:0.88rem; font-weight:600;">' + v.caption_id + '</div>' : '') +
+                (v.caption_id ? '<div style="padding:12px 16px; font-size:0.88rem; font-weight:600; background:var(--color-white); color:var(--color-text);">' + v.caption_id + '</div>' : '') +
                 '</div>';
             }
           });

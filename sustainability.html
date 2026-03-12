@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Keberlanjutan - PT Pangan Merah Putih</title>
   <meta name="description" content="Komitmen keberlanjutan PT PMP: mengurangi kerugian pasca-panen, menjaga kualitas jagung, dan mendukung ketahanan pangan nasional Indonesia.">
-  <script>(function () { var l = localStorage.getItem('pmp_lang') || 'id'; document.documentElement.setAttribute('lang', l); document.documentElement.setAttribute('data-lang', l); var t = localStorage.getItem('pmp_theme') || 'light'; document.documentElement.setAttribute('data-theme', t); })()</script>
+  <script>(function () { var l = localStorage.getItem('pmp_lang') || 'id'; document.documentElement.setAttribute('lang', l); document.documentElement.setAttribute('data-lang', l); var t = localStorage.getItem('pmp_theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); document.documentElement.setAttribute('data-theme', t); })()</script>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/nav.css">
   <link rel="stylesheet" href="css/components.css">
@@ -117,6 +117,12 @@
     @media (max-width: 768px) {
       .challenge-card .challenge-icon { font-size: 1.8rem; }
     }
+
+    /* Dark mode */
+    [data-theme="dark"] .challenge-card { background: #222220; border-color: var(--color-border); }
+    [data-theme="dark"] .solution-card { background: #222220; border-color: var(--color-border); }
+    [data-theme="dark"] .quality-metrics { background: #222220; border-color: var(--color-border); }
+    [data-theme="dark"] .metric-box { border-color: var(--color-border); }
   </style>
 </head>
 

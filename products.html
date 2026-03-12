@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Produk & Jasa - PT Pangan Merah Putih</title>
   <meta name="description" content="Produk dan jasa PT PMP: jagung pipil kering Grade A, B, C untuk industri pakan ternak. Proses pengeringan vertical dryer berkapasitas 300 ton per hari.">
-  <script>(function () { var l = localStorage.getItem('pmp_lang') || 'id'; document.documentElement.setAttribute('lang', l); document.documentElement.setAttribute('data-lang', l); var t = localStorage.getItem('pmp_theme') || 'light'; document.documentElement.setAttribute('data-theme', t); })()</script>
+  <script>(function () { var l = localStorage.getItem('pmp_lang') || 'id'; document.documentElement.setAttribute('lang', l); document.documentElement.setAttribute('data-lang', l); var t = localStorage.getItem('pmp_theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); document.documentElement.setAttribute('data-theme', t); })()</script>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/nav.css">
   <link rel="stylesheet" href="css/components.css">
@@ -169,6 +169,11 @@
     @media (max-width: 480px) {
       .product-card-visual { min-height: 100px; }
     }
+
+    /* Dark mode */
+    [data-theme="dark"] .product-card { background: #222220; border-color: var(--color-border); }
+    [data-theme="dark"] .product-card-visual { background: #1a1a1a; }
+    [data-theme="dark"] .flow-step { background: #222220; border-color: var(--color-border); }
   </style>
 </head>
 

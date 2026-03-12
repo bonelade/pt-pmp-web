@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Harga Jagung - PT Pangan Merah Putih</title>
   <meta name="description" content="Harga jagung terkini PT PMP: Grade A, B, C dengan spesifikasi kadar air, aflatoksin, dan parameter kualitas lengkap.">
-  <script>(function () { var l = localStorage.getItem('pmp_lang') || 'id'; document.documentElement.setAttribute('lang', l); document.documentElement.setAttribute('data-lang', l); var t = localStorage.getItem('pmp_theme') || 'light'; document.documentElement.setAttribute('data-theme', t); })()</script>
+  <script>(function () { var l = localStorage.getItem('pmp_lang') || 'id'; document.documentElement.setAttribute('lang', l); document.documentElement.setAttribute('data-lang', l); var t = localStorage.getItem('pmp_theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); document.documentElement.setAttribute('data-theme', t); })()</script>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/nav.css">
   <link rel="stylesheet" href="css/components.css">
@@ -405,6 +405,31 @@
       .harga-tabel { font-size: 0.72rem; min-width: 600px; }
       .harga-tabel thead th, .harga-tabel tbody td { padding: 8px 6px; }
     }
+
+    /* Dark mode — grade cards & table rows */
+    [data-theme="dark"] .grade-price-card.grade-a {
+      background: linear-gradient(180deg, rgba(22, 163, 74, 0.12) 0%, #1e1e1c 100%);
+      border-color: rgba(22, 163, 74, 0.25);
+    }
+    [data-theme="dark"] .grade-price-card.grade-b {
+      background: linear-gradient(180deg, rgba(212, 175, 55, 0.12) 0%, #1e1e1c 100%);
+      border-color: rgba(212, 175, 55, 0.25);
+    }
+    [data-theme="dark"] .grade-price-card.grade-c {
+      background: linear-gradient(180deg, rgba(204, 34, 41, 0.12) 0%, #1e1e1c 100%);
+      border-color: rgba(204, 34, 41, 0.25);
+    }
+    [data-theme="dark"] .grade-price-card { box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3); }
+    [data-theme="dark"] .grade-price-card:hover { box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4); }
+    [data-theme="dark"] .harga-tabel .row-a { background: rgba(22, 163, 74, 0.08); }
+    [data-theme="dark"] .harga-tabel .row-b { background: rgba(212, 175, 55, 0.08); }
+    [data-theme="dark"] .harga-tabel .row-c { background: rgba(204, 34, 41, 0.08); }
+    [data-theme="dark"] .harga-tabel { background: #1e1e1c; }
+    [data-theme="dark"] .harga-tabel thead th { background: #222220; color: var(--color-text); border-color: var(--color-border); }
+    [data-theme="dark"] .harga-tabel tbody td { border-color: var(--color-border); }
+    [data-theme="dark"] .param-box { background: #222220; border-color: var(--color-border); }
+    [data-theme="dark"] .harga-intro { color: var(--color-text); }
+    [data-theme="dark"] .grade-spec span { background: rgba(255,255,255,0.06); }
   </style>
 </head>
 

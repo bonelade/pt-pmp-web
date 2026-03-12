@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Artikel - PT Pangan Merah Putih</title>
   <meta name="description" content="Baca artikel lengkap dari PT Pangan Merah Putih tentang industri jagung, ketahanan pangan, dan perkembangan perusahaan.">
-  <script>(function () { var l = localStorage.getItem('pmp_lang') || 'id'; document.documentElement.setAttribute('lang', l); document.documentElement.setAttribute('data-lang', l); var t = localStorage.getItem('pmp_theme') || 'light'; document.documentElement.setAttribute('data-theme', t); })()</script>
+  <script>(function () { var l = localStorage.getItem('pmp_lang') || 'id'; document.documentElement.setAttribute('lang', l); document.documentElement.setAttribute('data-lang', l); var t = localStorage.getItem('pmp_theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); document.documentElement.setAttribute('data-theme', t); })()</script>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/nav.css">
   <link rel="stylesheet" href="css/components.css">
@@ -180,6 +180,13 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* Dark mode */
+    [data-theme="dark"] .sidebar-card { background: #222220; border-color: var(--color-border); }
+    [data-theme="dark"] .related-thumb { background: #2a2a28; border-color: rgba(212, 175, 55, 0.18); }
+    [data-theme="dark"] .related-info a { color: var(--color-text); }
+    [data-theme="dark"] .article-thumbnail { background: #1e1e1c; border-color: rgba(212, 175, 55, 0.25); }
+    [data-theme="dark"] .article-meta { border-color: var(--color-border); }
   </style>
 </head>
 

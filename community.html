@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Komunitas & Pasar - PT Pangan Merah Putih</title>
   <meta name="description" content="Kemitraan PT PMP dengan petani jagung Kalimantan Barat: harga fair, akses pasar luas, dan dukungan untuk komunitas pertanian lokal.">
-  <script>(function () { var l = localStorage.getItem('pmp_lang') || 'id'; document.documentElement.setAttribute('lang', l); document.documentElement.setAttribute('data-lang', l); var t = localStorage.getItem('pmp_theme') || 'light'; document.documentElement.setAttribute('data-theme', t); })()</script>
+  <script>(function () { var l = localStorage.getItem('pmp_lang') || 'id'; document.documentElement.setAttribute('lang', l); document.documentElement.setAttribute('data-lang', l); var t = localStorage.getItem('pmp_theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); document.documentElement.setAttribute('data-theme', t); })()</script>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/nav.css">
   <link rel="stylesheet" href="css/components.css">
@@ -41,6 +41,9 @@
     .farmer-card h3 {
       margin-bottom: 12px;
     }
+
+    /* Dark mode */
+    [data-theme="dark"] .farmer-card { background: #222220; border-color: var(--color-border); }
   </style>
 </head>
 

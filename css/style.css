@@ -121,6 +121,93 @@
   background: #2a2a28; color: var(--color-text); border-color: var(--color-border);
 }
 
+/* Badges — dark mode tinted backgrounds */
+[data-theme="dark"] .badge-gold { background: rgba(212, 175, 55, 0.15); color: var(--color-gold-light); }
+[data-theme="dark"] .badge-green { background: rgba(45, 107, 74, 0.20); color: #6ee7a0; }
+[data-theme="dark"] .badge-red { background: rgba(204, 34, 41, 0.18); color: #fca5a5; }
+
+/* Icon boxes — darker gradient tints */
+[data-theme="dark"] .icon-box-gold {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.18), rgba(212, 175, 55, 0.10));
+  box-shadow: 0 4px 14px rgba(201, 147, 42, 0.12);
+}
+[data-theme="dark"] .icon-box-green {
+  background: linear-gradient(135deg, rgba(45, 107, 74, 0.22), rgba(45, 107, 74, 0.12));
+  box-shadow: 0 4px 14px rgba(26, 71, 49, 0.08);
+}
+
+/* Process flow */
+[data-theme="dark"] .process-icon { background: #2a2a28; }
+
+/* News card body text and link */
+[data-theme="dark"] .news-card-body p { color: var(--color-text-muted); }
+[data-theme="dark"] .news-card { background: #1e1e1c; border-color: var(--color-border); }
+
+/* Pagination */
+[data-theme="dark"] .page-btn { background: #2a2a28; border-color: var(--color-border); color: var(--color-text); }
+[data-theme="dark"] .page-btn:hover { border-color: var(--color-gold); color: var(--color-gold); }
+[data-theme="dark"] .page-btn.active { background: var(--color-gold); color: #1a1a1a; }
+
+/* Social icons */
+[data-theme="dark"] .social-icon-elegant {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.10);
+}
+[data-theme="dark"] .social-icon-elegant:hover { background: rgba(255, 255, 255, 0.12); }
+
+/* Footer text */
+[data-theme="dark"] footer a { color: var(--color-text-muted); }
+[data-theme="dark"] footer a:hover { color: var(--color-gold); }
+[data-theme="dark"] footer p, [data-theme="dark"] footer span { color: var(--color-text-muted); }
+[data-theme="dark"] .footer-brand .logo-text span { color: var(--color-red); }
+
+/* Links general */
+[data-theme="dark"] a { color: var(--color-gold); }
+[data-theme="dark"] .btn-link { color: var(--color-gold); }
+
+/* Section bg overrides for inline bg-white sections */
+[data-theme="dark"] .section.bg-white,
+[data-theme="dark"] section.bg-white { background: var(--color-white); }
+[data-theme="dark"] .section.bg-light,
+[data-theme="dark"] section.bg-light { background: var(--color-light); }
+
+/* About gallery caption */
+[data-theme="dark"] .gallery-item-overlay { background: rgba(0, 0, 0, 0.7); }
+[data-theme="dark"] .gallery-item-caption { color: #e8e6e0; }
+
+/* Gallery item gold frame — subtle in dark mode */
+[data-theme="dark"] .gallery-item::after {
+  border-color: rgba(212, 175, 55, 0.25);
+  box-shadow: inset 0 0 20px rgba(212, 175, 55, 0.06);
+}
+
+/* Reading progress */
+[data-theme="dark"] #reading-progress { background: rgba(20, 20, 19, 0.9); }
+
+/* Market cards */
+[data-theme="dark"] .market-card { background: #222220; border-color: var(--color-border); }
+[data-theme="dark"] .market-card::after { background: rgba(255, 255, 255, 0.02); }
+
+/* Lightbox dark background overlay */
+[data-theme="dark"] .lightbox-overlay { background: rgba(0, 0, 0, 0.92); }
+
+/* About page image wrap */
+[data-theme="dark"] .about-image-wrap { border-color: rgba(212, 175, 55, 0.25); }
+[data-theme="dark"] .about-gallery { border-color: rgba(212, 175, 55, 0.25); }
+
+/* Product card visual */
+[data-theme="dark"] .product-card-visual { background: #1e1e1c; }
+[data-theme="dark"] .product-card { background: #222220; border-color: var(--color-border); }
+
+/* CTA section — keep dark look */
+[data-theme="dark"] .cta-section { background: #0a1a10; }
+
+/* Smooth transition for theme change */
+body, .card, .news-card, .sidebar-card, footer, .page-hero, .section,
+.badge, .btn, .icon-box, .filter-tab, .page-btn, input, textarea, select {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
 /* === Reset === */
 *,
 *::before,
