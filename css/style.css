@@ -84,6 +84,12 @@
   border-color: var(--color-gold-light);
   color: var(--color-gold-light);
 }
+[data-theme="dark"] .bg-dark .btn-outline,
+[data-theme="dark"] .hero .btn-outline,
+[data-theme="dark"] .page-hero .btn-outline {
+  border-color: rgba(255,255,255,0.5);
+  color: #fff;
+}
 [data-theme="dark"] .page-hero { background: #0e1f16; }
 [data-theme="dark"] .page-hero h1 { color: #fff; }
 [data-theme="dark"] footer { background: #0e1f16; }
@@ -168,7 +174,8 @@
 [data-theme="dark"] .footer-brand .logo-text span { color: var(--color-red); }
 
 /* Links general */
-[data-theme="dark"] a { color: var(--color-gold-light); }
+[data-theme="dark"] a:not(.btn) { color: var(--color-gold-light); }
+[data-theme="dark"] .btn-primary { color: #1a1a1a; }
 [data-theme="dark"] .btn-link { color: var(--color-gold-light); }
 
 /* Section bg overrides for inline bg-white sections */
