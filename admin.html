@@ -624,7 +624,7 @@
           </div>
           <div class="admin-table-wrap">
             <table class="admin-table">
-              <thead><tr><th>Judul</th><th>Kategori</th><th>Tanggal</th><th>Thumbnail</th><th>Aksi</th></tr></thead>
+              <thead><tr><th>Foto</th><th>Judul</th><th>Kategori</th><th>Tanggal</th><th>Thumbnail</th><th>Aksi</th></tr></thead>
               <tbody id="articles-tbody"></tbody>
             </table>
           </div>
@@ -1397,7 +1397,7 @@
         <td>
           <div class="action-btns">
             <button class="btn-edit" onclick="editArticle('${a.id}')">${adminIcon('pencil',14)} Edit</button>
-            <button class="btn-delete" onclick="askDelete('${a.id}')">${adminIcon('trash',14)}</button>
+            <button class="btn-delete" onclick="askDelete('${a.id}')">${adminIcon('trash',14)} Hapus</button>
           </div>
         </td>
       </tr>`;
@@ -1441,8 +1441,13 @@
 
     if (arts.length === 0) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
     empty.style.display = 'none';
-    tbody.innerHTML = arts.map(a => `
+    tbody.innerHTML = arts.map(a => {
+      var artThumb = a.thumbnail
+        ? '<img src="' + a.thumbnail + '" alt="" class="art-thumb-img">'
+        : '<div class="art-thumb-placeholder">📄</div>';
+      return `
       <tr>
+        <td class="art-thumb-cell">${artThumb}</td>
         <td class="article-title">${a.title_id}<small>${a.title_en || '—'}</small></td>
         <td><span class="badge ${catColors[a.category] || 'badge-gold'}">${catLabels[a.category] || a.category}</span></td>
         <td>${window.NewsDB.formatDate(a.date, 'id')}</td>
@@ -1454,7 +1459,8 @@
             <button class="btn-delete" onclick="askDelete('${a.id}')">${adminIcon('trash',14)} Hapus</button>
           </div>
         </td>
-      </tr>`).join('');
+      </tr>`;
+    }).join('');
   }
 
   // ============================

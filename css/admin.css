@@ -601,6 +601,23 @@ html { overflow-x: hidden; }
   margin-top: 6px;
 }
 
+/* === Article thumbnail in table === */
+.art-thumb-cell { width: 60px; }
+.art-thumb-img {
+  width: 52px; height: 52px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
+.art-thumb-placeholder {
+  width: 52px; height: 52px;
+  border-radius: 8px;
+  background: var(--color-light);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-text-muted);
+  font-size: 1.2rem;
+}
+
 /* === Mobile Table Improvements — General card layout for all tables === */
 @media (max-width: 640px) {
   .admin-table-wrap {
@@ -645,14 +662,33 @@ html { overflow-x: hidden; }
   }
   .btn-edit, .btn-delete { padding: 5px 10px; font-size: 0.75rem; }
 
-  /* ── Article table: compact card per row ── */
+  /* ── Article table: card layout with photo ── */
   #page-articles .admin-table tbody tr {
-    flex-direction: column;
-    gap: 4px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0;
+    padding: 14px 16px;
   }
+  /* Photo cell */
   #page-articles .admin-table td:first-child {
+    flex-shrink: 0;
+    font-weight: normal;
+    margin-right: 14px;
+  }
+  #page-articles .admin-table td:first-child .art-thumb-img {
+    width: 68px; height: 68px; border-radius: 10px;
+  }
+  #page-articles .admin-table td:first-child .art-thumb-placeholder {
+    width: 68px; height: 68px; border-radius: 10px;
+  }
+  /* Title cell — beside photo */
+  #page-articles .admin-table td:nth-child(2) {
+    flex: 1;
+    min-width: 0;
+    font-weight: 600;
     font-size: 0.88rem;
-    line-height: 1.3;
+    line-height: 1.35;
   }
   #page-articles .admin-table .article-title {
     max-width: none;
@@ -664,48 +700,73 @@ html { overflow-x: hidden; }
   #page-articles .admin-table .article-title small {
     display: none;
   }
-  /* Kategori + Tanggal — single line meta */
-  #page-articles .admin-table td:nth-child(2),
+  /* Kategori — use as line-break spacer */
   #page-articles .admin-table td:nth-child(3) {
+    flex-basis: 100%;
+    height: 0;
+    overflow: hidden;
+    padding: 0; margin: 0;
+    font-size: 0; line-height: 0;
+  }
+  #page-articles .admin-table td:nth-child(3) * { display: none; }
+  /* Tanggal — bottom-left */
+  #page-articles .admin-table td:nth-child(4) {
     font-size: 0.75rem;
     color: var(--color-text-muted);
-    display: inline;
+    margin-top: 10px;
   }
   /* Thumbnail status — hide on mobile */
-  #page-articles .admin-table td:nth-child(4) { display: none; }
-  /* Action buttons — horizontal row */
-  #page-articles .admin-table td:nth-child(5) {
-    margin-top: 4px;
+  #page-articles .admin-table td:nth-child(5) { display: none; }
+  /* Action buttons — bottom-right */
+  #page-articles .admin-table td:nth-child(6) {
+    margin-top: 10px;
+    margin-left: auto;
   }
   #page-articles .action-btns {
     flex-wrap: nowrap;
+    gap: 8px;
+  }
+  #page-articles .btn-edit,
+  #page-articles .btn-delete {
+    padding: 6px 12px;
+    font-size: 0.78rem;
+  }
+  #page-articles .btn-delete {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
   }
 
-  /* ── Dashboard table: compact horizontal card ── */
+  /* ── Dashboard table: vertical card layout ── */
   #page-dashboard .admin-table tbody tr {
     flex-direction: row;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0;
+    padding: 14px 16px;
+    position: relative;
   }
-  /* Photo cell — small fixed thumb */
+  /* Photo cell — bigger thumbnail */
   #page-dashboard .admin-table td:first-child {
     flex-shrink: 0;
     font-weight: normal;
     font-size: inherit;
+    margin-right: 14px;
   }
   #page-dashboard .admin-table td:first-child img,
   #page-dashboard .admin-table td:first-child div {
-    width: 44px !important;
-    height: 44px !important;
+    width: 72px !important;
+    height: 72px !important;
+    border-radius: 10px !important;
   }
-  /* Title cell — fills remaining, truncated */
+  /* Title cell — beside photo */
   #page-dashboard .admin-table td:nth-child(2) {
     flex: 1;
     min-width: 0;
     font-weight: 600;
-    font-size: 0.84rem;
-    line-height: 1.3;
+    font-size: 0.88rem;
+    line-height: 1.35;
+    padding-top: 2px;
   }
   #page-dashboard .admin-table td:nth-child(2) .article-title {
     max-width: none;
@@ -717,24 +778,42 @@ html { overflow-x: hidden; }
   #page-dashboard .admin-table td:nth-child(2) .article-title small {
     display: none;
   }
-  /* Kategori — small badge inline */
+  /* Kategori — use as line-break spacer */
   #page-dashboard .admin-table td:nth-child(3) {
-    display: none;
+    flex-basis: 100%;
+    height: 0;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    font-size: 0;
+    line-height: 0;
   }
-  /* Tanggal — compact */
+  #page-dashboard .admin-table td:nth-child(3) * { display: none; }
+  /* Tanggal — bottom-left */
   #page-dashboard .admin-table td:nth-child(4) {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     color: var(--color-text-muted);
     white-space: nowrap;
-    flex-shrink: 0;
+    margin-top: 10px;
   }
-  /* Action buttons — compact right side */
+  /* Actions — bottom-right */
   #page-dashboard .admin-table td:nth-child(5) {
-    flex-shrink: 0;
-    margin-top: 0;
+    margin-top: 10px;
+    margin-left: auto;
   }
   #page-dashboard .action-btns {
     flex-wrap: nowrap;
+    gap: 8px;
+  }
+  #page-dashboard .btn-edit,
+  #page-dashboard .btn-delete {
+    padding: 6px 14px;
+    font-size: 0.78rem;
+  }
+  #page-dashboard .btn-delete {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
   }
 }
 
