@@ -896,7 +896,7 @@
     <div class="container" style="position: relative; z-index: 1;">
       <div class="about-split">
         <div class="about-image-wrap animate-on-scroll">
-          <img id="about-section-photo" src="images/gallery/PrabowoPTPMP.jpeg" alt="Peresmian PT PMP" style="width:100%; height:100%; object-fit:cover; position:absolute; inset:0;">
+          <img id="about-section-photo" src="images/gallery/PrabowoPTPMP.jpeg" alt="Peresmian PT PMP" loading="lazy" style="width:100%; height:100%; object-fit:cover; position:absolute; inset:0;">
           <div class="about-badge-strip">
             <div class="strip-flag">🇮🇩</div>
             <div>
@@ -1031,10 +1031,9 @@
         <div class="section-divider"></div>
       </div>
       <div class="grid grid-3" id="home-news-grid">
-        <div class="empty-state">
-          <div class="empty-icon">📰</div>
-          <p data-i18n="home_news_empty">Belum ada berita yang dipublikasikan.</p>
-        </div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
       </div>
       <div class="text-center" style="margin-top:40px;">
         <a href="news.html" class="btn btn-dark" data-i18n="home_news_btn">Lihat Semua Berita</a>
@@ -1066,15 +1065,20 @@
         <div class="section-divider"></div>
       </div>
       <div class="gallery-grid" id="home-gallery-display">
-        <p id="home-gallery-placeholder" style="text-align:center; color:#888; grid-column:1/-1;">Belum ada foto untuk ditampilkan.</p>
+        <div class="skeleton" style="aspect-ratio:4/3"></div>
+        <div class="skeleton" style="aspect-ratio:4/3"></div>
+        <div class="skeleton" style="aspect-ratio:4/3"></div>
+        <div class="skeleton" style="aspect-ratio:4/3"></div>
       </div>
     </div>
   </section>
 
   <!-- Lightbox -->
   <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-arrow lightbox-prev" onclick="event.stopPropagation();lightboxNav(-1)" aria-label="Previous">&#10094;</button>
     <span class="lightbox-close">✕</span>
-    <img class="lightbox-img" id="lightbox-img" src="" alt="">
+    <img class="lightbox-img" id="lightbox-img" src="" alt="" onclick="event.stopPropagation()">
+    <button class="lightbox-arrow lightbox-next" onclick="event.stopPropagation();lightboxNav(1)" aria-label="Next">&#10095;</button>
   </div>
 
   <!-- CTA Section -->
@@ -1409,7 +1413,17 @@
           if (window.observeNewAnimations) window.observeNewAnimations();
         });
       }
+      // Lightbox with arrow key & button navigation
+      var _lbSrcs = [];
+      var _lbIdx = 0;
+      function _getLightboxSrcs() {
+        var items = document.querySelectorAll('#home-gallery-display .gallery-item img');
+        return Array.prototype.map.call(items, function(i) { return i.src; });
+      }
       window.openLightbox = function (src) {
+        _lbSrcs = _getLightboxSrcs();
+        _lbIdx = _lbSrcs.indexOf(src);
+        if (_lbIdx < 0) _lbIdx = 0;
         var lb = document.getElementById('lightbox');
         var img = document.getElementById('lightbox-img');
         if (img) img.src = src;
@@ -1419,6 +1433,18 @@
         var lb = document.getElementById('lightbox');
         if (lb) lb.classList.remove('open');
       };
+      window.lightboxNav = function (dir) {
+        if (_lbSrcs.length === 0) return;
+        _lbIdx = (_lbIdx + dir + _lbSrcs.length) % _lbSrcs.length;
+        var img = document.getElementById('lightbox-img');
+        if (img) img.src = _lbSrcs[_lbIdx];
+      };
+      document.addEventListener('keydown', function (e) {
+        var lb = document.getElementById('lightbox');
+        if (!lb || !lb.classList.contains('open')) return;
+        if (e.key === 'ArrowLeft') lightboxNav(-1);
+        if (e.key === 'ArrowRight') lightboxNav(1);
+      });
       document.addEventListener('click', function (e) {
         if (e.target && e.target.classList.contains('lightbox-close')) closeLightbox();
       });

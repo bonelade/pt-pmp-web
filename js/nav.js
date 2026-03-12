@@ -80,9 +80,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Close on Escape
+  // Close on Escape (nav panel + lightbox)
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closePanel();
+    if (e.key === 'Escape') {
+      // Close lightbox first if open
+      var lb = document.getElementById('lightbox');
+      if (lb && lb.classList.contains('open')) {
+        if (typeof closeLightbox === 'function') closeLightbox();
+        return;
+      }
+      closePanel();
+    }
   });
 
   // Active link detection

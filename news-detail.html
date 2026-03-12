@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Artikel - PT Pangan Merah Putih</title>
+  <meta name="description" content="Baca artikel lengkap dari PT Pangan Merah Putih tentang industri jagung, ketahanan pangan, dan perkembangan perusahaan.">
   <script>(function () { var l = localStorage.getItem('pmp_lang') || 'id'; document.documentElement.setAttribute('lang', l); document.documentElement.setAttribute('data-lang', l); })()</script>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/nav.css">
@@ -394,7 +395,20 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-      window.NewsDB.loadNews(function() { renderArticle(); });
+      window.NewsDB.loadNews(function() {
+        renderArticle();
+        // Click-to-zoom on inline article images
+        document.querySelectorAll('.article-content img, .article-thumbnail img').forEach(function(img) {
+          img.style.cursor = 'zoom-in';
+          img.addEventListener('click', function() {
+            var overlay = document.createElement('div');
+            overlay.className = 'lightbox-overlay open';
+            overlay.innerHTML = '<span class="lightbox-close">✕</span><img class="lightbox-img" src="' + img.src + '" alt="' + (img.alt || '') + '">';
+            document.body.appendChild(overlay);
+            overlay.addEventListener('click', function() { overlay.remove(); });
+          });
+        });
+      });
     });
   </script>
   <!-- Floating WhatsApp Button -->

@@ -80,4 +80,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // === Active nav re-scan after i18n ===
   // Already handled in nav.js
+
+  // === Offline / connection lost detection ===
+  window.addEventListener('offline', function () {
+    window.showToast('Tidak ada koneksi internet', 'error');
+  });
+  window.addEventListener('online', function () {
+    window.showToast('Koneksi kembali tersedia', 'success');
+  });
 });
