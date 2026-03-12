@@ -197,7 +197,7 @@
   top: 0;
   left: 0;
   bottom: 0;
-  width: 280px;
+  width: min(280px, 85vw);
   background: rgba(8, 24, 16, 0.98);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);

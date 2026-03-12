@@ -13,7 +13,7 @@
 
 .process-step {
   flex: 1;
-  min-width: 140px;
+  min-width: 100px;
   text-align: center;
   position: relative;
   padding: 0 8px;
@@ -32,15 +32,15 @@
 }
 
 .process-icon {
-  width: 72px;
-  height: 72px;
+  width: clamp(52px, 6vw, 72px);
+  height: clamp(52px, 6vw, 72px);
   border-radius: 50%;
   background: var(--color-light);
   border: 3px solid var(--color-gold);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.6rem;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
   margin: 0 auto 12px;
   transition: var(--transition);
 }
@@ -68,10 +68,9 @@
 .revenue-card {
   background: var(--color-white);
   border-radius: var(--radius-card);
-  padding: 36px 28px;
+  padding: clamp(20px, 3vw, 36px) clamp(16px, 2.5vw, 28px);
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
-  /* Default soft shadow */
   transition: var(--transition);
   position: relative;
   overflow: hidden;
@@ -123,9 +122,8 @@
 /* === Advantage Card === */
 .advantage-card {
   display: flex;
-  gap: 20px;
-  padding: 32px;
-  /* slightly more padding */
+  gap: clamp(12px, 2vw, 20px);
+  padding: clamp(20px, 3vw, 32px);
   background: var(--color-white);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-sm);
@@ -217,7 +215,7 @@
   display: grid;
   grid-template-columns: 1fr auto 1fr auto 1fr;
   align-items: stretch;
-  gap: 24px;
+  gap: clamp(12px, 2vw, 24px);
   max-width: 900px;
   margin: 0 auto;
 }
@@ -225,7 +223,7 @@
 .stakeholder-box {
   background: rgba(255, 255, 255, 0.06);
   border-radius: 16px;
-  padding: 36px 24px 28px;
+  padding: clamp(20px, 3vw, 36px) clamp(14px, 2vw, 24px) clamp(16px, 2.5vw, 28px);
   text-align: center;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -279,9 +277,9 @@
 }
 
 .stakeholder-box .sbox-icon {
-  width: 60px;
-  height: 60px;
-  margin: 0 auto 16px;
+  width: clamp(44px, 5vw, 60px);
+  height: clamp(44px, 5vw, 60px);
+  margin: 0 auto clamp(10px, 1.5vw, 16px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -355,13 +353,13 @@
 
 .news-card-img {
   width: 100%;
-  height: 200px;
+  height: clamp(140px, 18vw, 200px);
   object-fit: cover;
   background: var(--color-light);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
+  font-size: clamp(2rem, 3vw, 3rem);
   color: var(--color-text-muted);
   overflow: hidden;
   position: relative;
@@ -384,7 +382,7 @@
 }
 
 .news-card-body {
-  padding: 24px;
+  padding: clamp(14px, 2vw, 24px);
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -440,9 +438,9 @@
 }
 
 .filter-tab {
-  padding: 8px 20px;
+  padding: clamp(6px, 1vw, 8px) clamp(14px, 2vw, 20px);
   border-radius: 20px;
-  font-size: 0.8rem;
+  font-size: clamp(0.72rem, 1.1vw, 0.8rem);
   font-weight: 600;
   border: 1.5px solid var(--color-border);
   color: var(--color-text-muted);
@@ -475,8 +473,8 @@
 }
 
 .page-btn {
-  width: 40px;
-  height: 40px;
+  width: clamp(34px, 4vw, 40px);
+  height: clamp(34px, 4vw, 40px);
   border-radius: 8px;
   border: 1.5px solid var(--color-border);
   background: var(--color-white);
@@ -510,7 +508,7 @@
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
   color: var(--color-white);
   border-radius: var(--radius-card);
-  padding: 36px 28px;
+  padding: clamp(20px, 3vw, 36px) clamp(16px, 2.5vw, 28px);
   transition: var(--transition);
   position: relative;
   overflow: hidden;
@@ -549,7 +547,7 @@
 
 .market-card .market-number {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
+  font-size: clamp(1.6rem, 3.5vw, 2.5rem);
   font-weight: 800;
   color: var(--color-gold);
   line-height: 1;
@@ -578,12 +576,12 @@
 /* === Empty State === */
 .empty-state {
   text-align: center;
-  padding: 80px 24px;
+  padding: clamp(40px, 6vw, 80px) clamp(16px, 2vw, 24px);
   color: var(--color-text-muted);
 }
 
 .empty-state .empty-icon {
-  font-size: 4rem;
+  font-size: clamp(2.5rem, 5vw, 4rem);
   margin-bottom: 16px;
   opacity: 0.35;
 }
@@ -595,20 +593,21 @@
 /* === Toast Notification === */
 .toast {
   position: fixed;
-  bottom: 28px;
+  bottom: clamp(16px, 3vw, 28px);
   left: 50%;
   transform: translateX(-50%) translateY(100px);
   background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
   color: var(--color-white);
-  padding: 14px 28px;
+  padding: clamp(10px, 1.5vw, 14px) clamp(16px, 3vw, 28px);
   border-radius: 50px;
-  font-size: 0.88rem;
+  font-size: clamp(0.78rem, 1.2vw, 0.88rem);
   font-weight: 600;
   box-shadow: 0 8px 32px rgba(26, 71, 49, 0.3);
   z-index: 9999;
   opacity: 0;
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
   white-space: nowrap;
+  max-width: 90vw;
 }
 
 .toast.show {
@@ -654,38 +653,9 @@
     margin: 8px 0;
   }
 
-  /* News cards mobile */
-  .news-card-img {
-    height: 160px;
-  }
-
-  .news-card-body {
-    padding: 16px;
-  }
-
-  .news-card-body h3 {
-    font-size: 1rem;
-  }
-
-  .news-card-body p {
-    font-size: 0.82rem;
-  }
 }
 
 @media (max-width: 480px) {
-  .news-card-img {
-    height: 140px;
-  }
-
-  .news-card-body {
-    padding: 14px;
-  }
-
-  .process-icon {
-    width: 52px;
-    height: 52px;
-  }
-
   .stakeholder-card {
     padding: 16px;
   }

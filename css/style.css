@@ -121,7 +121,7 @@ h3 {
 }
 
 h4 {
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
   font-weight: 600;
 }
 
@@ -143,21 +143,21 @@ p:last-child {
 }
 
 .section {
-  padding: 80px 0;
+  padding: clamp(36px, 6vw, 80px) 0;
 }
 
 .section-sm {
-  padding: 50px 0;
+  padding: clamp(28px, 4vw, 50px) 0;
 }
 
 .section-lg {
-  padding: 120px 0;
+  padding: clamp(48px, 8vw, 120px) 0;
 }
 
 /* === Section Headers === */
 .section-header {
   text-align: center;
-  margin-bottom: 52px;
+  margin-bottom: clamp(28px, 4vw, 52px);
 }
 
 .section-header .label {
@@ -165,13 +165,13 @@ p:last-child {
   background: rgba(212, 175, 55, 0.1);
   color: var(--color-gold);
   border: 1px solid rgba(212, 175, 55, 0.3);
-  font-size: 0.75rem;
+  font-size: clamp(0.65rem, 1.2vw, 0.75rem);
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  padding: 6px 18px;
+  padding: clamp(4px, 0.8vw, 6px) clamp(12px, 2vw, 18px);
   border-radius: 30px;
-  margin-bottom: 24px;
+  margin-bottom: clamp(16px, 2.5vw, 24px);
   backdrop-filter: blur(8px);
 }
 
@@ -523,11 +523,11 @@ p:last-child {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 14px 32px;
+  gap: 8px;
+  padding: clamp(10px, 1.5vw, 14px) clamp(20px, 3vw, 32px);
   border-radius: 50px;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: clamp(0.82rem, 1.3vw, 0.95rem);
   letter-spacing: 0.02em;
   transition: var(--transition);
   line-height: 1;
@@ -576,13 +576,13 @@ p:last-child {
 }
 
 .btn-sm {
-  padding: 10px 22px;
-  font-size: 0.85rem;
+  padding: clamp(8px, 1vw, 10px) clamp(16px, 2vw, 22px);
+  font-size: clamp(0.78rem, 1.1vw, 0.85rem);
 }
 
 .btn-lg {
-  padding: 18px 40px;
-  font-size: 1.05rem;
+  padding: clamp(14px, 2vw, 18px) clamp(28px, 3.5vw, 40px);
+  font-size: clamp(0.9rem, 1.4vw, 1.05rem);
 }
 
 /* === Cards === */
@@ -600,7 +600,7 @@ p:last-child {
 }
 
 .card-body {
-  padding: 28px;
+  padding: clamp(16px, 2.5vw, 28px);
 }
 
 .card-body h3 {
@@ -610,7 +610,7 @@ p:last-child {
 /* === Grid Utilities === */
 .grid {
   display: grid;
-  gap: 32px;
+  gap: clamp(16px, 3vw, 32px);
 }
 
 .grid-2 {
@@ -653,14 +653,14 @@ p:last-child {
 
 /* === Icon Box === */
 .icon-box {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
+  width: clamp(48px, 5vw, 64px);
+  height: clamp(48px, 5vw, 64px);
+  border-radius: clamp(12px, 1.5vw, 16px);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.7rem;
-  margin-bottom: 20px;
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+  margin-bottom: clamp(14px, 2vw, 20px);
   flex-shrink: 0;
   transition: var(--transition);
 }
@@ -714,7 +714,7 @@ p:last-child {
 
 .stat-item {
   text-align: center;
-  padding: 44px 24px;
+  padding: clamp(24px, 3.5vw, 44px) clamp(12px, 2vw, 24px);
   border-right: 1px solid rgba(255, 255, 255, 0.07);
   position: relative;
   z-index: 1;
@@ -739,7 +739,7 @@ p:last-child {
 
 .stat-number {
   font-family: var(--font-heading);
-  font-size: 3rem;
+  font-size: clamp(1.8rem, 4vw, 3rem);
   font-weight: 800;
   color: var(--color-gold);
   line-height: 1;
@@ -748,7 +748,7 @@ p:last-child {
 }
 
 .stat-label {
-  font-size: 0.85rem;
+  font-size: clamp(0.68rem, 1.2vw, 0.85rem);
   color: rgba(255, 255, 255, 0.7);
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -859,7 +859,7 @@ p:last-child {
 footer {
   background: linear-gradient(180deg, #0d2419 0%, #0a1d15 100%);
   color: rgba(255, 255, 255, 0.8);
-  padding: 70px 0 0;
+  padding: clamp(36px, 5vw, 70px) 0 0;
   position: relative;
 }
 
@@ -876,13 +876,13 @@ footer::before {
 .footer-grid {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 40px;
-  padding-bottom: 40px;
+  gap: clamp(20px, 3vw, 40px);
+  padding-bottom: clamp(20px, 3vw, 40px);
 }
 
 .footer-brand .logo-text {
   font-family: var(--font-heading);
-  font-size: 1.4rem;
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
   font-weight: 800;
   color: var(--color-white);
   margin-bottom: 4px;
@@ -949,7 +949,7 @@ footer::before {
 /* === Breadcrumb === */
 .page-hero {
   background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 60%, var(--color-primary-light) 100%);
-  padding: 90px 0 64px;
+  padding: clamp(70px, 8vw, 90px) 0 clamp(36px, 5vw, 64px);
   position: relative;
   overflow: hidden;
 }
@@ -1009,10 +1009,6 @@ footer::before {
 }
 
 @media (max-width: 768px) {
-  .section {
-    padding: 60px 0;
-  }
-
   .grid-2,
   .grid-3 {
     grid-template-columns: 1fr;
@@ -1030,16 +1026,6 @@ footer::before {
 
   .stat-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .section {
-    padding: 48px 0;
-  }
-
-  .section-header h2 {
-    font-size: clamp(1.3rem, 4vw, 2rem);
   }
 
   /* Cloud ornaments - reduce overflow */
@@ -1068,10 +1054,6 @@ footer::before {
 @media (max-width: 480px) {
   :root {
     --container-pad: 16px;
-  }
-
-  .section {
-    padding: 36px 0;
   }
 
   .stat-grid {
@@ -1108,10 +1090,6 @@ footer::before {
     height: 15px;
   }
 
-  /* Footer */
-  .footer-brand .logo-text {
-    font-size: 1.1rem;
-  }
 }
 
 /* === Enhanced Section Labels (dark bg override) === */
@@ -1289,18 +1267,18 @@ iframe[src*="youtube"]:hover {
 }
 
 .lightbox-img {
-  max-width: 90vw;
+  max-width: 92vw;
   max-height: 85vh;
-  border-radius: 8px;
+  border-radius: clamp(4px, 1vw, 8px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
 .lightbox-close {
   position: absolute;
-  top: 20px;
-  right: 24px;
+  top: clamp(10px, 2vw, 20px);
+  right: clamp(12px, 2.5vw, 24px);
   color: white;
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 3vw, 2rem);
   cursor: pointer;
   line-height: 1;
   opacity: 0.7;

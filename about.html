@@ -14,7 +14,7 @@
     .profile-split {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 60px;
+      gap: clamp(24px, 5vw, 60px);
       align-items: stretch;
     }
 
@@ -158,7 +158,7 @@
       position: relative;
       background: linear-gradient(155deg, #0f3d26 0%, var(--color-primary-dark) 100%);
       border-radius: var(--radius-lg);
-      padding: 40px;
+      padding: clamp(20px, 3.5vw, 40px);
       color: white;
       overflow: hidden;
       border: 1px solid rgba(201, 147, 42, 0.15);
@@ -213,7 +213,7 @@
     }
 
     .about-stat-cell {
-      padding: 28px 20px;
+      padding: clamp(16px, 2.5vw, 28px) clamp(12px, 1.8vw, 20px);
       text-align: center;
       position: relative;
       background: rgba(255, 255, 255, 0.04);
@@ -227,7 +227,7 @@
 
     .about-stat-num {
       font-family: var(--font-heading);
-      font-size: 2.4rem;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
       font-weight: 800;
       color: var(--color-gold);
       line-height: 1;
@@ -261,7 +261,7 @@
 
     .vm-card {
       border-radius: var(--radius-card);
-      padding: 44px 40px;
+      padding: clamp(24px, 3.5vw, 44px) clamp(20px, 3vw, 40px);
       position: relative;
       overflow: hidden;
       border: 1px solid rgba(255, 255, 255, 0.08);

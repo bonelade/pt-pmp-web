@@ -12,8 +12,8 @@
   <style>
     .article-layout {
       display: grid;
-      grid-template-columns: 1fr 320px;
-      gap: 48px;
+      grid-template-columns: 1fr clamp(240px, 25vw, 320px);
+      gap: clamp(24px, 4vw, 48px);
       align-items: start;
     }
 
@@ -26,25 +26,25 @@
     .article-meta {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: clamp(10px, 1.5vw, 16px);
       flex-wrap: wrap;
-      margin-bottom: 24px;
-      padding-bottom: 24px;
+      margin-bottom: clamp(16px, 2vw, 24px);
+      padding-bottom: clamp(16px, 2vw, 24px);
       border-bottom: 2px solid var(--color-border);
     }
 
     .article-thumbnail {
       width: 100%;
-      max-height: 420px;
+      max-height: clamp(260px, 35vw, 420px);
       object-fit: cover;
       border-radius: var(--radius-card);
-      margin-bottom: 32px;
+      margin-bottom: clamp(20px, 3vw, 32px);
       background: var(--color-light);
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 200px;
-      font-size: 6rem;
+      min-height: clamp(140px, 18vw, 200px);
+      font-size: clamp(3rem, 5vw, 6rem);
       overflow: hidden;
       position: relative;
       border: 2px solid rgba(212, 175, 55, 0.35);
@@ -101,10 +101,10 @@
     .sidebar-card {
       background: var(--color-white);
       border-radius: var(--radius-card);
-      padding: 24px;
+      padding: clamp(16px, 2vw, 24px);
       box-shadow: var(--shadow-card);
       border: 1px solid var(--color-border);
-      margin-bottom: 24px;
+      margin-bottom: clamp(16px, 2vw, 24px);
     }
 
     .sidebar-card h4 {
