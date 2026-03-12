@@ -645,50 +645,96 @@ html { overflow-x: hidden; }
   }
   .btn-edit, .btn-delete { padding: 5px 10px; font-size: 0.75rem; }
 
-  /* ── Article table specific card tweaks ── */
-  #page-articles .admin-table .article-title { max-width: none; }
-  /* Kategori + Tanggal — inline metadata row */
+  /* ── Article table: compact card per row ── */
+  #page-articles .admin-table tbody tr {
+    flex-direction: column;
+    gap: 4px;
+  }
+  #page-articles .admin-table td:first-child {
+    font-size: 0.88rem;
+    line-height: 1.3;
+  }
+  #page-articles .admin-table .article-title {
+    max-width: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  #page-articles .admin-table .article-title small {
+    display: none;
+  }
+  /* Kategori + Tanggal — single line meta */
   #page-articles .admin-table td:nth-child(2),
   #page-articles .admin-table td:nth-child(3) {
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     color: var(--color-text-muted);
     display: inline;
   }
-  /* Thumbnail — hide on mobile card */
+  /* Thumbnail status — hide on mobile */
   #page-articles .admin-table td:nth-child(4) { display: none; }
+  /* Action buttons — horizontal row */
+  #page-articles .admin-table td:nth-child(5) {
+    margin-top: 4px;
+  }
+  #page-articles .action-btns {
+    flex-wrap: nowrap;
+  }
 
-  /* ── Dashboard table: photo + article card layout ── */
+  /* ── Dashboard table: compact horizontal card ── */
   #page-dashboard .admin-table tbody tr {
     flex-direction: row;
-    flex-wrap: wrap;
     align-items: center;
     gap: 12px;
+    padding: 12px 16px;
   }
-  /* Photo cell — stays visible as small thumb */
+  /* Photo cell — small fixed thumb */
   #page-dashboard .admin-table td:first-child {
     flex-shrink: 0;
     font-weight: normal;
     font-size: inherit;
   }
-  /* Title cell — fills remaining space */
+  #page-dashboard .admin-table td:first-child img,
+  #page-dashboard .admin-table td:first-child div {
+    width: 44px !important;
+    height: 44px !important;
+  }
+  /* Title cell — fills remaining, truncated */
   #page-dashboard .admin-table td:nth-child(2) {
     flex: 1;
     min-width: 0;
-    font-weight: 700;
-    font-size: 0.9rem;
+    font-weight: 600;
+    font-size: 0.84rem;
+    line-height: 1.3;
   }
-  #page-dashboard .admin-table td:nth-child(2) .article-title { max-width: none; }
-  /* Kategori + Tanggal — inline under title */
-  #page-dashboard .admin-table td:nth-child(3),
+  #page-dashboard .admin-table td:nth-child(2) .article-title {
+    max-width: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  #page-dashboard .admin-table td:nth-child(2) .article-title small {
+    display: none;
+  }
+  /* Kategori — small badge inline */
+  #page-dashboard .admin-table td:nth-child(3) {
+    display: none;
+  }
+  /* Tanggal — compact */
   #page-dashboard .admin-table td:nth-child(4) {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--color-text-muted);
-    display: inline;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
-  /* Action buttons — full width row */
+  /* Action buttons — compact right side */
   #page-dashboard .admin-table td:nth-child(5) {
-    width: 100%;
-    margin-top: 2px;
+    flex-shrink: 0;
+    margin-top: 0;
+  }
+  #page-dashboard .action-btns {
+    flex-wrap: nowrap;
   }
 }
 
