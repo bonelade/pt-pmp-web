@@ -1285,12 +1285,12 @@
     const gradeColors = { A: '#16a34a', B: '#c9932a', C: '#cc2229' };
     const gradeBg = { A: '#f0fdf4', B: '#fefce8', C: '#fef2f2' };
     container.innerHTML = `
-      <div style="display:flex; gap:16px; flex-wrap:wrap;">
+      <div class="dash-harga-grid">
         ${hdata.grades.map(g => `
-          <div style="flex:1; min-width:0; background:${gradeBg[g.grade]}; border:2px solid ${gradeColors[g.grade]}; border-radius:10px; padding:16px 20px; text-align:center;">
-            <div style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:${gradeColors[g.grade]}; margin-bottom:4px;">GRADE ${g.grade}</div>
-            <div style="font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:800; color:${gradeColors[g.grade]}; line-height:1;">${window.HargaDB.formatHarga(g.harga)}</div>
-            <div style="font-size:0.72rem; color:#6b7280; margin-top:4px;">per kilogram • KA ${g.kadar_air}%</div>
+          <div class="dash-harga-item" style="background:${gradeBg[g.grade]}; border:2px solid ${gradeColors[g.grade]};">
+            <div class="dash-harga-grade" style="color:${gradeColors[g.grade]};">GRADE ${g.grade}</div>
+            <div class="dash-harga-price" style="color:${gradeColors[g.grade]};">${window.HargaDB.formatHarga(g.harga)}</div>
+            <div class="dash-harga-info">per kg • KA ${g.kadar_air}%</div>
           </div>`).join('')}
       </div>
       <div style="margin-top:12px; font-size:0.78rem; color:var(--color-text-muted);">
