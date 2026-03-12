@@ -57,11 +57,28 @@
       display: none;
     }
 
+    /* Supply chain mobile vertical layout */
+    .sc-flow { display: flex; gap: 0; align-items: stretch; min-width: 720px; }
+    .sc-arrow-h { display: flex; align-items: center; padding: 0 8px; font-size: 2rem; color: var(--color-gold); }
+    .sc-arrow-v { display: none; text-align: center; font-size: 1.5rem; color: var(--color-gold); padding: 8px 0; }
+
     @media (max-width: 768px) {
       .farmer-card { padding: clamp(16px, 3vw, 28px) clamp(12px, 2.5vw, 24px); }
       .farmer-card h3 { font-size: 1.05rem; margin-bottom: 8px; }
       .farmer-card .fcard-icon { margin-bottom: clamp(10px, 2vw, 16px); }
-      .supply-chain-scroll::after { display: block; }
+
+      /* Stack supply chain vertically on mobile */
+      .supply-chain-scroll { overflow-x: visible !important; }
+      .supply-chain-scroll::after { display: none; }
+      .sc-flow {
+        flex-direction: column;
+        min-width: 0;
+        gap: 0;
+      }
+      .sc-flow > div[style*="flex:"] { flex: none !important; }
+      .sc-arrow-h { display: none; }
+      .sc-arrow-v { display: block; }
+      /* Midstream 2x2 grid stays */
     }
 
     @media (max-width: 480px) {
@@ -181,10 +198,10 @@
       </div>
       <!-- Full Supply Chain -->
       <div class="animate-on-scroll supply-chain-scroll" style="overflow-x:auto; padding:20px 0; -webkit-overflow-scrolling:touch;">
-        <div style="display:flex; gap:0; align-items:stretch; min-width:720px;">
+        <div class="sc-flow">
           <!-- Hulu -->
           <div
-            style="flex:1; background:var(--color-light); border:2px dashed var(--color-red); border-radius:var(--radius-card); padding:24px; margin-right:16px;">
+            style="flex:1; background:var(--color-light); border:2px dashed var(--color-red); border-radius:var(--radius-card); padding:24px;">
             <div
               style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--color-red); margin-bottom:16px;">
               🔴 HULU</div>
@@ -202,10 +219,11 @@
             </div>
           </div>
           <!-- Arrow -->
-          <div style="display:flex; align-items:center; padding:0 8px; font-size:2rem; color:var(--color-gold);">→</div>
+          <div class="sc-arrow-h">→</div>
+          <div class="sc-arrow-v">↓</div>
           <!-- Midstream -->
           <div
-            style="flex:2; background:var(--color-primary); border-radius:var(--radius-card); padding:24px; margin-right:16px;">
+            style="flex:2; background:var(--color-primary); border-radius:var(--radius-card); padding:24px;">
             <div
               style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--color-gold); margin-bottom:16px;">
               🟡 MID STREAM — PT PMP</div>
@@ -229,7 +247,8 @@
             </div>
           </div>
           <!-- Arrow -->
-          <div style="display:flex; align-items:center; padding:0 8px; font-size:2rem; color:var(--color-gold);">→</div>
+          <div class="sc-arrow-h">→</div>
+          <div class="sc-arrow-v">↓</div>
           <!-- Hilir -->
           <div
             style="flex:1.5; background:var(--color-light); border:2px dashed var(--color-gold); border-radius:var(--radius-card); padding:24px;">
@@ -301,9 +320,9 @@
   </section>
 
   <!-- Lightbox -->
-  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
-    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-    <img id="lightbox-img" src="" alt="Lightbox Image">
+  <div id="lightbox" class="lightbox-overlay" onclick="closeLightbox()">
+    <span class="lightbox-close" onclick="closeLightbox()">✕</span>
+    <img id="lightbox-img" class="lightbox-img" src="" alt="Foto galeri PT Pangan Merah Putih">
   </div>
 
   <!-- Footer -->

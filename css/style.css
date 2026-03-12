@@ -1344,6 +1344,9 @@ footer::before {
     gap: 6px;
     flex-wrap: wrap;
   }
+
+  /* Reduce ornaments in page hero on tablet */
+  .page-hero .section-ornaments { opacity: 0.3; }
 }
 
 @media (max-width: 480px) {
@@ -1359,6 +1362,9 @@ footer::before {
   .breadcrumb {
     font-size: 0.72rem;
   }
+
+  /* Hide ornaments in page hero on mobile — keep it clean */
+  .page-hero .section-ornaments { display: none; }
 }
 
 @media (max-width: 360px) {
