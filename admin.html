@@ -1306,8 +1306,16 @@
     if (sessionStorage.getItem('pmp_admin')) {
       document.getElementById('login-section').style.display = 'none';
       document.getElementById('admin-panel').classList.add('show');
-      refreshDashboard();
-      renderArticleTable();
+      // Wait for Supabase data before rendering dashboard & articles
+      if (window.NewsDB && window.NewsDB.loadNews) {
+        window.NewsDB.loadNews(function() {
+          refreshDashboard();
+          renderArticleTable();
+        });
+      } else {
+        refreshDashboard();
+        renderArticleTable();
+      }
     }
     document.getElementById('art-date').value = new Date().toISOString().split('T')[0];
   });
