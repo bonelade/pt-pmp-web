@@ -481,7 +481,7 @@
             <h3><span class="admin-icon" id="icon-harga-header"></span> Harga Jagung Aktif</h3>
             <button class="btn btn-primary btn-sm" onclick="showPage('harga', document.querySelector('.admin-nav a[onclick*=harga]'))"><span class="admin-icon" id="icon-edit-harga"></span> Update Harga</button>
           </div>
-          <div style="padding:20px 24px;" id="dash-harga-preview"></div>
+          <div style="padding:20px 24px; overflow-x:auto;" id="dash-harga-preview"></div>
         </div>
 
         <div class="admin-card">
@@ -505,9 +505,9 @@
             <h3>Semua Artikel (<span id="article-count">0</span>)</h3>
             <button class="btn btn-primary btn-sm" onclick="openModal()">+ Artikel Baru</button>
           </div>
-          <div style="padding:16px 24px; border-bottom:1px solid var(--color-border); display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
-            <input type="text" id="search-input" placeholder="Cari artikel..." style="flex:1; min-width:0; padding:8px 14px; border:1.5px solid var(--color-border); border-radius:4px; font-family:var(--font-body); font-size:0.88rem; outline:none;" oninput="renderArticleTable()">
-            <select id="cat-filter" style="padding:8px 14px; border:1.5px solid var(--color-border); border-radius:4px; font-family:var(--font-body); font-size:0.88rem; outline:none; background:white;" onchange="renderArticleTable()">
+          <div style="padding:16px 24px; border-bottom:1px solid var(--color-border); display:flex; gap:12px; flex-wrap:wrap; align-items:center;" class="articles-filter-bar">
+            <input type="text" id="search-input" placeholder="Cari artikel..." style="flex:1; min-width:180px; padding:8px 14px; border:1.5px solid var(--color-border); border-radius:4px; font-family:var(--font-body); font-size:0.88rem; outline:none;" oninput="renderArticleTable()">
+            <select id="cat-filter" style="padding:8px 14px; border:1.5px solid var(--color-border); border-radius:4px; font-family:var(--font-body); font-size:0.88rem; outline:none; background:white; min-width:0;" onchange="renderArticleTable()">
               <option value="all">Semua Kategori</option>
               <option value="company">Kabar Perusahaan</option>
               <option value="market">Pasar</option>
