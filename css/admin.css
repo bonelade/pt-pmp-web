@@ -656,6 +656,40 @@ html { overflow-x: hidden; }
   }
   /* Thumbnail — hide on mobile card */
   #page-articles .admin-table td:nth-child(4) { display: none; }
+
+  /* ── Dashboard table: photo + article card layout ── */
+  #page-dashboard .admin-table tbody tr {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+  }
+  /* Photo cell — stays visible as small thumb */
+  #page-dashboard .admin-table td:first-child {
+    flex-shrink: 0;
+    font-weight: normal;
+    font-size: inherit;
+  }
+  /* Title cell — fills remaining space */
+  #page-dashboard .admin-table td:nth-child(2) {
+    flex: 1;
+    min-width: 0;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  #page-dashboard .admin-table td:nth-child(2) .article-title { max-width: none; }
+  /* Kategori + Tanggal — inline under title */
+  #page-dashboard .admin-table td:nth-child(3),
+  #page-dashboard .admin-table td:nth-child(4) {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    display: inline;
+  }
+  /* Action buttons — full width row */
+  #page-dashboard .admin-table td:nth-child(5) {
+    width: 100%;
+    margin-top: 2px;
+  }
 }
 
 /* === Responsive Admin === */
