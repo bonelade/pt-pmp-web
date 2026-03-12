@@ -660,6 +660,140 @@ p:last-child {
   100% { transform: translateX(60px) translateY(-10px); }
 }
 
+/* === Luxury Section Ornament Layers === */
+.lux-particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+.lux-particle-gold {
+  background: radial-gradient(circle, rgba(201,147,42,0.8) 0%, rgba(201,147,42,0) 70%);
+  box-shadow: 0 0 6px 1px rgba(201,147,42,0.3);
+  animation: lux-twinkle ease-in-out infinite alternate;
+}
+.lux-particle-green {
+  background: radial-gradient(circle, rgba(26,71,49,0.6) 0%, rgba(26,71,49,0) 70%);
+  box-shadow: 0 0 6px 1px rgba(26,71,49,0.2);
+  animation: lux-twinkle ease-in-out infinite alternate;
+}
+.lux-particle-white {
+  background: radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 70%);
+  box-shadow: 0 0 5px 1px rgba(255,255,255,0.15);
+  animation: lux-twinkle ease-in-out infinite alternate;
+}
+@keyframes lux-twinkle {
+  0% { opacity: 0.15; transform: scale(0.5); }
+  100% { opacity: 1; transform: scale(1.3); }
+}
+
+.lux-gradient-curve {
+  position: absolute;
+  width: 150%;
+  height: 100%;
+  left: -25%;
+  top: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.lux-gradient-curve svg {
+  width: 100%;
+  height: 100%;
+}
+.lux-curve-1 { animation: lux-drift-1 20s ease-in-out infinite alternate; }
+.lux-curve-2 { animation: lux-drift-2 26s ease-in-out infinite alternate; }
+.lux-curve-3 { animation: lux-drift-3 22s ease-in-out infinite alternate; }
+.lux-curve-4 { animation: lux-drift-4 28s ease-in-out infinite alternate; }
+@keyframes lux-drift-1 {
+  0% { transform: translateX(0) translateY(0) scaleX(1); }
+  50% { transform: translateX(-50px) translateY(-6px) scaleX(1.04); }
+  100% { transform: translateX(40px) translateY(4px) scaleX(0.97); }
+}
+@keyframes lux-drift-2 {
+  0% { transform: translateX(0) translateY(0) scaleX(1); }
+  50% { transform: translateX(60px) translateY(8px) scaleX(0.96); }
+  100% { transform: translateX(-30px) translateY(-5px) scaleX(1.03); }
+}
+@keyframes lux-drift-3 {
+  0% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(-40px) translateY(10px); }
+  100% { transform: translateX(50px) translateY(-8px); }
+}
+@keyframes lux-drift-4 {
+  0% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(35px) translateY(-12px); }
+  100% { transform: translateX(-55px) translateY(6px); }
+}
+
+.lux-shimmer-line {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.lux-shimmer-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(201,147,42,0.15) 40%, rgba(201,147,42,0.3) 50%, rgba(201,147,42,0.15) 60%, transparent 100%);
+  animation: lux-shimmer 4s ease-in-out infinite;
+  background-size: 200% 100%;
+}
+@keyframes lux-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.lux-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(40px);
+}
+.lux-orb-gold {
+  background: radial-gradient(circle, rgba(201,147,42,0.12) 0%, rgba(201,147,42,0) 70%);
+  animation: lux-orb-pulse 8s ease-in-out infinite alternate;
+}
+.lux-orb-green {
+  background: radial-gradient(circle, rgba(26,71,49,0.1) 0%, rgba(26,71,49,0) 70%);
+  animation: lux-orb-pulse 10s ease-in-out infinite alternate;
+}
+@keyframes lux-orb-pulse {
+  0% { transform: scale(0.8); opacity: 0.3; }
+  100% { transform: scale(1.2); opacity: 0.7; }
+}
+
+.lux-flowing-svg {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+.lux-flowing-svg path {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.lux-corner-accent {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.08;
+}
+
+/* Dark mode luxury adjustments */
+[data-theme="dark"] .lux-particle-gold { box-shadow: 0 0 10px 2px rgba(201,147,42,0.4); }
+[data-theme="dark"] .lux-particle-green { box-shadow: 0 0 8px 2px rgba(100,180,130,0.3); background: radial-gradient(circle, rgba(100,180,130,0.6) 0%, rgba(100,180,130,0) 70%); }
+[data-theme="dark"] .lux-orb-gold { background: radial-gradient(circle, rgba(201,147,42,0.15) 0%, rgba(201,147,42,0) 70%); }
+[data-theme="dark"] .lux-orb-green { background: radial-gradient(circle, rgba(100,180,130,0.1) 0%, rgba(100,180,130,0) 70%); }
+[data-theme="dark"] .lux-shimmer-line::after { background: linear-gradient(90deg, transparent 0%, rgba(201,147,42,0.1) 40%, rgba(201,147,42,0.2) 50%, rgba(201,147,42,0.1) 60%, transparent 100%); background-size: 200% 100%; }
+
+@keyframes ornament-breath {
+  0% { transform: scale(1) rotate(0deg); opacity: 0.5; }
+  100% { transform: scale(1.08) rotate(3deg); opacity: 1; }
+}
+
 /* === Elegant Social Media Icons === */
 .social-icon-elegant {
   display: inline-flex;
