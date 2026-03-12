@@ -42,6 +42,39 @@
       margin-bottom: 12px;
     }
 
+    /* Supply chain scroll hint */
+    .supply-chain-scroll {
+      position: relative;
+    }
+    .supply-chain-scroll::after {
+      content: 'Geser →';
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      font-size: 0.65rem;
+      color: var(--color-text-muted);
+      opacity: 0.6;
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .farmer-card { padding: clamp(16px, 3vw, 28px) clamp(12px, 2.5vw, 24px); }
+      .farmer-card h3 { font-size: 1.05rem; margin-bottom: 8px; }
+      .farmer-card .fcard-icon { margin-bottom: clamp(10px, 2vw, 16px); }
+      .supply-chain-scroll::after { display: block; }
+    }
+
+    @media (max-width: 480px) {
+      .farmer-card { padding: 18px 14px; border-top-width: 3px; }
+      .farmer-card .fcard-icon { width: 52px; height: 52px; min-width: 52px; }
+    }
+
+    @media (max-width: 360px) {
+      .farmer-card { padding: 14px 12px; }
+      .farmer-card h3 { font-size: 0.95rem; }
+      .farmer-card .fcard-icon { width: 44px; height: 44px; min-width: 44px; font-size: 1.2rem; }
+    }
+
     /* Dark mode */
     [data-theme="dark"] .farmer-card { background: #222220; border-color: var(--color-border); }
   </style>
@@ -147,8 +180,8 @@
         <div class="section-divider"></div>
       </div>
       <!-- Full Supply Chain -->
-      <div class="animate-on-scroll" style="overflow-x:auto; padding:20px 0;">
-        <div style="display:flex; gap:0; align-items:stretch; min-width:900px;">
+      <div class="animate-on-scroll supply-chain-scroll" style="overflow-x:auto; padding:20px 0; -webkit-overflow-scrolling:touch;">
+        <div style="display:flex; gap:0; align-items:stretch; min-width:720px;">
           <!-- Hulu -->
           <div
             style="flex:1; background:var(--color-light); border:2px dashed var(--color-red); border-radius:var(--radius-card); padding:24px; margin-right:16px;">

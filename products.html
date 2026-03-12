@@ -18,7 +18,7 @@
       box-shadow: var(--shadow-card);
       transition: var(--transition);
       display: grid;
-      grid-template-columns: 200px 1fr;
+      grid-template-columns: clamp(140px, 18vw, 200px) 1fr;
     }
 
     .product-card:hover {
@@ -136,7 +136,7 @@
       font-size: 0.74rem;
       text-align: center;
       color: var(--color-text-muted);
-      max-width: 130px;
+      max-width: clamp(100px, 12vw, 130px);
       margin: 0;
       line-height: 1.45;
     }
@@ -262,7 +262,7 @@
       overflow-x: auto; border-radius: var(--radius-card);
       box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08); border: 1px solid var(--color-border);
     }
-    .harga-tabel { width: 100%; border-collapse: collapse; min-width: 900px; font-size: 0.88rem; }
+    .harga-tabel { width: 100%; border-collapse: collapse; min-width: 700px; font-size: 0.88rem; }
     .harga-tabel thead tr:first-child {
       background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark)); color: white;
     }
@@ -325,9 +325,45 @@
       .harga-intro { grid-template-columns: 1fr; gap: 28px; margin-bottom: 36px; }
       .grade-cards { grid-template-columns: 1fr; gap: 16px; margin-bottom: 36px; }
     }
+    @media (max-width: 768px) {
+      .harga-tabel { font-size: 0.78rem; min-width: 600px; }
+      .harga-tabel thead th, .harga-tabel tbody td { padding: 10px 8px; }
+      .grade-price-card .price-value { font-size: clamp(1.4rem, 5vw, 2rem); }
+      .param-box { padding: clamp(14px, 3vw, 24px); }
+      .param-item { font-size: 0.85rem; gap: 10px; }
+      .param-icon { width: 32px; height: 32px; border-radius: 8px; }
+      .info-box { padding: 18px 20px; }
+      .update-bar { padding: 12px 16px; font-size: 0.78rem; }
+    }
+
     @media (max-width: 480px) {
-      .harga-tabel { font-size: 0.72rem; min-width: 600px; }
+      .harga-tabel { font-size: 0.72rem; min-width: 560px; }
       .harga-tabel thead th, .harga-tabel tbody td { padding: 8px 6px; }
+      .grade-cards { gap: 12px; }
+      .grade-price-card { padding: 20px 14px 16px; }
+      .grade-price-card .grade-spec { padding: 6px 10px; font-size: 0.72rem; }
+      .product-card-body { padding: 16px 14px; }
+      .product-card-body h3 { font-size: 1.05rem; }
+      .flow-step p { max-width: 110px; font-size: 0.7rem; }
+      .flow-step h4 { font-size: 0.78rem; }
+    }
+
+    @media (max-width: 360px) {
+      .product-card { grid-template-columns: 1fr; }
+      .product-card-visual { min-height: 90px; }
+      .product-card-body { padding: 14px 12px; }
+      .flow-steps { grid-template-columns: repeat(2, 1fr); gap: 20px 0; }
+      .flow-icon { width: 42px; height: 42px; }
+      .flow-step p { max-width: 100px; font-size: 0.68rem; }
+      .harga-tabel { min-width: 480px; font-size: 0.68rem; }
+      .harga-tabel thead th, .harga-tabel tbody td { padding: 6px 4px; }
+      .grade-price-card .grade-label { width: 40px; height: 40px; font-size: 1.2rem; border-radius: 12px; }
+      .grade-price-card .price-value { font-size: 1.3rem; }
+      .param-item { font-size: 0.8rem; gap: 8px; }
+      .info-box { padding: 14px 16px; margin-top: 20px; }
+      .info-box h4 { font-size: 0.88rem; }
+      .info-box p { font-size: 0.8rem; }
+      .update-bar { padding: 10px 12px; font-size: 0.72rem; border-radius: 10px; }
     }
 
     /* Dark mode — harga */

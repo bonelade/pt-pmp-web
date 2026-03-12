@@ -116,6 +116,30 @@
 
     @media (max-width: 768px) {
       .challenge-card .challenge-icon { font-size: 1.8rem; }
+      .challenge-card { padding: 18px 16px; }
+      .challenge-card h3 { font-size: 1.05rem; }
+      .solution-card { gap: 14px; padding: 18px 16px; }
+      .solution-card h3 { font-size: 1rem; }
+      .solution-icon { min-width: 40px; width: 40px; height: 40px; font-size: 1.2rem; }
+      .quality-metrics { padding: 24px; gap: 20px; }
+      .metric-label { font-size: 0.78rem; }
+    }
+
+    @media (max-width: 480px) {
+      .challenge-card { padding: 16px 14px; }
+      .challenge-card .challenge-icon { font-size: 1.5rem; margin-bottom: 10px; }
+      .solution-card { flex-direction: column; gap: 10px; padding: 16px 14px; }
+      .quality-metrics { padding: 20px 16px; gap: 16px; }
+      .metric-value { font-size: clamp(1.5rem, 6vw, 2.2rem); }
+      .metric-label { font-size: 0.75rem; }
+    }
+
+    @media (max-width: 360px) {
+      .challenge-card { padding: 14px 12px; border-left-width: 3px; }
+      .solution-card { padding: 14px 12px; border-left-width: 3px; }
+      .quality-metrics { padding: 16px 12px; border-radius: 12px; }
+      .metric-value { font-size: 1.4rem; }
+      .metric-label { font-size: 0.7rem; }
     }
 
     /* Dark mode */

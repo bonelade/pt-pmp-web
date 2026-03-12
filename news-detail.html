@@ -181,6 +181,36 @@
       }
     }
 
+    @media (max-width: 768px) {
+      .article-body h1 { font-size: clamp(1.4rem, 4vw, 1.8rem); }
+      .article-content { font-size: 0.95rem; line-height: 1.75; }
+      .article-meta { gap: 8px; }
+      .sidebar-card { padding: 14px; }
+      .sidebar-card h4 { font-size: 0.8rem; margin-bottom: 12px; }
+      .related-thumb { width: 52px; height: 52px; }
+      .related-info a { font-size: 0.82rem; }
+    }
+
+    @media (max-width: 480px) {
+      .article-body h1 { font-size: 1.3rem; margin-bottom: 14px; }
+      .article-thumbnail { margin-bottom: 20px; border-width: 1.5px; }
+      .article-content { font-size: 0.9rem; }
+      .article-content h2 { margin: 1.5rem 0 0.8rem; }
+      .related-item { padding: 10px 0; gap: 10px; }
+      .related-thumb { width: 48px; height: 48px; border-radius: 6px; }
+      .related-info a { font-size: 0.78rem; }
+      .related-info span { font-size: 0.68rem; }
+    }
+
+    @media (max-width: 360px) {
+      .article-body h1 { font-size: 1.15rem; }
+      .article-content { font-size: 0.85rem; line-height: 1.7; }
+      .article-content p { margin-bottom: 1rem; }
+      .article-meta { flex-direction: column; gap: 6px; align-items: flex-start; }
+      .sidebar-card { padding: 12px; }
+      .related-thumb { width: 44px; height: 44px; }
+    }
+
     /* Dark mode */
     [data-theme="dark"] .sidebar-card { background: #222220; border-color: var(--color-border); }
     [data-theme="dark"] .related-thumb { background: #2a2a28; border-color: rgba(212, 175, 55, 0.18); }

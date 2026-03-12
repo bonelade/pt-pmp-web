@@ -355,6 +355,113 @@
       width: 100%;
       height: 100%;
     }
+
+    /* === Toast Notification === */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      color: #fff;
+      padding: 14px 28px 14px 20px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      z-index: 99999;
+      opacity: 0;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+      max-width: 90vw;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      backdrop-filter: blur(8px);
+      background: linear-gradient(135deg, #334155, #1e293b);
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    .toast.success {
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      box-shadow: 0 8px 28px rgba(22, 163, 74, 0.35);
+    }
+    .toast.error {
+      background: linear-gradient(135deg, #dc2626, #a11219);
+      box-shadow: 0 8px 28px rgba(204, 34, 41, 0.35);
+    }
+    .toast-icon {
+      width: 22px; height: 22px; flex-shrink: 0;
+    }
+
+    /* === Loading Overlay === */
+    .admin-loading-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255,255,255,0.65);
+      backdrop-filter: blur(3px);
+      z-index: 99998;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .admin-loading-overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .admin-spinner {
+      width: 48px; height: 48px;
+      border: 4px solid rgba(26,71,49,0.15);
+      border-top: 4px solid var(--color-primary);
+      border-radius: 50%;
+      animation: admin-spin 0.8s linear infinite;
+    }
+    .admin-loading-text {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--color-primary);
+    }
+    @keyframes admin-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    [data-theme="dark"] .admin-loading-overlay {
+      background: rgba(0,0,0,0.5);
+    }
+    [data-theme="dark"] .admin-spinner {
+      border-color: rgba(255,255,255,0.15);
+      border-top-color: var(--color-gold);
+    }
+    [data-theme="dark"] .admin-loading-text {
+      color: var(--color-gold-light);
+    }
+    [data-theme="dark"] .toast {
+      background: linear-gradient(135deg, #334155, #1e293b);
+    }
+
+    /* === Button Spinner (inline) === */
+    .btn-loading {
+      position: relative;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+    .btn-loading::after {
+      content: '';
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      margin-top: -8px;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top: 2px solid #fff;
+      border-radius: 50%;
+      animation: admin-spin 0.7s linear infinite;
+    }
   </style>
 </head>
 <body class="admin-body">
@@ -1230,12 +1337,16 @@
       document.querySelector('.admin-sidebar').classList.remove('open');
       document.querySelector('.admin-sidebar-overlay').classList.remove('open');
     }
-    if (page === 'articles') renderArticleTable();
-    if (page === 'dashboard') refreshDashboard();
-    if (page === 'harga') loadHargaForm();
-    if (page === 'kontak') loadKontakForm();
-    if (page === 'gallery') loadGalleryPage();
-    if (page === 'stats') loadStatsPage();
+    showLoading('Memuat data...');
+    setTimeout(function() {
+      if (page === 'articles') renderArticleTable();
+      if (page === 'dashboard') refreshDashboard();
+      if (page === 'harga') loadHargaForm();
+      if (page === 'kontak') loadKontakForm();
+      if (page === 'gallery') loadGalleryPage();
+      if (page === 'stats') loadStatsPage();
+      hideLoading();
+    }, 300);
   }
 
   // ============================
@@ -1419,6 +1530,10 @@
   }
 
   function saveAllHarga() {
+    const btn = document.querySelector('[onclick="saveAllHarga()"]');
+    if (btn) btn.classList.add('btn-loading');
+    showLoading('Menyimpan harga...');
+
     const hdata = window.HargaDB.getHarga();
     GRADE_KEYS.forEach((key, i) => {
       SPEC_FIELDS.forEach(f => {
@@ -1429,6 +1544,7 @@
       if (hEl && hEl.value) hdata.grades[i].harga = parseInt(hEl.value);
     });
 
+    hdata.last_updated = new Date().toISOString();
     window.HargaDB.saveHarga(hdata);
     document.getElementById('harga-last-updated').textContent = window.HargaDB.formatDateTime(hdata.last_updated);
     renderHargaPreview(hdata);
@@ -1438,13 +1554,17 @@
     if (gradeA) document.getElementById('stat-harga-a').textContent = Number(gradeA.harga).toLocaleString('id-ID');
     renderDashHarga(hdata);
 
-    showToast('✓ Harga jagung berhasil diperbarui dan dipublikasikan!', 'success');
+    setTimeout(() => {
+      hideLoading();
+      if (btn) btn.classList.remove('btn-loading');
+      showToast('Harga jagung berhasil diperbarui!', 'success');
+    }, 600);
   }
 
   function resetHarga() {
     if (!confirm('Reset semua harga ke nilai default?')) return;
     loadHargaForm();
-    showToast('↺ Harga direset ke nilai default.', '');
+    showToast('Harga direset ke nilai default.', '');
   }
 
   // ============================
@@ -1452,11 +1572,39 @@
   // ============================
   function showToast(msg, type) {
     const t = document.createElement('div');
-    t.className = `toast ${type}`;
-    t.textContent = msg;
+    t.className = `toast ${type || ''}`;
+    var icon = '';
+    if (type === 'success') {
+      icon = '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>';
+    } else if (type === 'error') {
+      icon = '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';
+    } else {
+      icon = '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+    }
+    t.innerHTML = icon + '<span>' + msg + '</span>';
     document.body.appendChild(t);
     setTimeout(() => t.classList.add('show'), 10);
     setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, 3200);
+  }
+
+  // ============================
+  // Loading Overlay
+  // ============================
+  var _loadingOverlay = null;
+  function showLoading(msg) {
+    if (!_loadingOverlay) {
+      _loadingOverlay = document.createElement('div');
+      _loadingOverlay.className = 'admin-loading-overlay';
+      _loadingOverlay.innerHTML = '<div class="admin-spinner"></div><div class="admin-loading-text"></div>';
+      document.body.appendChild(_loadingOverlay);
+    }
+    _loadingOverlay.querySelector('.admin-loading-text').textContent = msg || 'Memuat data...';
+    setTimeout(() => _loadingOverlay.classList.add('show'), 10);
+  }
+  function hideLoading() {
+    if (_loadingOverlay) {
+      _loadingOverlay.classList.remove('show');
+    }
   }
 
   // ============================
@@ -1535,6 +1683,8 @@
     const editId = document.getElementById('edit-id').value;
     const articleId = editId || window.NewsDB.generateId();
 
+    showLoading(editId ? 'Menyimpan artikel...' : 'Mempublikasikan artikel...');
+
     function finishSave(thumbUrl) {
       window.NewsDB.upsertArticle({
         id: articleId,
@@ -1549,12 +1699,15 @@
       closeModal();
       refreshDashboard();
       renderArticleTable();
-      showToast(editId ? '✓ Artikel berhasil diperbarui!' : '✓ Artikel berhasil dipublikasikan!', 'success');
+      setTimeout(() => {
+        hideLoading();
+        showToast(editId ? 'Artikel berhasil diperbarui!' : 'Artikel berhasil dipublikasikan!', 'success');
+      }, 500);
     }
 
     // New thumbnail selected? Upload to Supabase Storage first, then save URL only
     if (window._newThumbDataUrl) {
-      showToast('Mengupload thumbnail ke cloud...', 'success');
+      showToast('Mengupload thumbnail ke cloud...', '');
       window.GalleryDB.uploadBase64ToStorage(window._newThumbDataUrl, 'thumbnails', function(res) {
         window._newThumbDataUrl = null;
         if (res.success && res.url) {
@@ -1562,6 +1715,7 @@
           finishSave(res.url);
         } else {
           console.error('[SaveArticle] Thumbnail upload FAILED:', res.error);
+          hideLoading();
           showToast('Gagal upload thumbnail: ' + (res.error || 'Unknown error') + '. Artikel disimpan tanpa thumbnail.', 'error');
           finishSave('');
         }
@@ -1600,6 +1754,10 @@
   }
 
   function saveKontakForm() {
+    const btn = document.querySelector('[onclick="saveKontakForm()"]');
+    if (btn) btn.classList.add('btn-loading');
+    showLoading('Menyimpan kontak...');
+
     const k = {
       whatsapp: document.getElementById('kontak-whatsapp').value.trim(),
       whatsapp_label: document.getElementById('kontak-whatsapp_label').value.trim() || 'WhatsApp PT PMP',
@@ -1611,7 +1769,11 @@
       email_label: document.getElementById('kontak-email_label').value.trim() || 'Email Kami',
     };
     window.KontakDB.saveKontak(k);
-    showToast('✓ Informasi kontak berhasil disimpan!', 'success');
+    setTimeout(() => {
+      hideLoading();
+      if (btn) btn.classList.remove('btn-loading');
+      showToast('Informasi kontak berhasil disimpan!', 'success');
+    }, 600);
   }
 
   // ============================
@@ -1912,7 +2074,7 @@
       document.getElementById('video-url').value = '';
       document.getElementById('photo-caption-id').value = '';
       document.getElementById('photo-caption-en').value = '';
-      showToast('✓ Video berhasil ditambahkan!', 'success');
+      showToast('Video berhasil ditambahkan!', 'success');
       renderGalleryPages();
       onAlbumSelectChange();
       updateStorageUsage();
@@ -1938,7 +2100,7 @@
     var uploaded = 0;
     var successCount = 0;
     var totalToUpload = toUpload.length;
-    showToast('Mengupload ' + totalToUpload + ' foto ke cloud...', '');
+    showLoading('Mengupload ' + totalToUpload + ' foto ke cloud...');
 
     function finishUpload() {
       _pendingPhotos = [];
@@ -1947,7 +2109,8 @@
       document.getElementById('photo-caption-id').value = '';
       document.getElementById('photo-caption-en').value = '';
       document.getElementById('upload-size-info').innerHTML = '';
-      showToast('✓ ' + successCount + '/' + totalToUpload + ' foto berhasil diupload!', 'success');
+      hideLoading();
+      showToast(successCount + '/' + totalToUpload + ' foto berhasil diupload!', 'success');
       renderGalleryPages();
       onAlbumSelectChange();
       updateStorageUsage();
@@ -1996,7 +2159,7 @@
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    showToast('✓ photos.json berhasil didownload! Replace file data/photos.json lalu push ke GitHub.', 'success');
+    showToast('photos.json berhasil didownload!', 'success');
   }
 
   // Reset gallery to original JSON data

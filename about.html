@@ -424,6 +424,32 @@
       .about-stat-num { font-size: 1.5rem; }
       .info-label { min-width: 80px; }
       .vm-card { padding: 24px 18px; }
+      .vm-card h3 { font-size: 1.3rem; }
+      .vm-card p { font-size: 0.9rem; }
+      .vm-card ul li { font-size: 0.85rem; gap: 8px; }
+      .vm-grid { gap: 20px; }
+      .about-gallery-nav { bottom: 10px; right: 10px; }
+      .about-gallery-btn { width: 26px; height: 26px; }
+      .about-gallery-dot { width: 6px; height: 6px; }
+      .info-list li { flex-direction: column; gap: 4px; padding: 12px 0; }
+      .info-label { min-width: unset; font-size: 0.68rem; }
+      .info-value { font-size: 0.88rem; }
+    }
+
+    @media (max-width: 360px) {
+      .about-gallery { min-height: 170px; }
+      .about-stats-grid-4 { grid-template-columns: 1fr 1fr; gap: 1px; }
+      .about-stat-cell { padding: 12px 6px; }
+      .about-stat-num { font-size: 1.3rem; }
+      .about-stat-label { font-size: 0.58rem; letter-spacing: 0.04em; }
+      .about-stats-box { padding: 16px 10px; }
+      .vm-card { padding: 20px 14px; }
+      .vm-card h3 { font-size: 1.15rem; }
+      .vm-card p { font-size: 0.85rem; }
+      .vm-card .vm-icon { width: 44px; height: 44px; font-size: 2rem; margin-bottom: 14px; }
+      .vm-grid { gap: 16px; }
+      .profile-split { gap: 20px; }
+      .about-gallery-caption { padding: 10px 14px; font-size: 0.75rem; }
     }
 
     /* Dark mode overrides */

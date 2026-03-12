@@ -1329,6 +1329,53 @@ footer::before {
   color: rgba(255, 255, 255, 0.6);
 }
 
+/* Page hero responsive */
+@media (max-width: 768px) {
+  .page-hero {
+    padding: clamp(60px, 7vw, 80px) 0 clamp(28px, 4vw, 48px);
+  }
+
+  .page-hero h1 {
+    font-size: clamp(1.4rem, 4.5vw, 2rem);
+  }
+
+  .breadcrumb {
+    font-size: 0.78rem;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-hero {
+    padding: 56px 0 24px;
+  }
+
+  .page-hero h1 {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .page-hero {
+    padding: 50px 0 20px;
+  }
+
+  .page-hero h1 {
+    font-size: 1.15rem;
+  }
+
+  .breadcrumb {
+    font-size: 0.68rem;
+    gap: 4px;
+  }
+}
+
 /* === Responsive === */
 @media (max-width: 1024px) {
   .grid-4 {
@@ -1347,11 +1394,19 @@ footer::before {
   .footer-grid {
     grid-template-columns: 1fr 1fr;
   }
+
+  .section {
+    padding: clamp(28px, 5vw, 60px) 0;
+  }
 }
 
 @media (max-width: 768px) {
   .grid-2,
   .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-4 {
     grid-template-columns: 1fr;
   }
 
@@ -1390,6 +1445,18 @@ footer::before {
     width: 38px;
     height: 38px;
   }
+
+  /* Reduce section header spacing */
+  .section-header {
+    margin-bottom: clamp(20px, 3vw, 36px);
+  }
+
+  h1 { font-size: clamp(1.6rem, 4.5vw, 2.8rem); }
+  h2 { font-size: clamp(1.3rem, 3vw, 2rem); }
+
+  /* Section ornaments - reduce on tablet */
+  .section-ornaments .lux-particle,
+  .section-ornaments .lux-orb { opacity: 0.4; }
 }
 
 @media (max-width: 480px) {
@@ -1415,7 +1482,7 @@ footer::before {
     font-size: 0.7rem;
   }
 
-  /* Cloud ornaments - hide on very small screens for performance */
+  /* Cloud ornaments - reduce on phones */
   .cloud-curve {
     opacity: 0.5;
   }
@@ -1431,6 +1498,112 @@ footer::before {
     height: 15px;
   }
 
+  /* Buttons — touch-friendly */
+  .btn {
+    padding: 12px 24px;
+    font-size: 0.85rem;
+    min-height: 44px;
+  }
+
+  /* Section ornaments — lighter for performance */
+  .section-ornaments .lux-shimmer-line,
+  .section-ornaments .lux-gradient-curve { display: none; }
+  .section-ornaments .lux-particle { opacity: 0.25; }
+  .section-ornaments .lux-orb { opacity: 0.2; }
+
+  /* Footer mobile */
+  .footer-col h4 {
+    font-size: 0.75rem;
+    margin-bottom: 14px;
+  }
+
+  .footer-col ul li a {
+    font-size: 0.82rem;
+  }
+
+  .footer-contact-item {
+    font-size: 0.82rem;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .footer-brand p {
+    font-size: 0.82rem;
+  }
+
+  .footer-bottom {
+    padding: 14px 0;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 360px) {
+  :root {
+    --container-pad: 12px;
+  }
+
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.2rem; }
+  h3 { font-size: 1rem; }
+
+  .section {
+    padding: 28px 0;
+  }
+
+  .section-header .label {
+    font-size: 0.6rem;
+    padding: 4px 10px;
+  }
+
+  /* Hide ornaments on very small screens for performance */
+  .section-ornaments { display: none; }
+
+  .stat-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .stat-item {
+    padding: 16px 12px;
+  }
+
+  /* Gallery */
+  .gallery-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  /* Footer ultra-small */
+  .footer-brand .logo-text {
+    font-size: 1rem;
+  }
+
+  .footer-brand p {
+    font-size: 0.78rem;
+    margin-top: 8px;
+  }
+
+  .footer-col h4 {
+    font-size: 0.7rem;
+    margin-bottom: 10px;
+  }
+
+  .footer-col ul li {
+    margin-bottom: 8px;
+  }
+
+  .footer-col ul li a {
+    font-size: 0.78rem;
+  }
+
+  .footer-contact-item {
+    font-size: 0.78rem;
+  }
+
+  .footer-bottom {
+    padding: 12px 0;
+    font-size: 0.7rem;
+  }
 }
 
 /* === Enhanced Section Labels (dark bg override) === */
