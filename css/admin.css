@@ -824,7 +824,10 @@ html { overflow-x: hidden; }
 
   /* Stats page */
   #stats-daily-chart { height: 160px !important; gap: 6px !important; }
-  #stats-daily-labels { gap: 6px !important; font-size: 0.68rem; }
+  #stats-daily-chart > div { min-width: 0 !important; }
+  #stats-daily-labels { gap: 6px !important; }
+  #stats-daily-labels > div { font-size: 0.68rem !important; min-width: 0; }
+  #page-stats .admin-card > div[style*="padding:24px"] { padding: 16px !important; }
 }
 
 /* Small phones */
@@ -910,9 +913,14 @@ html { overflow-x: hidden; }
   .dash-harga-info { margin-top: 0; white-space: nowrap; }
 
   /* Stats page */
-  #stats-daily-chart { height: 120px !important; gap: 4px !important; }
-  #stats-daily-labels { gap: 4px !important; }
-  #stats-daily-labels > div { font-size: 0.6rem; }
+  #stats-daily-chart { height: 120px !important; gap: 3px !important; }
+  #stats-daily-chart > div { min-width: 0 !important; }
+  #stats-daily-chart > div > span { font-size: 0.62rem !important; }
+  #stats-daily-chart > div > div { max-width: 32px !important; border-radius: 4px 4px 0 0 !important; }
+  #stats-daily-labels { gap: 3px !important; }
+  #stats-daily-labels > div { font-size: 0.58rem !important; min-width: 0; line-height: 1.2; }
+  #stats-daily-labels > div > span { font-size: 0.52rem !important; }
+  #page-stats .admin-card > div[style*="padding:24px"] { padding: 12px !important; }
 
   /* Info banners */
   .admin-page > div[style*="background:#fffbeb"],
@@ -935,6 +943,14 @@ html { overflow-x: hidden; }
   .modal { margin: 4px; }
   .modal-body { padding: 14px 12px; }
   .login-card { padding: 24px 16px; margin: 12px; }
+
+  /* Stats chart — ultra compact */
+  #stats-daily-chart { height: 100px !important; gap: 2px !important; }
+  #stats-daily-chart > div > span { font-size: 0.55rem !important; }
+  #stats-daily-chart > div > div { max-width: 26px !important; }
+  #stats-daily-labels { gap: 2px !important; }
+  #stats-daily-labels > div { font-size: 0.52rem !important; }
+  #page-stats .admin-card > div[style*="padding:24px"] { padding: 10px 8px !important; }
 }
 
 /* === Admin Form Grids (responsive) === */
