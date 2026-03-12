@@ -59,7 +59,7 @@ function loadNews(callback) {
     if (sb || attempts >= 50) {
       clearInterval(timer);
       if (sb) {
-        sb.from('news_data').select('*').eq('id', 'main').single()
+        sb.from('news_data').select('*').eq('id', 'main').maybeSingle()
           .then(function (res) {
             if (res.data && res.data.data && Array.isArray(res.data.data)) {
               console.log('[NewsDB] Loaded from Supabase:', res.data.data.length, 'articles');

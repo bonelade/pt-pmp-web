@@ -51,7 +51,7 @@ function loadHarga(callback) {
     if (sb || attempts >= 50) {
       clearInterval(timer);
       if (sb) {
-        sb.from('harga').select('*').eq('id', 'main').single()
+        sb.from('harga').select('*').eq('id', 'main').maybeSingle()
           .then(function (res) {
             if (res.data && res.data.data) {
               _hargaCache = res.data.data;

@@ -35,7 +35,7 @@ function loadKontak(callback) {
     if (sb || attempts >= 50) {
       clearInterval(timer);
       if (sb) {
-        sb.from('kontak').select('*').eq('id', 'main').single()
+        sb.from('kontak').select('*').eq('id', 'main').maybeSingle()
           .then(function (res) {
             if (res.data && res.data.data) {
               _kontakCache = Object.assign({}, KONTAK_DEFAULT, res.data.data);
