@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, { threshold: 0.5 });
 
-  document.querySelectorAll('[data-count]').forEach(el => statObserver.observe(el));
+  document.querySelectorAll('[data-count]:not(.section-ornaments)').forEach(el => statObserver.observe(el));
 
   // === Toast Utility ===
   window.showToast = function(message, type = 'success') {
