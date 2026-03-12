@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Produk & Jasa - PT Pangan Merah Putih</title>
-  <meta name="description" content="Produk dan jasa PT PMP: jagung pipil kering Grade A, B, C untuk industri pakan ternak. Proses pengeringan vertical dryer berkapasitas 300 ton per hari.">
+  <meta name="description" content="Produk, jasa, dan harga jagung PT PMP: jagung pipil kering Grade A, B, C untuk industri pakan ternak. Spesifikasi mutu, harga pembelian, dan proses pengeringan vertical dryer 300 ton/hari.">
   <script>(function () { var l = localStorage.getItem('pmp_lang') || 'id'; document.documentElement.setAttribute('lang', l); document.documentElement.setAttribute('data-lang', l); var t = localStorage.getItem('pmp_theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); document.documentElement.setAttribute('data-theme', t); })()</script>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/nav.css">
@@ -170,10 +170,187 @@
       .product-card-visual { min-height: 100px; }
     }
 
-    /* Dark mode */
+    /* Dark mode — products */
     [data-theme="dark"] .product-card { background: #222220; border-color: var(--color-border); }
     [data-theme="dark"] .product-card-visual { background: #1a1a1a; }
     [data-theme="dark"] .flow-step { background: #222220; border-color: var(--color-border); }
+
+    /* === Harga Jagung Section === */
+    .harga-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(24px, 4vw, 48px);
+      align-items: center;
+      margin-bottom: clamp(32px, 5vw, 60px);
+    }
+    .harga-intro h2 { margin-bottom: 12px; }
+    .harga-intro p { font-size: 0.95rem; }
+
+    .param-box {
+      background: linear-gradient(145deg, var(--color-primary), var(--color-primary-dark));
+      border-radius: var(--radius-card);
+      padding: clamp(16px, 3vw, 32px);
+      color: white;
+      border: 1px solid rgba(201, 147, 42, 0.15);
+      box-shadow: 0 8px 32px rgba(26, 71, 49, 0.25);
+    }
+    .param-box .param-label {
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: #9a7b1e; margin-bottom: 20px;
+    }
+    .param-list { display: flex; flex-direction: column; gap: 14px; }
+    .param-item { display: flex; align-items: center; gap: 14px; font-size: 0.9rem; }
+    .param-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(201, 147, 42, 0.12); border: 1px solid rgba(201, 147, 42, 0.2);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      color: var(--color-gold);
+    }
+
+    .grade-cards {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: clamp(12px, 2vw, 24px); margin-bottom: clamp(28px, 4.5vw, 56px);
+    }
+    .grade-price-card {
+      border-radius: var(--radius-card);
+      padding: clamp(24px, 3.5vw, 40px) clamp(16px, 2.5vw, 28px) clamp(20px, 3vw, 36px);
+      text-align: center; position: relative; overflow: hidden;
+      transition: var(--transition); box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+    }
+    .grade-price-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    }
+    .grade-price-card:hover { transform: translateY(-5px); box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12); }
+    .grade-price-card.grade-a { background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%); border: 1.5px solid rgba(22, 163, 74, 0.2); }
+    .grade-price-card.grade-a::before { background: linear-gradient(90deg, #16a34a, #4ade80); }
+    .grade-price-card.grade-b { background: linear-gradient(180deg, #fefce8 0%, #ffffff 100%); border: 1.5px solid rgba(201, 147, 42, 0.2); }
+    .grade-price-card.grade-b::before { background: linear-gradient(90deg, var(--color-gold), var(--color-gold-light)); }
+    .grade-price-card.grade-c { background: linear-gradient(180deg, #fef2f2 0%, #ffffff 100%); border: 1.5px solid rgba(204, 34, 41, 0.2); }
+    .grade-price-card.grade-c::before { background: linear-gradient(90deg, var(--color-red), #f87171); }
+    .grade-price-card .grade-label {
+      display: flex; align-items: center; justify-content: center;
+      width: clamp(44px, 5vw, 56px); height: clamp(44px, 5vw, 56px);
+      border-radius: 16px; font-family: var(--font-heading);
+      font-size: 1.5rem; font-weight: 800; color: white;
+      margin: 0 auto 16px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .grade-a .grade-label { background: linear-gradient(135deg, #16a34a, #22c55e); }
+    .grade-b .grade-label { background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light)); }
+    .grade-c .grade-label { background: linear-gradient(135deg, var(--color-red), #ef4444); }
+    .grade-price-card .grade-name {
+      font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--color-text-muted); margin-bottom: 12px;
+    }
+    .grade-price-card .price-value {
+      font-family: var(--font-heading); font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 800; line-height: 1; margin-bottom: 6px;
+    }
+    .grade-a .price-value { color: #16a34a; }
+    .grade-b .price-value { color: #9a7b1e; }
+    .grade-c .price-value { color: var(--color-red); }
+    .grade-price-card .price-unit { font-size: 0.82rem; color: var(--color-text-muted); margin-bottom: 20px; }
+    .grade-price-card .grade-spec {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      background: rgba(0, 0, 0, 0.04); border-radius: 12px; padding: 8px 16px;
+      font-size: 0.78rem; font-weight: 600; margin-bottom: 6px; color: var(--color-text);
+    }
+    .grade-price-card .grade-spec .spec-icon {
+      width: 16px; height: 16px; display: inline-flex; flex-shrink: 0; color: var(--color-gold);
+    }
+
+    .harga-tabel-wrap {
+      overflow-x: auto; border-radius: var(--radius-card);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08); border: 1px solid var(--color-border);
+    }
+    .harga-tabel { width: 100%; border-collapse: collapse; min-width: 900px; font-size: 0.88rem; }
+    .harga-tabel thead tr:first-child {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark)); color: white;
+    }
+    .harga-tabel thead th {
+      padding: 14px 16px; text-align: center; font-size: 0.72rem;
+      font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap;
+    }
+    .harga-tabel thead th:first-child { text-align: left; padding-left: 24px; }
+    .harga-tabel .sub-header td {
+      background: var(--color-light); padding: 8px 16px; font-size: 0.68rem;
+      font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--color-text-muted); text-align: center;
+    }
+    .harga-tabel .sub-header td:first-child { text-align: left; padding-left: 24px; }
+    .harga-tabel tbody td {
+      padding: 16px; text-align: center; border-bottom: 1px solid var(--color-border); color: var(--color-text);
+    }
+    .harga-tabel tbody td:first-child { text-align: left; padding-left: 24px; font-weight: 700; }
+    .harga-tabel .row-a { background: #f0fdf4; }
+    .harga-tabel .row-b { background: #fefce8; }
+    .harga-tabel .row-c { background: #fef2f2; }
+    .harga-tabel .grade-tag {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 30px; height: 30px; border-radius: 10px;
+      font-weight: 800; font-size: 0.82rem; color: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+    .grade-tag.a { background: linear-gradient(135deg, #16a34a, #22c55e); }
+    .grade-tag.b { background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light)); }
+    .grade-tag.c { background: linear-gradient(135deg, var(--color-red), #ef4444); }
+    .harga-cell-big { font-family: var(--font-heading); font-weight: 800; font-size: 1rem; white-space: nowrap; }
+    .harga-cell-big.a { color: #16a34a; }
+    .harga-cell-big.b { color: #9a7b1e; }
+    .harga-cell-big.c { color: var(--color-red); }
+
+    .info-box {
+      background: var(--color-light); border-left: 4px solid var(--color-gold);
+      border-radius: 0 var(--radius-card) var(--radius-card) 0;
+      padding: 24px 28px; margin-top: 32px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    }
+    .info-box h4 { margin-bottom: 8px; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; }
+    .info-box h4 .info-icon { width: 20px; height: 20px; display: inline-flex; color: var(--color-gold); }
+    .info-box p { font-size: 0.88rem; margin: 0; }
+
+    .update-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+      color: rgba(255, 255, 255, 0.75); padding: 14px 24px; border-radius: var(--radius-card);
+      font-size: 0.82rem; margin-bottom: 36px; flex-wrap: wrap; gap: 8px;
+      border: 1px solid rgba(201, 147, 42, 0.1);
+    }
+    .update-bar .live-dot {
+      display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+      background: #4ade80; box-shadow: 0 0 6px #4ade80; margin-right: 6px;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: 0.4 } }
+
+    @media (max-width: 900px) {
+      .harga-intro { grid-template-columns: 1fr; gap: 28px; margin-bottom: 36px; }
+      .grade-cards { grid-template-columns: 1fr; gap: 16px; margin-bottom: 36px; }
+    }
+    @media (max-width: 480px) {
+      .harga-tabel { font-size: 0.72rem; min-width: 600px; }
+      .harga-tabel thead th, .harga-tabel tbody td { padding: 8px 6px; }
+    }
+
+    /* Dark mode — harga */
+    [data-theme="dark"] .grade-price-card.grade-a {
+      background: linear-gradient(180deg, rgba(22, 163, 74, 0.12) 0%, #1e1e1c 100%); border-color: rgba(22, 163, 74, 0.25);
+    }
+    [data-theme="dark"] .grade-price-card.grade-b {
+      background: linear-gradient(180deg, rgba(212, 175, 55, 0.12) 0%, #1e1e1c 100%); border-color: rgba(212, 175, 55, 0.25);
+    }
+    [data-theme="dark"] .grade-price-card.grade-c {
+      background: linear-gradient(180deg, rgba(204, 34, 41, 0.12) 0%, #1e1e1c 100%); border-color: rgba(204, 34, 41, 0.25);
+    }
+    [data-theme="dark"] .grade-price-card { box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3); }
+    [data-theme="dark"] .grade-price-card:hover { box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4); }
+    [data-theme="dark"] .harga-tabel .row-a { background: rgba(22, 163, 74, 0.08); }
+    [data-theme="dark"] .harga-tabel .row-b { background: rgba(212, 175, 55, 0.08); }
+    [data-theme="dark"] .harga-tabel .row-c { background: rgba(204, 34, 41, 0.08); }
+    [data-theme="dark"] .harga-tabel { background: #1e1e1c; }
+    [data-theme="dark"] .harga-tabel thead th { background: #222220; color: var(--color-text); border-color: var(--color-border); }
+    [data-theme="dark"] .harga-tabel tbody td { border-color: var(--color-border); }
+    [data-theme="dark"] .param-box { background: #222220; border-color: var(--color-border); }
+    [data-theme="dark"] .harga-intro { color: var(--color-text); }
+    [data-theme="dark"] .grade-spec span { background: rgba(255,255,255,0.06); }
   </style>
 </head>
 
@@ -192,7 +369,7 @@
         </div>
       </a>
       <div class="nav-controls">
-        <button id="lang-toggle" onclick="toggleLanguage()">ID | EN</button>
+        <button id="lang-toggle" onclick="toggleLanguage(); if(window.renderHargaPage) renderHargaPage();">ID | EN</button>
         <button id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
       </div>
     </nav>
@@ -218,7 +395,6 @@
       <li><a href="products.html" data-i18n="nav_products">Produk & Jasa</a></li>
       <li><a href="community.html" data-i18n="nav_community">Komunitas</a></li>
       <li><a href="news.html" data-i18n="nav_news">Berita</a></li>
-      <li><a href="harga-jagung.html" class="nav-harga">Harga</a></li>
     </ul>
   </div>
 
@@ -379,6 +555,116 @@
     </div>
   </section>
 
+  <!-- Harga & Spesifikasi Jagung -->
+  <section class="section bg-light" id="harga" style="position: relative; overflow: hidden;">
+    <div class="section-ornaments" data-type="float-scatter" data-theme="mix"></div>
+    <div class="container">
+
+      <!-- Live Update Bar -->
+      <div class="update-bar">
+        <div><span class="live-dot"></span> <strong style="color:white;">Harga Aktif</strong> — Diperbarui oleh
+          Administrator PT PMP</div>
+        <div id="update-timestamp">—</div>
+      </div>
+
+      <!-- Intro -->
+      <div class="harga-intro animate-on-scroll">
+        <div>
+          <span class="label" id="label-spec">Spesifikasi & Kualitas</span>
+          <h2 id="intro-title">Standar Mutu Jagung PT PMP</h2>
+          <p id="intro-text">PT Pangan Merah Putih menerapkan sistem grading jagung berdasarkan standar mutu industri
+            pakan nasional. Harga pembelian jagung dari petani ditetapkan berdasarkan grade kualitas yang terukur.</p>
+          <p id="intro-text2">Sistem grading ini memastikan transparansi harga bagi petani dan konsistensi kualitas bagi
+            pembeli (Bulog & Feedmill).</p>
+        </div>
+        <div class="param-box">
+          <div class="param-label" id="param-label">Parameter Penilaian</div>
+          <div class="param-list" id="param-list">
+            <div class="param-item">
+              <div class="param-icon"><span class="pmp-icon" id="param-icon-droplet" style="width:18px;height:18px;display:inline-flex;"></span></div>
+              <span>Kadar Air (%)</span>
+            </div>
+            <div class="param-item">
+              <div class="param-icon"><span class="pmp-icon" id="param-icon-flask" style="width:18px;height:18px;display:inline-flex;"></span></div>
+              <span>Aflatoxin (ppb)</span>
+            </div>
+            <div class="param-item">
+              <div class="param-icon"><span class="pmp-icon" id="param-icon-corn" style="width:18px;height:18px;display:inline-flex;"></span></div>
+              <span>Biji Jamur, Biji Mati, Biji Pecah (%)</span>
+            </div>
+            <div class="param-item">
+              <div class="param-icon"><span class="pmp-icon" id="param-icon-search" style="width:18px;height:18px;display:inline-flex;"></span></div>
+              <span>Benda Asing, Biji Lubang, Biji Putih (%)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grade Price Cards -->
+      <div class="grade-cards" id="grade-cards">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+      </div>
+
+      <!-- Section Header Table -->
+      <div class="section-header animate-on-scroll" style="margin-bottom:24px;">
+        <span class="label" id="table-label">Tabel Lengkap Spesifikasi & Harga</span>
+        <h2 id="table-title">Spesifikasi Harga dan Kualitas Jagung</h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <!-- Full Spec Table -->
+      <div class="harga-tabel-wrap animate-on-scroll">
+        <table class="harga-tabel">
+          <thead>
+            <tr>
+              <th style="text-align:left; padding-left:24px;" id="th-grade">Standar Grade</th>
+              <th id="th-ka">Kadar Air (%)</th>
+              <th id="th-afla">Aflatoxin (ppb)</th>
+              <th id="th-jamur">Biji Jamur (%)</th>
+              <th id="th-mati">Biji Mati (%)</th>
+              <th id="th-pecah">Biji Pecah (%)</th>
+              <th id="th-asing">Benda Asing (%)</th>
+              <th id="th-lubang">Biji Lubang (%)</th>
+              <th id="th-putih">Biji Putih (%)</th>
+              <th id="th-harga">Harga Penuh</th>
+            </tr>
+            <tr class="sub-header">
+              <td id="sub-max">Maks.</td>
+              <td>Maks.</td><td>Maks.</td><td>Maks.</td><td>Maks.</td>
+              <td>Maks.</td><td>Maks.</td><td>Maks.</td><td>Maks.</td><td>Maks.</td>
+            </tr>
+          </thead>
+          <tbody id="harga-tbody">
+            <!-- rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Info Box -->
+      <div class="info-box animate-on-scroll">
+        <h4 id="info-title"><span class="info-icon" id="info-icon-pin"></span> Catatan Penting</h4>
+        <p id="info-text">Harga di atas merupakan <strong>harga pembelian jagung pipilan</strong> dari petani/pengepul
+          ke PT PMP berdasarkan grade kualitas. Harga dapat berubah sewaktu-waktu sesuai kondisi pasar.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Galeri Kualitas Jagung -->
+  <section class="section bg-white" id="harga-gallery-section" style="display:none; position:relative; overflow:hidden;">
+    <div class="section-ornaments" data-type="cloud-curves" data-theme="mix"></div>
+    <div class="container" style="position:relative; z-index:1;">
+      <div class="section-header animate-on-scroll">
+        <span class="label">Referensi Visual</span>
+        <h2>Kualitas Jagung</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="gallery-grid" id="harga-gallery-display"></div>
+    </div>
+  </section>
+
   <!-- Galeri Produksi -->
   <section class="section bg-light" id="products-gallery-section" style="display:none; position:relative; overflow:hidden;">
     <div class="section-ornaments" data-type="float-scatter" data-theme="mix"></div>
@@ -526,6 +812,11 @@
         set('flow-icon-microscope', ic.microscope, '100%');
         set('flow-icon-construction', ic.construction, '100%');
         set('flow-icon-truck', ic.truck, '100%');
+        set('param-icon-droplet', ic.droplet, '100%');
+        set('param-icon-flask', ic.flask, '100%');
+        set('param-icon-corn', ic.corn, '100%');
+        set('param-icon-search', ic.microscope, '100%');
+        set('info-icon-pin', ic.checkCircle, '100%');
       }
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', injectIcons);
       else injectIcons();
@@ -533,6 +824,7 @@
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="js/supabase-config.js"></script>
+  <script src="js/harga.js"></script>
   <script src="js/gallery.js"></script>
   <script>
     (function () {
@@ -569,6 +861,149 @@
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', renderProductsGallery);
       else renderProductsGallery();
     })();
+  </script>
+  <script>
+    function renderHargaPage() {
+      var lang = window.getCurrentLang ? window.getCurrentLang() : 'id';
+      var hdata = window.HargaDB.getHarga();
+      var isEN = lang === 'en';
+
+      var t = {
+        labelSpec: isEN ? 'Specifications & Quality' : 'Spesifikasi & Kualitas',
+        introTitle: isEN ? 'PT PMP Corn Quality Standards' : 'Standar Mutu Jagung PT PMP',
+        introText: isEN ? 'PT Pangan Merah Putih applies a corn grading system based on national feed industry quality standards. Purchase prices are determined based on measurable quality grades.' : 'PT Pangan Merah Putih menerapkan sistem grading jagung berdasarkan standar mutu industri pakan nasional. Harga pembelian ditetapkan berdasarkan grade kualitas yang terukur.',
+        introText2: isEN ? 'This grading system ensures price transparency for farmers and quality consistency for buyers (Bulog & Feedmills).' : 'Sistem grading ini memastikan transparansi harga bagi petani dan konsistensi kualitas bagi pembeli (Bulog & Feedmill).',
+        paramLabel: isEN ? 'Assessment Parameters' : 'Parameter Penilaian',
+        tableLabel: isEN ? 'Complete Specification & Price Table' : 'Tabel Lengkap Spesifikasi & Harga',
+        tableTitle: isEN ? 'Corn Price and Quality Specifications' : 'Spesifikasi Harga dan Kualitas Jagung',
+        thGrade: isEN ? 'Quality Standard' : 'Standar Grade',
+        thKa: isEN ? 'Moisture (%)' : 'Kadar Air (%)',
+        thAfla: isEN ? 'Aflatoxin (ppb)' : 'Aflatoxin (ppb)',
+        thJamur: isEN ? 'Moldy Grain (%)' : 'Biji Jamur (%)',
+        thMati: isEN ? 'Dead Grain (%)' : 'Biji Mati (%)',
+        thPecah: isEN ? 'Broken Grain (%)' : 'Biji Pecah (%)',
+        thAsing: isEN ? 'Foreign Matter (%)' : 'Benda Asing (%)',
+        thLubang: isEN ? 'Holed Grain (%)' : 'Biji Lubang (%)',
+        thPutih: isEN ? 'White Grain (%)' : 'Biji Putih (%)',
+        thHarga: isEN ? 'Full Price' : 'Harga Penuh',
+        subMax: isEN ? 'Max.' : 'Maks.',
+        infoTitle: isEN ? 'Important Note' : 'Catatan Penting',
+        infoText: isEN ? 'Prices above are <strong>corn purchase prices</strong> from farmers/collectors to PT PMP based on quality grade. Prices may change at any time according to market conditions.' : 'Harga di atas merupakan <strong>harga pembelian jagung pipilan</strong> dari petani/pengepul ke PT PMP berdasarkan grade kualitas. Harga dapat berubah sewaktu-waktu sesuai kondisi pasar.',
+        gradeNames: isEN
+          ? ['Grade A — Best Quality', 'Grade B — Standard Quality', 'Grade C — Basic Quality']
+          : ['Grade A — Kualitas Terbaik', 'Grade B — Kualitas Standar', 'Grade C — Kualitas Dasar'],
+        perKg: isEN ? 'per kilogram' : 'per kilogram',
+        moisture: isEN ? 'Moisture Content' : 'Kadar Air',
+        aflatoxin: isEN ? 'Aflatoxin' : 'Aflatoksin',
+      };
+
+      // Apply text
+      var el;
+      el = document.getElementById('label-spec'); if (el) el.textContent = t.labelSpec;
+      el = document.getElementById('intro-title'); if (el) el.textContent = t.introTitle;
+      el = document.getElementById('intro-text'); if (el) el.textContent = t.introText;
+      el = document.getElementById('intro-text2'); if (el) el.textContent = t.introText2;
+      el = document.getElementById('param-label'); if (el) el.textContent = t.paramLabel;
+      el = document.getElementById('table-label'); if (el) el.textContent = t.tableLabel;
+      el = document.getElementById('table-title'); if (el) el.textContent = t.tableTitle;
+      el = document.getElementById('th-grade'); if (el) el.textContent = t.thGrade;
+      el = document.getElementById('th-ka'); if (el) el.textContent = t.thKa;
+      el = document.getElementById('th-afla'); if (el) el.textContent = t.thAfla;
+      el = document.getElementById('th-jamur'); if (el) el.textContent = t.thJamur;
+      el = document.getElementById('th-mati'); if (el) el.textContent = t.thMati;
+      el = document.getElementById('th-pecah'); if (el) el.textContent = t.thPecah;
+      el = document.getElementById('th-asing'); if (el) el.textContent = t.thAsing;
+      el = document.getElementById('th-lubang'); if (el) el.textContent = t.thLubang;
+      el = document.getElementById('th-putih'); if (el) el.textContent = t.thPutih;
+      el = document.getElementById('th-harga'); if (el) el.textContent = t.thHarga;
+      el = document.getElementById('sub-max'); if (el) el.textContent = t.subMax;
+      el = document.getElementById('info-title'); if (el) el.innerHTML = '<span class="info-icon" id="info-icon-pin"></span> ' + t.infoTitle;
+      el = document.getElementById('info-text'); if (el) el.innerHTML = t.infoText;
+
+      // Timestamp
+      el = document.getElementById('update-timestamp'); if (el) el.textContent = window.HargaDB.formatDateTime(hdata.last_updated);
+
+      // Grade Price Cards
+      var gradeClass = { A: 'grade-a', B: 'grade-b', C: 'grade-c' };
+      var ic = window.Icons || {};
+      var dropletSvg = ic.droplet || '';
+      var flaskSvg = ic.flask || '';
+      document.getElementById('grade-cards').innerHTML = hdata.grades.map(function(g, i) {
+        return '<div class="grade-price-card ' + gradeClass[g.grade] + ' animate-on-scroll">' +
+          '<div class="grade-label">' + g.grade + '</div>' +
+          '<div class="grade-name">' + t.gradeNames[i] + '</div>' +
+          '<div class="price-value">' + window.HargaDB.formatHarga(g.harga) + '</div>' +
+          '<div class="price-unit">' + t.perKg + '</div>' +
+          '<div class="grade-spec"><span class="spec-icon">' + dropletSvg + '</span> ' + t.moisture + ' ' + g.kadar_air + '%</div>' +
+          '<div class="grade-spec"><span class="spec-icon">' + flaskSvg + '</span> ' + t.aflatoxin + ' ' + g.aflatoxin + ' ppb</div>' +
+        '</div>';
+      }).join('');
+
+      // Full Table Body
+      var rowClass = ['row-a', 'row-b', 'row-c'];
+      document.getElementById('harga-tbody').innerHTML = hdata.grades.map(function(g, i) {
+        return '<tr class="' + rowClass[i] + '">' +
+          '<td><div style="display:flex; align-items:center; gap:10px;"><span class="grade-tag ' + g.grade.toLowerCase() + '">' + g.grade + '</span><span>' + t.gradeNames[i] + '</span></div></td>' +
+          '<td>' + g.kadar_air + '</td>' +
+          '<td>' + g.aflatoxin + '</td>' +
+          '<td>' + g.biji_jamur + '</td>' +
+          '<td>' + g.biji_mati + '</td>' +
+          '<td>' + g.biji_pecah + '</td>' +
+          '<td>' + g.benda_asing + '</td>' +
+          '<td>' + g.biji_lubang + '</td>' +
+          '<td>' + g.biji_putih + '</td>' +
+          '<td class="harga-cell-big ' + g.grade.toLowerCase() + '">' + window.HargaDB.formatHarga(g.harga) + '</td>' +
+        '</tr>';
+      }).join('');
+
+      // Re-inject info icon after render
+      var _ic = window.Icons;
+      if (_ic) {
+        var pinEl = document.getElementById('info-icon-pin');
+        if (pinEl) { pinEl.innerHTML = _ic.checkCircle; var s = pinEl.querySelector('svg'); if (s) { s.style.width = '100%'; s.style.height = '100%'; } }
+      }
+
+      // Re-observe scroll animations
+      if (window.observeNewAnimations) window.observeNewAnimations();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      window.HargaDB.loadHarga(function() { renderHargaPage(); });
+      setTimeout(function() {
+        document.querySelectorAll('.animate-on-scroll:not(.visible)').forEach(function(el) {
+          var obs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+          }, { threshold: 0.1 });
+          obs.observe(el);
+        });
+      }, 100);
+    });
+  </script>
+  <script>
+  (function () {
+    function renderHargaGallery() {
+      if (!window.GalleryDB) return;
+      window.GalleryDB.loadGalleryData(function (allPhotos) {
+        var photos = allPhotos.filter(function (p) { return p.album === 'harga_quality'; });
+        if (photos.length === 0) return;
+        var section = document.getElementById('harga-gallery-section');
+        var grid = document.getElementById('harga-gallery-display');
+        if (section) section.style.display = 'block';
+        if (grid) {
+          grid.innerHTML = photos.map(function (p) {
+            return '<div class="gallery-item animate-on-scroll" onclick="openLightbox(\'' + p.src.replace(/'/g, "&#39;") + '\')">' +
+              '<img src="' + p.src + '" alt="' + (p.caption_id || '') + '" loading="lazy">' +
+              (p.caption_id ? '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + p.caption_id + '</div></div>' : '') +
+              '</div>';
+          }).join('');
+          if (window.initGalleryCarousel) window.initGalleryCarousel(grid);
+        }
+        if (window.observeNewAnimations) window.observeNewAnimations();
+      });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', renderHargaGallery);
+    else renderHargaGallery();
+  })();
   </script>
   <div class="lightbox" id="lightbox" onclick="closeLightbox()">
     <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
