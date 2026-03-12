@@ -74,7 +74,7 @@
 }
 [data-theme="dark"] .news-card-body h3,
 [data-theme="dark"] .card h3, [data-theme="dark"] h1, [data-theme="dark"] h2,
-[data-theme="dark"] h3, [data-theme="dark"] h4 { color: var(--color-text); }
+[data-theme="dark"] h3, [data-theme="dark"] h4, [data-theme="dark"] h5 { color: var(--color-text); }
 [data-theme="dark"] .badge { background: rgba(212, 175, 55, 0.15); }
 [data-theme="dark"] .btn-dark {
   background: var(--color-gold);
@@ -214,6 +214,38 @@
 
 /* CTA section — keep dark look */
 [data-theme="dark"] .cta-section { background: #0a1a10; }
+
+/* === Dark mode: ensure ALL text on dark cards is readable === */
+[data-theme="dark"] .challenge-card h3,
+[data-theme="dark"] .solution-card h3,
+[data-theme="dark"] .product-card h3,
+[data-theme="dark"] .product-card-body h3,
+[data-theme="dark"] .revenue-card h3,
+[data-theme="dark"] .farmer-card h3,
+[data-theme="dark"] .flow-step h4,
+[data-theme="dark"] .process-step h4,
+[data-theme="dark"] .timeline-item h4,
+[data-theme="dark"] .advantage-card h3,
+[data-theme="dark"] .vm-card h3 { color: #fff; }
+
+[data-theme="dark"] .challenge-card p,
+[data-theme="dark"] .solution-card p,
+[data-theme="dark"] .product-card p,
+[data-theme="dark"] .product-card-body p,
+[data-theme="dark"] .revenue-card p,
+[data-theme="dark"] .revenue-card li,
+[data-theme="dark"] .farmer-card p,
+[data-theme="dark"] .flow-step p,
+[data-theme="dark"] .process-step p,
+[data-theme="dark"] .advantage-card p { color: var(--color-text); }
+
+[data-theme="dark"] .badge-gold { color: var(--color-gold-light); }
+[data-theme="dark"] .icon-box-gold { color: var(--color-gold-light); }
+[data-theme="dark"] .text-gold { color: var(--color-gold-light); }
+[data-theme="dark"] .link-gold { color: var(--color-gold-light); }
+[data-theme="dark"] .spec-tag::before { color: var(--color-gold-light); }
+[data-theme="dark"] .metric-value { color: var(--color-gold-light); }
+[data-theme="dark"] .param-box .param-label { color: var(--color-gold-light); }
 
 /* Smooth transition for theme change */
 body, .card, .news-card, .sidebar-card, footer, .page-hero, .section,
