@@ -364,17 +364,23 @@
   font-size: 3rem;
   color: var(--color-text-muted);
   overflow: hidden;
+  position: relative;
+  border-bottom: 2px solid rgba(212, 175, 55, 0.20);
 }
 
 .news-card-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .news-card:hover .news-card-img img {
   transform: scale(1.07);
+}
+
+.news-card:hover .news-card-img {
+  border-bottom-color: rgba(212, 175, 55, 0.45);
 }
 
 .news-card-body {

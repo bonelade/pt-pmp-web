@@ -57,7 +57,12 @@
       min-height: 360px;
       height: 100%;
       box-shadow: 0 20px 60px rgba(10, 36, 22, 0.25);
-      border: 1px solid rgba(201, 147, 42, 0.12);
+      border: 2px solid rgba(212, 175, 55, 0.35);
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+    .about-gallery:hover {
+      border-color: rgba(212, 175, 55, 0.60);
+      box-shadow: 0 20px 60px rgba(10, 36, 22, 0.25), 0 0 0 1px rgba(212, 175, 55, 0.10);
     }
 
     .about-gallery-track {
