@@ -269,7 +269,7 @@
 }
 
 .stakeholder-box.center h3 {
-  color: var(--color-white);
+  color: #fff;
 }
 
 .stakeholder-box.center p {
@@ -296,7 +296,7 @@
 .stakeholder-box h3 {
   font-size: 1.05rem;
   margin-bottom: 8px;
-  color: var(--color-white);
+  color: #fff;
   font-weight: 700;
 }
 
@@ -459,7 +459,7 @@
 .filter-tab.active {
   background: var(--color-gold);
   border-color: var(--color-gold);
-  color: var(--color-white);
+  color: #1a1a1a;
   box-shadow: 0 4px 14px rgba(201, 147, 42, 0.3);
 }
 
@@ -493,7 +493,7 @@
 .page-btn.active {
   background: var(--color-gold);
   border-color: var(--color-gold);
-  color: var(--color-white);
+  color: #1a1a1a;
   box-shadow: 0 4px 14px rgba(201, 147, 42, 0.3);
 }
 
@@ -506,7 +506,7 @@
 /* === Market Stat Cards === */
 .market-card {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
-  color: var(--color-white);
+  color: #fff;
   border-radius: var(--radius-card);
   padding: clamp(20px, 3vw, 36px) clamp(16px, 2.5vw, 28px);
   transition: var(--transition);
@@ -557,12 +557,12 @@
 }
 
 .market-card.gold-bg .market-number {
-  color: var(--color-white);
+  color: #fff;
   text-shadow: none;
 }
 
 .market-card h3 {
-  color: var(--color-white);
+  color: #fff;
   font-size: 1rem;
   margin-bottom: 8px;
 }
@@ -597,7 +597,7 @@
   left: 50%;
   transform: translateX(-50%) translateY(100px);
   background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
-  color: var(--color-white);
+  color: #fff;
   padding: clamp(10px, 1.5vw, 14px) clamp(16px, 3vw, 28px);
   border-radius: 50px;
   font-size: clamp(0.78rem, 1.2vw, 0.88rem);

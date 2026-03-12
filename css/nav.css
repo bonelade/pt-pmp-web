@@ -74,7 +74,7 @@
   font-family: var(--font-heading);
   font-size: 0.93rem;
   font-weight: 800;
-  color: var(--color-white);
+  color: #fff;
   display: block;
   letter-spacing: 0.01em;
 }

@@ -106,7 +106,7 @@ html { overflow-x: hidden; }
 .admin-sidebar {
   width: 256px;
   background: linear-gradient(180deg, #0d2419 0%, #091a11 100%);
-  color: var(--color-white);
+  color: #fff;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -125,7 +125,7 @@ html { overflow-x: hidden; }
   font-family: var(--font-heading);
   font-size: 1.02rem;
   font-weight: 800;
-  color: var(--color-white);
+  color: #fff;
   letter-spacing: 0.01em;
 }
 .admin-sidebar-header .brand-name em { color: var(--color-red); font-style: normal; }
@@ -164,7 +164,7 @@ html { overflow-x: hidden; }
   background: rgba(255,255,255,0.06);
 }
 .admin-nav a.active {
-  color: var(--color-white);
+  color: #fff;
   background: rgba(201,147,42,0.12);
   border-left-color: var(--color-gold);
   font-weight: 600;
@@ -239,7 +239,7 @@ html { overflow-x: hidden; }
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-white);
+  color: #fff;
   font-weight: 800;
   font-size: 0.78rem;
   box-shadow: 0 2px 8px rgba(201,147,42,0.3);
@@ -382,7 +382,7 @@ html { overflow-x: hidden; }
   border: none;
   font-family: var(--font-body);
 }
-.btn-edit:hover { background: #2563eb; color: var(--color-white); }
+.btn-edit:hover { background: #2563eb; color: #fff; }
 .btn-delete {
   padding: 5px 12px;
   background: #fef2f2;
@@ -395,7 +395,7 @@ html { overflow-x: hidden; }
   border: none;
   font-family: var(--font-body);
 }
-.btn-delete:hover { background: var(--color-red); color: var(--color-white); }
+.btn-delete:hover { background: var(--color-red); color: #fff; }
 
 /* === Modal === */
 .modal-overlay {
@@ -502,7 +502,7 @@ html { overflow-x: hidden; }
 .form-tab-btn:last-child { border-right: none; }
 .form-tab-btn.active {
   background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
-  color: var(--color-white);
+  color: #fff;
 }
 .form-tab-content { display: none; }
 .form-tab-content.active { display: block; }

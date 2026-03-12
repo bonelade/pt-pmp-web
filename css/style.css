@@ -85,7 +85,13 @@
   color: var(--color-gold-light);
 }
 [data-theme="dark"] .page-hero { background: #0e1f16; }
+[data-theme="dark"] .page-hero h1 { color: #fff; }
 [data-theme="dark"] footer { background: #0e1f16; }
+[data-theme="dark"] footer h4, [data-theme="dark"] footer .logo-text { color: #fff; }
+[data-theme="dark"] .bg-dark h1, [data-theme="dark"] .bg-dark h2,
+[data-theme="dark"] .bg-dark h3, [data-theme="dark"] .bg-dark h4 { color: #fff; }
+[data-theme="dark"] .hero-title { color: #fff; }
+[data-theme="dark"] .stat-bar h2, [data-theme="dark"] .stat-bar h3 { color: #fff; }
 [data-theme="dark"] .empty-state { background: var(--color-light); }
 [data-theme="dark"] .filter-tab {
   background: rgba(255, 255, 255, 0.06);
@@ -655,7 +661,7 @@ p:last-child {
 .bg-dark h2,
 .bg-dark h3,
 .bg-dark h4 {
-  color: var(--color-white);
+  color: #fff;
 }
 
 .bg-dark p {
@@ -672,7 +678,7 @@ p:last-child {
 
 .bg-gold h2,
 .bg-gold h3 {
-  color: var(--color-white);
+  color: #fff;
 }
 
 .bg-gold p {
@@ -712,22 +718,22 @@ p:last-child {
 
 .btn-outline {
   border: 2px solid rgba(255, 255, 255, 0.5);
-  color: var(--color-white);
+  color: #fff;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(6px);
 }
 
 .btn-outline:hover {
-  background: var(--color-white);
+  background: rgba(255, 255, 255, 0.95);
   color: var(--color-primary);
-  border-color: var(--color-white);
+  border-color: rgba(255, 255, 255, 0.95);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
   transform: translateY(-4px);
 }
 
 .btn-dark {
   background: var(--color-primary);
-  color: var(--color-white);
+  color: #fff;
   box-shadow: 0 4px 14px rgba(17, 56, 36, 0.3);
 }
 
@@ -863,7 +869,7 @@ p:last-child {
 
 .icon-box-white {
   background: rgba(255, 255, 255, 0.12);
-  color: var(--color-white);
+  color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
@@ -937,7 +943,7 @@ p:last-child {
 }
 
 .text-white {
-  color: var(--color-white);
+  color: #fff;
 }
 
 .text-muted {
@@ -1046,7 +1052,7 @@ footer::before {
   font-family: var(--font-heading);
   font-size: clamp(1.1rem, 2vw, 1.4rem);
   font-weight: 800;
-  color: var(--color-white);
+  color: #fff;
   margin-bottom: 4px;
 }
 
@@ -1130,7 +1136,7 @@ footer::before {
 }
 
 .page-hero h1 {
-  color: var(--color-white);
+  color: #fff;
   margin-bottom: 12px;
 }
 
