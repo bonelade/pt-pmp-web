@@ -216,7 +216,8 @@
           renderPage();
         });
       });
-      renderPage();
+      // Wait for Supabase data before first render
+      window.NewsDB.loadNews(function() { renderPage(); });
 
       // Re-render on language change
       const origToggle = window.toggleLanguage;

@@ -1317,23 +1317,24 @@
   <script src="js/main.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Load latest 3 news
+      // Load latest 3 news (wait for Supabase data)
       const grid = document.getElementById('home-news-grid');
-      const articles = window.NewsDB.getArticles().slice(0, 3);
-      const lang = window.getCurrentLang();
-      if (articles.length > 0) {
-        window.NewsDB.renderNewsCards(grid, articles, lang,
-          window.translations[lang]['home_news_read']);
-        // Re-observe new cards
-        setTimeout(() => {
-          document.querySelectorAll('.animate-on-scroll:not(.visible)').forEach(el => {
-            const observer = new IntersectionObserver((entries) => {
-              entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-            }, { threshold: 0.12 });
-            observer.observe(el);
-          });
-        }, 100);
-      }
+      window.NewsDB.loadNews(function(allArticles) {
+        const articles = allArticles.slice(0, 3);
+        const lang = window.getCurrentLang();
+        if (articles.length > 0) {
+          window.NewsDB.renderNewsCards(grid, articles, lang,
+            window.translations[lang]['home_news_read']);
+          setTimeout(() => {
+            document.querySelectorAll('.animate-on-scroll:not(.visible)').forEach(el => {
+              const observer = new IntersectionObserver((entries) => {
+                entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+              }, { threshold: 0.12 });
+              observer.observe(el);
+            });
+          }, 100);
+        }
+      });
       // Gallery preview - load async from JSON
       if (window.GalleryDB) {
         window.GalleryDB.loadGalleryData(function (allPhotos) {

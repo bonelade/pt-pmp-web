@@ -372,7 +372,9 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', renderArticle);
+    document.addEventListener('DOMContentLoaded', function() {
+      window.NewsDB.loadNews(function() { renderArticle(); });
+    });
   </script>
   <!-- Floating WhatsApp Button -->
   <div id="float-wa" style="display:none; position:fixed; bottom:28px; right:28px; z-index:999;">
