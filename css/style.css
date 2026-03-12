@@ -47,6 +47,80 @@
   --nav-height: 80px;
 }
 
+/* === Dark Mode === */
+[data-theme="dark"] {
+  --color-white: #1a1a1a;
+  --color-light: #222220;
+  --color-grey: #333330;
+  --color-text: #e8e6e0;
+  --color-text-muted: #a0a0a0;
+  --color-border: #3a3a38;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] body { background: #141413; color: var(--color-text); }
+[data-theme="dark"] .bg-white { background: var(--color-white); }
+[data-theme="dark"] .bg-light { background: var(--color-light); }
+[data-theme="dark"] .card, [data-theme="dark"] .news-card,
+[data-theme="dark"] .sidebar-card, [data-theme="dark"] .revenue-card,
+[data-theme="dark"] .advantage-card, [data-theme="dark"] .market-card,
+[data-theme="dark"] .grade-price-card, [data-theme="dark"] .challenge-card,
+[data-theme="dark"] .solution-card, [data-theme="dark"] .farmer-card,
+[data-theme="dark"] .vm-card, [data-theme="dark"] .product-card {
+  background: #222220;
+  border-color: var(--color-border);
+}
+[data-theme="dark"] .news-card-body h3,
+[data-theme="dark"] .card h3, [data-theme="dark"] h1, [data-theme="dark"] h2,
+[data-theme="dark"] h3, [data-theme="dark"] h4 { color: var(--color-text); }
+[data-theme="dark"] .badge { background: rgba(212, 175, 55, 0.15); }
+[data-theme="dark"] .btn-dark {
+  background: var(--color-gold);
+  color: #1a1a1a;
+}
+[data-theme="dark"] .btn-outline {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+[data-theme="dark"] .page-hero { background: #0e1f16; }
+[data-theme="dark"] footer { background: #0e1f16; }
+[data-theme="dark"] .empty-state { background: var(--color-light); }
+[data-theme="dark"] .filter-tab {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
+}
+[data-theme="dark"] .filter-tab.active {
+  background: var(--color-gold);
+  color: #1a1a1a;
+}
+[data-theme="dark"] .skeleton, [data-theme="dark"] .skeleton-card {
+  background: linear-gradient(90deg, #2a2a28 25%, #333330 50%, #2a2a28 75%);
+  background-size: 200% 100%;
+}
+[data-theme="dark"] .toast { background: #2a2a28; color: var(--color-text); }
+[data-theme="dark"] img { opacity: 0.92; }
+[data-theme="dark"] .news-card-img { background: #2a2a28; }
+[data-theme="dark"] table { border-color: var(--color-border); }
+[data-theme="dark"] th { background: #222220; color: var(--color-text); border-color: var(--color-border); }
+[data-theme="dark"] td { border-color: var(--color-border); color: var(--color-text); }
+[data-theme="dark"] tr:nth-child(even) { background: rgba(255, 255, 255, 0.03); }
+[data-theme="dark"] .stat-bar { background: #0e1f16; }
+[data-theme="dark"] .section-header .label { color: var(--color-gold); }
+[data-theme="dark"] p { color: var(--color-text); }
+[data-theme="dark"] .breadcrumb a { color: var(--color-gold); }
+[data-theme="dark"] .footer-grid { border-color: var(--color-border); }
+[data-theme="dark"] .footer-bottom { border-color: var(--color-border); }
+[data-theme="dark"] .about-stats-box { background: #222220; border-color: var(--color-border); }
+[data-theme="dark"] .process-step { background: #222220; }
+[data-theme="dark"] .stakeholder-box { background: #222220; border-color: var(--color-border); }
+[data-theme="dark"] .quality-metrics { background: #222220; }
+[data-theme="dark"] input, [data-theme="dark"] textarea, [data-theme="dark"] select {
+  background: #2a2a28; color: var(--color-text); border-color: var(--color-border);
+}
+
 /* === Reset === */
 *,
 *::before,

@@ -7,7 +7,7 @@
   <title>PT Pangan Merah Putih - Pusat Jagung Kalimantan Barat</title>
   <meta name="description"
     content="PT Pangan Merah Putih - Pusat pengeringan, penyimpanan, dan distribusi jagung pakan di Bengkayang, Kalimantan Barat.">
-  <script>(function () { var l = localStorage.getItem('pmp_lang') || 'id'; document.documentElement.setAttribute('lang', l); document.documentElement.setAttribute('data-lang', l); })()</script>
+  <script>(function () { var l = localStorage.getItem('pmp_lang') || 'id'; document.documentElement.setAttribute('lang', l); document.documentElement.setAttribute('data-lang', l); var t = localStorage.getItem('pmp_theme') || 'light'; document.documentElement.setAttribute('data-theme', t); })()</script>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/nav.css">
   <link rel="stylesheet" href="css/components.css">
@@ -774,7 +774,7 @@
         <span></span><span></span><span></span>
       </button>
       <a href="index.html" class="nav-logo">
-        <div class="logo-icon"><img src="images/gallery/LOGO PMP HITAM TRANSPARANT Large.png" alt="PT PMP" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="logo-icon"><img src="images/gallery/LOGO PMP HITAM TRANSPARANT Large.png" alt="Logo PT Pangan Merah Putih" style="width:100%;height:100%;object-fit:contain;"></div>
         <div class="logo-text-wrap">
           <span class="logo-name">PT PANGAN <em>MERAH</em> PUTIH</span>
           <span class="logo-sub">Bengkayang, Kalimantan Barat</span>
@@ -782,6 +782,7 @@
       </a>
       <div class="nav-controls">
         <button id="lang-toggle" onclick="toggleLanguage()">ID | EN</button>
+        <button id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
       </div>
     </nav>
   </header>
@@ -791,7 +792,7 @@
   <div id="nav-panel">
     <div class="nav-panel-header">
       <a href="index.html" class="nav-logo">
-        <div class="nav-panel-logo-icon"><img src="images/gallery/LOGO PMP HITAM TRANSPARANT Large.png" alt="PT PMP" style="width:100%;height:100%;object-fit:contain;filter:brightness(0) invert(1);"></div>
+        <div class="nav-panel-logo-icon"><img src="images/gallery/LOGO PMP HITAM TRANSPARANT Large.png" alt="Logo PT Pangan Merah Putih" style="width:100%;height:100%;object-fit:contain;filter:brightness(0) invert(1);"></div>
         <div class="logo-text-wrap">
           <span class="logo-name">PT PANGAN <em>MERAH</em> PUTIH</span>
           <span class="logo-sub">Bengkayang, Kalimantan Barat</span>
@@ -1077,7 +1078,7 @@
   <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
     <button class="lightbox-arrow lightbox-prev" onclick="event.stopPropagation();lightboxNav(-1)" aria-label="Previous">&#10094;</button>
     <span class="lightbox-close">✕</span>
-    <img class="lightbox-img" id="lightbox-img" src="" alt="" onclick="event.stopPropagation()">
+    <img class="lightbox-img" id="lightbox-img" src="" alt="Foto galeri PT Pangan Merah Putih" onclick="event.stopPropagation()">
     <button class="lightbox-arrow lightbox-next" onclick="event.stopPropagation();lightboxNav(1)" aria-label="Next">&#10095;</button>
   </div>
 
@@ -1180,7 +1181,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px;">
-            <img src="images/gallery/LOGO PMP HITAM TRANSPARANT Large.png" alt="PT PMP" style="width:36px;height:36px;object-fit:contain;filter:brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(15deg);opacity:0.85;">
+            <img src="images/gallery/LOGO PMP HITAM TRANSPARANT Large.png" alt="Logo PT Pangan Merah Putih" style="width:36px;height:36px;object-fit:contain;filter:brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(15deg);opacity:0.85;">
             <div class="logo-text">PT PANGAN <span>MERAH</span> PUTIH</div>
           </div>
           <p data-i18n="footer_tagline">Pusat pengeringan dan distribusi jagung pakan terkemuka di Kalimantan Barat.</p>
@@ -1325,6 +1326,7 @@
   <script src="js/gallery.js"></script>
   <script src="js/kontak.js"></script>
   <script src="js/news.js"></script>
+  <script src="js/theme.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/main.js"></script>
   <script>
