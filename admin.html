@@ -1443,7 +1443,6 @@
 
   function resetHarga() {
     if (!confirm('Reset semua harga ke nilai default?')) return;
-    localStorage.removeItem('pmp_harga_jagung');
     loadHargaForm();
     showToast('↺ Harga direset ke nilai default.', '');
   }

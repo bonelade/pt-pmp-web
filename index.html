@@ -1134,25 +1134,26 @@
       (function () {
         function renderSocialCTA() {
           if (!window.KontakDB) return;
-          var k = window.KontakDB.getKontak();
-          var container = document.getElementById('social-cta-buttons');
-          if (!container) return;
-          var ic = window.Icons || {};
-          var btns = [];
-          if (k.whatsapp) btns.push({ href: 'https://wa.me/62' + k.whatsapp, icon: ic.whatsapp || '' });
-          if (k.instagram) btns.push({ href: 'https://instagram.com/' + k.instagram, icon: ic.instagram || '' });
-          if (k.facebook) {
-            var fbHref = k.facebook.startsWith('http') ? k.facebook : 'https://facebook.com/' + k.facebook;
-            btns.push({ href: fbHref, icon: ic.facebook || '' });
-          }
-          if (k.email) btns.push({ href: 'mailto:' + k.email, icon: ic.email || '' });
-          if (btns.length === 0) {
-            container.innerHTML = '<a href="community.html" class="btn btn-primary btn-lg" data-i18n="hero_cta2">Hubungi Kami</a>';
-          } else {
-            container.innerHTML = btns.map(b =>
-              '<a href="' + b.href + '" target="_blank" rel="noopener" class="social-icon-elegant" style="width:48px;height:48px;"><span style="width:20px;height:20px;">' + b.icon + '</span></a>'
-            ).join('');
-          }
+          window.KontakDB.loadKontak(function(k) {
+            var container = document.getElementById('social-cta-buttons');
+            if (!container) return;
+            var ic = window.Icons || {};
+            var btns = [];
+            if (k.whatsapp) btns.push({ href: 'https://wa.me/62' + k.whatsapp, icon: ic.whatsapp || '' });
+            if (k.instagram) btns.push({ href: 'https://instagram.com/' + k.instagram, icon: ic.instagram || '' });
+            if (k.facebook) {
+              var fbHref = k.facebook.startsWith('http') ? k.facebook : 'https://facebook.com/' + k.facebook;
+              btns.push({ href: fbHref, icon: ic.facebook || '' });
+            }
+            if (k.email) btns.push({ href: 'mailto:' + k.email, icon: ic.email || '' });
+            if (btns.length === 0) {
+              container.innerHTML = '<a href="community.html" class="btn btn-primary btn-lg" data-i18n="hero_cta2">Hubungi Kami</a>';
+            } else {
+              container.innerHTML = btns.map(b =>
+                '<a href="' + b.href + '" target="_blank" rel="noopener" class="social-icon-elegant" style="width:48px;height:48px;"><span style="width:20px;height:20px;">' + b.icon + '</span></a>'
+              ).join('');
+            }
+          });
         }
         if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', renderSocialCTA);
         else renderSocialCTA();
@@ -1456,7 +1457,7 @@
     (function () {
       function initKontakUI() {
         if (!window.KontakDB) return;
-        var k = window.KontakDB.getKontak();
+        window.KontakDB.loadKontak(function(k) {
         // Floating WA
         if (k.whatsapp) {
           var btn = document.getElementById('float-wa');
@@ -1484,6 +1485,7 @@
             ).join('');
           }
         }
+        });
       }
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initKontakUI);
       else initKontakUI();

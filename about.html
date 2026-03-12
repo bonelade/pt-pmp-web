@@ -689,7 +689,7 @@
       (function () {
         function initKontakUI() {
           if (!window.KontakDB) return;
-          var k = window.KontakDB.getKontak();
+          window.KontakDB.loadKontak(function(k) {
           // Floating WA
           if (k.whatsapp) {
             var btn = document.getElementById('float-wa');
@@ -717,6 +717,7 @@
               ).join('');
             }
           }
+        });
         }
         if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initKontakUI);
         else initKontakUI();
