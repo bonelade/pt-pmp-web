@@ -448,7 +448,7 @@
         </div>
       </a>
       <div class="nav-controls">
-        <button id="lang-toggle" onclick="toggleLanguage(); renderHargaPage();">ID | EN</button>
+        <button id="lang-toggle" onclick="toggleLanguage();">ID | EN</button>
         <button id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
       </div>
     </nav>
@@ -474,7 +474,7 @@
       <li><a href="products.html" data-i18n="nav_products">Produk & Jasa</a></li>
       <li><a href="community.html" data-i18n="nav_community">Komunitas</a></li>
       <li><a href="news.html" data-i18n="nav_news">Berita</a></li>
-      <li><a href="harga-jagung.html" class="nav-harga">Harga</a></li>
+      <li><a href="harga-jagung.html" class="nav-harga" data-i18n="nav_harga">Harga</a></li>
     </ul>
   </div>
 
@@ -483,7 +483,7 @@
     <div class="section-ornaments" data-type="float-scatter" data-theme="gold" data-count="10"></div>
     <div class="container page-hero-content">
       <div class="breadcrumb">
-        <a href="index.html">Home</a><span>/</span>
+        <a href="index.html" data-i18n="nav_home">Beranda</a><span>/</span>
         <span id="bc-harga">Harga Jagung</span>
       </div>
       <h1 id="hero-title">Spesifikasi &amp; Harga Jagung</h1>
@@ -496,7 +496,7 @@
 
       <!-- Live Update Bar -->
       <div class="update-bar">
-        <div><span class="live-dot"></span> <strong style="color:white;">Harga Aktif</strong> — Diperbarui oleh
+        <div id="update-bar-text"><span class="live-dot"></span> <strong style="color:white;">Harga Aktif</strong> — Diperbarui oleh
           Administrator PT PMP</div>
         <div id="update-timestamp">—</div>
       </div>
@@ -516,19 +516,19 @@
           <div class="param-list" id="param-list">
             <div class="param-item">
               <div class="param-icon"><span class="pmp-icon" id="param-icon-droplet" style="width:18px;height:18px;display:inline-flex;"></span></div>
-              <span>Kadar Air (%)</span>
+              <span id="param-1">Kadar Air (%)</span>
             </div>
             <div class="param-item">
               <div class="param-icon"><span class="pmp-icon" id="param-icon-flask" style="width:18px;height:18px;display:inline-flex;"></span></div>
-              <span>Aflatoxin (ppb)</span>
+              <span id="param-2">Aflatoxin (ppb)</span>
             </div>
             <div class="param-item">
               <div class="param-icon"><span class="pmp-icon" id="param-icon-corn" style="width:18px;height:18px;display:inline-flex;"></span></div>
-              <span>Biji Jamur, Biji Mati, Biji Pecah (%)</span>
+              <span id="param-3">Biji Jamur, Biji Mati, Biji Pecah (%)</span>
             </div>
             <div class="param-item">
               <div class="param-icon"><span class="pmp-icon" id="param-icon-search" style="width:18px;height:18px;display:inline-flex;"></span></div>
-              <span>Benda Asing, Biji Lubang, Biji Putih (%)</span>
+              <span id="param-4">Benda Asing, Biji Lubang, Biji Putih (%)</span>
             </div>
           </div>
         </div>
@@ -564,17 +564,17 @@
               <th id="th-putih">Biji Putih (%)</th>
               <th id="th-harga">Harga Penuh</th>
             </tr>
-            <tr class="sub-header">
-              <td id="sub-max">Maks.</td>
-              <td>Maks.</td>
-              <td>Maks.</td>
-              <td>Maks.</td>
-              <td>Maks.</td>
-              <td>Maks.</td>
-              <td>Maks.</td>
-              <td>Maks.</td>
-              <td>Maks.</td>
-              <td>Maks.</td>
+            <tr class="sub-header" id="sub-header-row">
+              <td class="sub-max-cell">Maks.</td>
+              <td class="sub-max-cell">Maks.</td>
+              <td class="sub-max-cell">Maks.</td>
+              <td class="sub-max-cell">Maks.</td>
+              <td class="sub-max-cell">Maks.</td>
+              <td class="sub-max-cell">Maks.</td>
+              <td class="sub-max-cell">Maks.</td>
+              <td class="sub-max-cell">Maks.</td>
+              <td class="sub-max-cell">Maks.</td>
+              <td class="sub-max-cell">Maks.</td>
             </tr>
           </thead>
           <tbody id="harga-tbody">
@@ -599,8 +599,8 @@
     <div class="section-ornaments" data-type="cloud-curves" data-theme="mix"></div>
     <div class="container" style="position:relative; z-index:1;">
       <div class="section-header animate-on-scroll">
-        <span class="label">Referensi Visual</span>
-        <h2>Kualitas Jagung</h2>
+        <span class="label" id="gallery-label">Referensi Visual</span>
+        <h2 id="gallery-title">Kualitas Jagung</h2>
         <div class="section-divider"></div>
       </div>
       <div class="gallery-grid" id="harga-gallery-display"></div>
@@ -636,7 +636,7 @@
             <li><a href="index.html" data-i18n="nav_home">Beranda</a></li>
             <li><a href="about.html" data-i18n="nav_about">Tentang Kami</a></li>
             <li><a href="products.html" data-i18n="nav_products">Produk & Jasa</a></li>
-            <li><a href="harga-jagung.html">🌽 Harga Jagung</a></li>
+            <li><a href="harga-jagung.html" data-i18n="nav_harga_full">🌽 Harga Jagung</a></li>
             <li><a href="news.html" data-i18n="nav_news">Berita</a></li>
           </ul>
         </div>
@@ -735,11 +735,22 @@
       document.getElementById('th-lubang').textContent = t.thLubang;
       document.getElementById('th-putih').textContent = t.thPutih;
       document.getElementById('th-harga').textContent = t.thHarga;
-      document.getElementById('sub-max').textContent = t.subMax;
+      document.querySelectorAll('.sub-max-cell').forEach(function(el) { el.textContent = t.subMax; });
       document.getElementById('info-title').innerHTML = '<span class="info-icon" id="info-icon-pin"></span> ' + t.infoTitle;
       document.getElementById('info-text').innerHTML = t.infoText;
       document.getElementById('cta-title').textContent = t.ctaTitle;
       document.getElementById('cta-text').textContent = t.ctaText;
+      document.getElementById('update-bar-text').innerHTML = isEN
+        ? '<span class="live-dot"></span> <strong style="color:white;">Active Price</strong> — Updated by PT PMP Administrator'
+        : '<span class="live-dot"></span> <strong style="color:white;">Harga Aktif</strong> — Diperbarui oleh Administrator PT PMP';
+      var galleryLabel = document.getElementById('gallery-label');
+      var galleryTitle = document.getElementById('gallery-title');
+      if (galleryLabel) galleryLabel.textContent = isEN ? 'Visual Reference' : 'Referensi Visual';
+      if (galleryTitle) galleryTitle.textContent = isEN ? 'Corn Quality' : 'Kualitas Jagung';
+      document.getElementById('param-1').textContent = isEN ? 'Moisture Content (%)' : 'Kadar Air (%)';
+      document.getElementById('param-2').textContent = isEN ? 'Aflatoxin (ppb)' : 'Aflatoxin (ppb)';
+      document.getElementById('param-3').textContent = isEN ? 'Moldy, Dead, Broken Grain (%)' : 'Biji Jamur, Biji Mati, Biji Pecah (%)';
+      document.getElementById('param-4').textContent = isEN ? 'Foreign Matter, Holed, White Grain (%)' : 'Benda Asing, Biji Lubang, Biji Putih (%)';
 
       // Timestamp
       document.getElementById('update-timestamp').textContent = window.HargaDB.formatDateTime(hdata.last_updated);
@@ -787,6 +798,8 @@
         if (pinEl) { pinEl.innerHTML = _ic.checkCircle; var s = pinEl.querySelector('svg'); if (s) { s.style.width = '100%'; s.style.height = '100%'; } }
       }
     }
+
+    window.addEventListener('langChange', function() { renderHargaPage(); });
 
     document.addEventListener('DOMContentLoaded', () => {
       window.HargaDB.loadHarga(function() { renderHargaPage(); });

@@ -60,7 +60,7 @@
     <div class="section-ornaments" data-type="float-scatter" data-theme="gold" data-count="10"></div>
     <div class="container page-hero-content">
       <div class="breadcrumb">
-        <a href="index.html">Home</a><span>/</span>
+        <a href="index.html" data-i18n="nav_home">Beranda</a><span>/</span>
         <span data-i18n="news_hero_bc">Berita</span>
       </div>
       <h1 data-i18n="news_hero_title">Berita & Pengumuman</h1>
@@ -226,11 +226,7 @@
       window.NewsDB.loadNews(function() { renderPage(); });
 
       // Re-render on language change
-      const origToggle = window.toggleLanguage;
-      window.toggleLanguage = function () {
-        origToggle();
-        renderPage();
-      };
+      window.addEventListener('langChange', function() { renderPage(); });
     });
   </script>
   <!-- Floating WhatsApp Button -->

@@ -235,7 +235,7 @@
         </div>
       </a>
       <div class="nav-controls">
-        <button id="lang-toggle" onclick="toggleLanguage(); renderArticle();">ID | EN</button>
+        <button id="lang-toggle" onclick="toggleLanguage();">ID | EN</button>
         <button id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
       </div>
     </nav>
@@ -268,7 +268,7 @@
     <div class="section-ornaments" data-type="float-scatter" data-theme="gold" data-count="10"></div>
     <div class="container page-hero-content">
       <div class="breadcrumb">
-        <a href="index.html">Home</a><span>/</span>
+        <a href="index.html" data-i18n="nav_home">Beranda</a><span>/</span>
         <a href="news.html" data-i18n="nav_news">Berita</a><span>/</span>
         <span id="bc-title">Artikel</span>
       </div>
@@ -431,6 +431,8 @@
         }).join('');
       }
     }
+
+    window.addEventListener('langChange', function() { renderArticle(); });
 
     document.addEventListener('DOMContentLoaded', function() {
       window.NewsDB.loadNews(function() {

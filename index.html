@@ -1378,46 +1378,66 @@
   <script src="js/nav.js"></script>
   <script src="js/main.js"></script>
   <script>
+    // Cached data for re-render on language change
+    var _cachedHdata = null;
+    var _cachedArticles = null;
+
+    function renderHomeHarga(hdata) {
+      var lang = window.getCurrentLang ? window.getCurrentLang() : 'id';
+      var isEN = lang === 'en';
+      var gradeSubtitles = isEN
+        ? ['Best Quality', 'Standard Quality', 'Basic Quality']
+        : ['Kualitas Terbaik', 'Kualitas Standar', 'Kualitas Dasar'];
+      var gradeColors = {
+        A: { bg: '#e8f5ee', border: '#16a34a', badge: '#16a34a' },
+        B: { bg: '#fef3e2', border: '#c9932a', badge: '#c9932a' },
+        C: { bg: '#fde8e9', border: '#cc2229', badge: '#cc2229' }
+      };
+
+      var container = document.getElementById('home-harga-cards');
+      if (container && hdata.grades) {
+        container.innerHTML = hdata.grades.map(function(g, i) {
+          var c = gradeColors[g.grade];
+          return '<a href="products.html#harga" class="service-card animate-on-scroll visible" style="text-decoration:none; cursor:pointer; border-top:4px solid ' + c.border + ';">' +
+            '<div style="display:inline-block; padding:4px 14px; border-radius:20px; font-size:0.75rem; font-weight:700; color:#fff; background:' + c.badge + '; margin-bottom:12px;">Grade ' + g.grade + '</div>' +
+            '<div style="font-size:0.85rem; opacity:0.6; margin-bottom:8px;">' + gradeSubtitles[i] + '</div>' +
+            '<div style="font-size:1.8rem; font-weight:800; color:' + c.border + '; margin-bottom:4px;">' + window.HargaDB.formatHarga(g.harga) + '</div>' +
+            '<div style="font-size:0.8rem; opacity:0.5;">per kilogram</div>' +
+            '</a>';
+        }).join('');
+      }
+
+      var labelEl = document.getElementById('home-harga-label');
+      var titleEl = document.getElementById('home-harga-title');
+      var btnEl = document.getElementById('home-harga-btn');
+      var updEl = document.getElementById('home-harga-updated');
+      if (labelEl) labelEl.textContent = isEN ? 'Corn Prices' : 'Harga Jagung';
+      if (titleEl) titleEl.textContent = isEN ? 'Active Corn Purchase Prices' : 'Harga Pembelian Jagung Aktif';
+      if (btnEl) btnEl.textContent = isEN ? 'View Full Specifications' : 'Lihat Spesifikasi Lengkap';
+      if (updEl && hdata.last_updated) updEl.textContent = (isEN ? 'Last updated: ' : 'Terakhir diperbarui: ') + window.HargaDB.formatDateTime(hdata.last_updated);
+    }
+
+    function renderHomeNews(articles) {
+      var grid = document.getElementById('home-news-grid');
+      var lang = window.getCurrentLang();
+      if (articles.length > 0 && grid) {
+        window.NewsDB.renderNewsCards(grid, articles, lang,
+          window.translations[lang]['home_news_read']);
+      }
+    }
+
+    // Re-render dynamic content on language change
+    window.addEventListener('langChange', function() {
+      if (_cachedHdata) renderHomeHarga(_cachedHdata);
+      if (_cachedArticles) renderHomeNews(_cachedArticles);
+    });
+
     document.addEventListener('DOMContentLoaded', () => {
       // Load harga preview
       if (window.HargaDB) {
         window.HargaDB.loadHarga(function(hdata) {
-          var lang = window.getCurrentLang ? window.getCurrentLang() : 'id';
-          var isEN = lang === 'en';
-          var gradeNames = isEN
-            ? ['Grade A', 'Grade B', 'Grade C']
-            : ['Grade A', 'Grade B', 'Grade C'];
-          var gradeSubtitles = isEN
-            ? ['Best Quality', 'Standard Quality', 'Basic Quality']
-            : ['Kualitas Terbaik', 'Kualitas Standar', 'Kualitas Dasar'];
-          var gradeColors = {
-            A: { bg: '#e8f5ee', border: '#16a34a', badge: '#16a34a' },
-            B: { bg: '#fef3e2', border: '#c9932a', badge: '#c9932a' },
-            C: { bg: '#fde8e9', border: '#cc2229', badge: '#cc2229' }
-          };
-
-          var container = document.getElementById('home-harga-cards');
-          if (container && hdata.grades) {
-            container.innerHTML = hdata.grades.map(function(g, i) {
-              var c = gradeColors[g.grade];
-              return '<a href="products.html#harga" class="service-card animate-on-scroll' + (i > 0 ? ' animate-delay-' + i : '') + '" style="text-decoration:none; cursor:pointer; border-top:4px solid ' + c.border + ';">' +
-                '<div style="display:inline-block; padding:4px 14px; border-radius:20px; font-size:0.75rem; font-weight:700; color:#fff; background:' + c.badge + '; margin-bottom:12px;">' + gradeNames[i] + '</div>' +
-                '<div style="font-size:0.85rem; opacity:0.6; margin-bottom:8px;">' + gradeSubtitles[i] + '</div>' +
-                '<div style="font-size:1.8rem; font-weight:800; color:' + c.border + '; margin-bottom:4px;">' + window.HargaDB.formatHarga(g.harga) + '</div>' +
-                '<div style="font-size:0.8rem; opacity:0.5;">' + (isEN ? 'per kilogram' : 'per kilogram') + '</div>' +
-                '</a>';
-            }).join('');
-          }
-
-          var labelEl = document.getElementById('home-harga-label');
-          var titleEl = document.getElementById('home-harga-title');
-          var btnEl = document.getElementById('home-harga-btn');
-          var updEl = document.getElementById('home-harga-updated');
-          if (labelEl) labelEl.textContent = isEN ? 'Corn Prices' : 'Harga Jagung';
-          if (titleEl) titleEl.textContent = isEN ? 'Active Corn Purchase Prices' : 'Harga Pembelian Jagung Aktif';
-          if (btnEl) btnEl.textContent = isEN ? 'View Full Specifications' : 'Lihat Spesifikasi Lengkap';
-          if (updEl && hdata.last_updated) updEl.textContent = (isEN ? 'Last updated: ' : 'Terakhir diperbarui: ') + window.HargaDB.formatDateTime(hdata.last_updated);
-
+          _cachedHdata = hdata;
+          renderHomeHarga(hdata);
           if (window.observeNewAnimations) window.observeNewAnimations();
           setTimeout(function() {
             document.querySelectorAll('#home-harga .animate-on-scroll:not(.visible)').forEach(function(el) {
@@ -1431,22 +1451,18 @@
       }
 
       // Load latest 3 news (wait for Supabase data)
-      const grid = document.getElementById('home-news-grid');
+      var grid = document.getElementById('home-news-grid');
       window.NewsDB.loadNews(function(allArticles) {
-        const articles = allArticles.slice(0, 3);
-        const lang = window.getCurrentLang();
-        if (articles.length > 0) {
-          window.NewsDB.renderNewsCards(grid, articles, lang,
-            window.translations[lang]['home_news_read']);
-          setTimeout(() => {
-            document.querySelectorAll('.animate-on-scroll:not(.visible)').forEach(el => {
-              const observer = new IntersectionObserver((entries) => {
-                entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-              }, { threshold: 0.12 });
-              observer.observe(el);
-            });
-          }, 100);
-        }
+        _cachedArticles = allArticles.slice(0, 3);
+        renderHomeNews(_cachedArticles);
+        setTimeout(() => {
+          document.querySelectorAll('.animate-on-scroll:not(.visible)').forEach(el => {
+            const observer = new IntersectionObserver((entries) => {
+              entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+            }, { threshold: 0.12 });
+            observer.observe(el);
+          });
+        }, 100);
       });
       // Gallery preview - load async from JSON
       if (window.GalleryDB) {

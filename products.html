@@ -405,7 +405,7 @@
         </div>
       </a>
       <div class="nav-controls">
-        <button id="lang-toggle" onclick="toggleLanguage(); if(window.renderHargaPage) renderHargaPage();">ID | EN</button>
+        <button id="lang-toggle" onclick="toggleLanguage();">ID | EN</button>
         <button id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
       </div>
     </nav>
@@ -438,7 +438,7 @@
     <div class="section-ornaments" data-type="float-scatter" data-theme="gold" data-count="10"></div>
     <div class="container page-hero-content">
       <div class="breadcrumb">
-        <a href="index.html">Home</a><span>/</span>
+        <a href="index.html" data-i18n="nav_home">Beranda</a><span>/</span>
         <span data-i18n="prod_hero_bc">Produk & Jasa</span>
       </div>
       <h1 data-i18n="prod_hero_title">Produk & Jasa</h1>
@@ -1002,6 +1002,8 @@
       // Re-observe scroll animations
       if (window.observeNewAnimations) window.observeNewAnimations();
     }
+
+    window.addEventListener('langChange', function() { renderHargaPage(); });
 
     document.addEventListener('DOMContentLoaded', function() {
       window.HargaDB.loadHarga(function() { renderHargaPage(); });

@@ -11,6 +11,8 @@ const translations = {
     nav_products: 'Produk & Jasa',
     nav_community: 'Komunitas',
     nav_news: 'Berita',
+    nav_harga: 'Harga',
+    nav_harga_full: '🌽 Harga Jagung',
 
     // Footer
     footer_tagline: 'Pusat pengeringan dan distribusi jagung pakan terkemuka di Kalimantan Barat.',
@@ -240,6 +242,8 @@ const translations = {
     nav_products: 'Products & Services',
     nav_community: 'Community',
     nav_news: 'News',
+    nav_harga: 'Price',
+    nav_harga_full: '🌽 Corn Price',
 
     // Footer
     footer_tagline: 'Leading corn drying and distribution center in West Kalimantan.',
@@ -475,6 +479,8 @@ function setLang(lang) {
   document.documentElement.setAttribute('data-lang', lang);
   applyLanguage(lang);
   updateLangToggle(lang);
+  // Notify page-specific scripts to re-render dynamic content
+  window.dispatchEvent(new CustomEvent('langChange', { detail: { lang: lang } }));
 }
 
 function applyLanguage(lang) {
