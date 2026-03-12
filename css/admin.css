@@ -601,36 +601,61 @@ html { overflow-x: hidden; }
   margin-top: 6px;
 }
 
-/* === Mobile Table Improvements === */
+/* === Mobile Table Improvements — General card layout for all tables === */
 @media (max-width: 640px) {
   .admin-table-wrap {
-    overflow-x: auto;
+    overflow-x: visible;
     -webkit-overflow-scrolling: touch;
-    margin: 0 -4px;
-    padding: 0 4px;
+    margin: 0;
+    padding: 0;
   }
-  .admin-table {
-    min-width: 500px;
-  }
-  .admin-table th { padding: 8px 10px; font-size: 0.65rem; }
-  .admin-table td { padding: 10px; font-size: 0.8rem; }
-  .admin-table .article-title {
-    max-width: 140px;
-    font-size: 0.82rem;
-    white-space: normal;
-    word-break: break-word;
-  }
-  .admin-table .article-title small { font-size: 0.7rem; }
-  .action-btns { gap: 3px; }
-  .btn-edit, .btn-delete { padding: 4px 6px; font-size: 0.68rem; }
-  /* Hide thumbnail column on mobile in articles table — save space */
-  #page-articles .admin-table th:nth-child(4),
-  #page-articles .admin-table td:nth-child(4) { display: none; }
-}
 
-@media (max-width: 480px) {
-  .admin-table { min-width: 420px; }
-  .admin-table .article-title { max-width: 120px; }
+  /* General: convert ALL admin tables to card layout on mobile */
+  .admin-table {
+    min-width: 0;
+  }
+  .admin-table thead { display: none; }
+  .admin-table tbody tr {
+    display: flex;
+    flex-direction: column;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--color-border);
+    gap: 6px;
+  }
+  .admin-table tbody tr:last-child { border-bottom: none; }
+  .admin-table tbody tr:hover td { background: none; }
+  .admin-table td {
+    padding: 0;
+    border-bottom: none;
+    font-size: 0.85rem;
+  }
+  /* First cell in any table row — make it prominent as the "title" */
+  .admin-table td:first-child {
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: var(--color-text);
+  }
+  /* Action buttons row — add spacing */
+  .admin-table td:last-child {
+    margin-top: 4px;
+  }
+  .action-btns {
+    justify-content: flex-start;
+    gap: 6px;
+  }
+  .btn-edit, .btn-delete { padding: 5px 10px; font-size: 0.75rem; }
+
+  /* ── Article table specific card tweaks ── */
+  #page-articles .admin-table .article-title { max-width: none; }
+  /* Kategori + Tanggal — inline metadata row */
+  #page-articles .admin-table td:nth-child(2),
+  #page-articles .admin-table td:nth-child(3) {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    display: inline;
+  }
+  /* Thumbnail — hide on mobile card */
+  #page-articles .admin-table td:nth-child(4) { display: none; }
 }
 
 /* === Responsive Admin === */

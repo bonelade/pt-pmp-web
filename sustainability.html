@@ -109,6 +109,8 @@
     }
 
     @media (max-width: 900px) {
+      .bg-split-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+      .bg-callout { padding: 16px !important; }
       .challenge-grid { grid-template-columns: 1fr; }
       .solution-grid { grid-template-columns: 1fr; }
       .quality-metrics { grid-template-columns: 1fr; padding: 32px; }
@@ -209,7 +211,7 @@
   <section class="section bg-white" style="position: relative; overflow: hidden;">
     <div class="section-ornaments" data-type="cloud-curves" data-theme="mix"></div>
     <div class="container">
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;">
+      <div class="bg-split-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;">
         <div class="animate-on-scroll">
           <div class="section-header" style="text-align:left; margin-bottom:32px;">
             <span class="label" data-i18n="sust_bg_label">Latar Belakang</span>
@@ -221,7 +223,7 @@
           </p>
           <p>Angka ini mencakup kebutuhan industri pakan (sekitar 15 juta ton), industri non-pakan, serta pangan, dengan
             proyeksi ketersediaan total sekitar 17,3 juta ton pada tahun 2024.</p>
-          <div
+          <div class="bg-callout"
             style="margin-top:32px; padding:24px; background:var(--color-light); border-radius:var(--radius-card); border-left:4px solid var(--color-gold);">
             <p style="margin:0; font-weight:500; color:var(--color-text); font-size:0.95rem;">
               💡 PT PMP menangkap peluang sebagai solusi rantai pasok antara <strong>hulu (petani)</strong> dan
