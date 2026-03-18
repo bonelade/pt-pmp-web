@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quotation — PT Pangan Merah Putih</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      font-size: 11pt;
+      color: #1a1a1a;
+      background: #f0f0f0;
+      padding: 24px;
+    }
+
+    .page {
+      background: #fff;
+      width: 816px;
+      margin: 0 auto;
+      padding: 48px 56px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.12);
+      min-height: 1058px; /* legal: 14in × 96dpi - margins */
+    }
+
+    /* ── KOP SURAT ── */
+    .kop {
+      padding-bottom: 18px;
+      border-bottom: 3px solid #1a3c6e;
+      margin-bottom: 22px;
+      text-align: center;
+    }
+    .kop-text h1 {
+      font-size: 20pt;
+      font-weight: 700;
+      color: #1a3c6e;
+      letter-spacing: 1px;
+      line-height: 1.1;
+    }
+    .kop-text .tagline {
+      font-size: 7.5pt;
+      letter-spacing: 0.3em;
+      color: #c9932a;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin: 4px 0 6px;
+    }
+    .kop-text .contact {
+      font-size: 8.5pt;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* ── TITLE ── */
+    .doc-title-wrap {
+      text-align: center;
+      margin: 18px 0 22px;
+    }
+    .doc-title {
+      display: inline-block;
+      font-size: 15pt;
+      font-weight: 700;
+      color: #fff;
+      background: #1a3c6e;
+      padding: 8px 40px;
+      border-radius: 4px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ── META ── */
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+    .meta-box {
+      border: 1px solid #dde3ee;
+      border-radius: 6px;
+      padding: 12px 16px;
+      background: #f8f9fc;
+    }
+    .meta-box h4 {
+      font-size: 7.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #1a3c6e;
+      font-weight: 600;
+      margin-bottom: 7px;
+      border-bottom: 1px solid #dde3ee;
+      padding-bottom: 5px;
+    }
+    .meta-row {
+      display: flex;
+      gap: 6px;
+      font-size: 9.5pt;
+      line-height: 1.8;
+    }
+    .meta-row .lbl { color: #777; min-width: 70px; flex-shrink: 0; }
+    .meta-row .val { font-weight: 500; color: #1a1a1a; }
+    .meta-box .recipient-name {
+      font-size: 10.5pt;
+      font-weight: 600;
+      color: #1a3c6e;
+      margin-bottom: 3px;
+    }
+    .meta-box p {
+      font-size: 9.5pt;
+      color: #444;
+      line-height: 1.7;
+    }
+
+    /* ── ITEMS TABLE ── */
+    .section-label {
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #1a3c6e;
+      font-weight: 700;
+      margin-bottom: 8px;
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9.5pt;
+    }
+    thead tr {
+      background: #1a3c6e;
+      color: #fff;
+    }
+    thead th {
+      padding: 9px 12px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 8.5pt;
+      letter-spacing: 0.05em;
+    }
+    thead th.right { text-align: right; }
+    tbody tr { border-bottom: 1px solid #e8edf5; }
+    tbody tr:nth-child(even) { background: #f8f9fc; }
+    tbody td {
+      padding: 9px 12px;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+    tbody td.right { text-align: right; white-space: nowrap; }
+    tbody td .item-name { font-weight: 600; color: #1a1a1a; margin-bottom: 2px; }
+    tbody td .item-desc { font-size: 8.5pt; color: #666; line-height: 1.5; }
+    tbody td .item-features { margin-top: 4px; padding-left: 14px; }
+    tbody td .item-features li { font-size: 8pt; color: #555; line-height: 1.6; }
+    .strikethrough { text-decoration: line-through; color: #aaa; font-size: 8.5pt; }
+
+    /* ── SUMMARY ── */
+    .summary-wrap {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+    .summary-table {
+      width: 280px;
+      border: 1px solid #dde3ee;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 7px 14px;
+      font-size: 9.5pt;
+      border-bottom: 1px solid #eef1f8;
+    }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-row .s-lbl { color: #555; }
+    .summary-row .s-val { font-weight: 500; }
+    .summary-row.striked .s-val { text-decoration: line-through; color: #aaa; }
+    .summary-row.discount { background: #fff8ee; }
+    .summary-row.discount .s-lbl { color: #c9932a; font-weight: 600; }
+    .summary-row.discount .s-val { color: #c9932a; font-weight: 600; }
+    .summary-total {
+      background: #1a3c6e;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 14px;
+      font-weight: 700;
+      font-size: 11pt;
+    }
+
+    /* ── NOTES ── */
+    .notes {
+      margin-top: 22px;
+      background: #f8f9fc;
+      border-left: 3px solid #c9932a;
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      font-size: 9pt;
+      color: #444;
+      line-height: 1.7;
+    }
+    .notes strong { color: #1a3c6e; }
+
+    /* ── TTD ── */
+    .ttd-section {
+      margin-top: 36px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .ttd-box {
+      width: 240px;
+    }
+    .ttd-box { text-align: center; }
+    .ttd-box .ttd-title {
+      font-size: 9.5pt;
+      color: #555;
+      margin-bottom: 4px;
+    }
+    .ttd-box .ttd-place-date {
+      font-size: 9.5pt;
+      font-weight: 500;
+      margin-bottom: 70px;
+    }
+    .ttd-box .ttd-line {
+      border-top: 1.5px solid #1a1a1a;
+      margin: 0 20px;
+    }
+    .ttd-box .ttd-name {
+      font-size: 9pt;
+      color: #444;
+      margin-top: 5px;
+      min-height: 22px;
+    }
+    .ttd-box .ttd-role {
+      font-size: 8.5pt;
+      color: #777;
+    }
+
+    /* ── FOOTER ── */
+    .doc-footer {
+      margin-top: 28px;
+      border-top: 1px solid #dde3ee;
+      padding-top: 10px;
+      text-align: center;
+      font-size: 7.5pt;
+      color: #999;
+      line-height: 1.6;
+    }
+
+    /* ── LAMPIRAN ── */
+    .page-break { page-break-before: always; }
+    .lampiran-page {
+      background: #fff;
+      width: 816px;
+      margin: 32px auto 0;
+      padding: 48px 56px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.12);
+      min-height: 1058px;
+    }
+    .lampiran-header {
+      border-bottom: 3px solid #1a3c6e;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+    }
+    .lampiran-header .lamp-badge {
+      background: #1a3c6e;
+      color: #fff;
+      font-size: 7.5pt;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+    .lampiran-header h2 {
+      font-size: 14pt;
+      font-weight: 700;
+      color: #1a3c6e;
+    }
+    .lampiran-header .lamp-ref {
+      font-size: 8.5pt;
+      color: #999;
+      margin-left: auto;
+    }
+    .lampiran-intro {
+      font-size: 9.5pt;
+      color: #444;
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+    .lampiran-intro .site-url {
+      display: block;
+      background: #f0f4fb;
+      border: 2px solid #1a3c6e;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: monospace;
+      font-size: 16pt;
+      color: #1a3c6e;
+      font-weight: 700;
+      text-align: center;
+      margin: 2px 0;
+    }
+    .pages-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .page-card {
+      border: 1px solid #dde3ee;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .page-card .card-screen {
+      background: #eef1f9;
+      height: 110px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border-bottom: 1px solid #dde3ee;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-card .card-screen .browser-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 18px;
+      background: #d5daea;
+      display: flex;
+      align-items: center;
+      padding: 0 7px;
+      gap: 4px;
+    }
+    .browser-bar .dot { width: 6px; height: 6px; border-radius: 50%; }
+    .browser-bar .dot.r { background: #e05252; }
+    .browser-bar .dot.y { background: #e0b952; }
+    .browser-bar .dot.g { background: #52b26e; }
+    .browser-bar .url-bar {
+      flex: 1;
+      margin: 0 6px;
+      background: #fff;
+      border-radius: 2px;
+      height: 9px;
+      font-size: 5pt;
+      color: #999;
+      display: flex;
+      align-items: center;
+      padding: 0 4px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .page-card .card-screen .screen-icon {
+      font-size: 20pt;
+      margin-top: 10px;
+    }
+    .page-card .card-screen .screen-label {
+      font-size: 7.5pt;
+      color: #6a7a9b;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    .page-card .card-info {
+      padding: 9px 12px;
+    }
+    .page-card .card-info .page-name {
+      font-size: 9pt;
+      font-weight: 700;
+      color: #1a3c6e;
+      margin-bottom: 2px;
+    }
+    .page-card .card-info .page-desc {
+      font-size: 7.5pt;
+      color: #666;
+      line-height: 1.5;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .feature-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 8.5pt;
+      color: #444;
+      line-height: 1.5;
+    }
+    .feature-row .feat-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #c9932a;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+    .lamp-note {
+      background: #f8f9fc;
+      border-left: 3px solid #1a3c6e;
+      padding: 10px 14px;
+      border-radius: 0 5px 5px 0;
+      font-size: 8.5pt;
+      color: #555;
+      line-height: 1.6;
+    }
+    .admin-panel-note {
+      background: #fff8ee;
+      border: 1px solid #e8d08a;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 8.5pt;
+      color: #7a5c10;
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+
+    /* ── PRINT ── */
+    @media print {
+      @page { size: 8.5in 14in; margin: 0; }
+      html { zoom: 73%; }
+      body { background: #fff; padding: 0; }
+      .page { box-shadow: none; padding: 20mm 18mm; width: 100%; min-height: unset; }
+      .lampiran-page { box-shadow: none; padding: 20mm 18mm; width: 100%; min-height: unset; margin-top: 0; }
+      .no-print { display: none; }
+    }
+
+    /* Print button */
+    .print-btn {
+      display: block;
+      margin: 16px auto 0;
+      padding: 10px 28px;
+      background: #1a3c6e;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 10pt;
+      font-weight: 600;
+      cursor: pointer;
+      max-width: 200px;
+      text-align: center;
+    }
+    .print-btn:hover { background: #142f57; }
+  </style>
+</head>
+<body>
+
+<div class="no-print" style="text-align:center; margin-bottom:16px;">
+  <button class="print-btn" onclick="window.print()">🖨 Print / Save PDF</button>
+</div>
+
+<div class="page">
+
+  <!-- KOP -->
+  <div class="kop">
+    <div class="kop-text">
+      <h1>TOREON INTERNATIONAL</h1>
+      <div class="tagline">I T &nbsp; S E R V I C E S &nbsp; &amp; &nbsp; D I G I T A L &nbsp; C O N S U L T I N G</div>
+      <div class="contact">
+        Jl. Permai 33 No 34 / MC III No 200, Margahayu Permai, Bandung &nbsp;|&nbsp;
+        Telp: (+62) 821-2098-8201 &nbsp;|&nbsp; Email: marketing@toreon.id
+      </div>
+    </div>
+  </div>
+
+  <!-- TITLE -->
+  <div class="doc-title-wrap">
+    <span class="doc-title">QUOTATION</span>
+  </div>
+
+  <!-- META -->
+  <div class="meta-grid">
+    <div class="meta-box">
+      <h4>Informasi Dokumen</h4>
+      <div class="meta-row"><span class="lbl">No. Quotation</span><span class="val">TRN/QT/2025/03/001</span></div>
+      <div class="meta-row"><span class="lbl">Tanggal</span><span class="val">16 Maret 2025</span></div>
+      <div class="meta-row"><span class="lbl">Berlaku s/d</span><span class="val">16 April 2025</span></div>
+      <div class="meta-row"><span class="lbl">Sales</span><span class="val">Owen Jacob Notonugroho, S.T., M.T., M.B.A.</span></div>
+    </div>
+    <div class="meta-box">
+      <h4>Kepada Yth.</h4>
+      <div class="recipient-name">PT Pangan Merah Putih</div>
+      <p>
+        Up. Bpk. Muhammad Ryan Pratama<br>
+        Jl. Bukit Tinggi, Sebalo, Kec. Bengkayang<br>
+        Kabupaten Bengkayang, Kalimantan Barat
+      </p>
+    </div>
+  </div>
+
+  <!-- ITEMS -->
+  <div class="section-label">Rincian Penawaran</div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:28px;">#</th>
+        <th>Deskripsi Layanan</th>
+        <th class="right" style="width:120px;">Harga Normal</th>
+        <th class="right" style="width:120px;">Harga Penawaran</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td>1</td>
+        <td>
+          <div class="item-name">Jasa Pembuatan Website Profesional — PT Pangan Merah Putih</div>
+          <div class="item-desc">Website company profile multi-halaman, responsif, multi-bahasa (ID/EN), dengan sistem manajemen konten berbasis admin panel. Termasuk fitur lengkap:</div>
+          <ul class="item-features">
+            <li><strong>8 Halaman Publik:</strong> Beranda, Tentang Kami, Keberlanjutan, Produk & Jasa, Komunitas, Berita, Harga Jagung, Detail Berita</li>
+            <li><strong>Admin Panel:</strong> Dashboard, kelola artikel/berita, update harga jagung, kelola galeri foto & album, kelola kontak & sosial media, statistik pengunjung</li>
+            <li><strong>Multi-Bahasa:</strong> Sistem toggle Bahasa Indonesia / English di seluruh halaman</li>
+            <li><strong>Harga Jagung Live:</strong> Grade A/B/C dengan spesifikasi kualitas, update real-time oleh admin</li>
+            <li><strong>Galeri Foto & Video:</strong> Album terorganisir dengan lightbox viewer</li>
+            <li><strong>Sistem Berita:</strong> Artikel dengan thumbnail, kategori, filter, dan halaman detail</li>
+            <li><strong>Dark Mode:</strong> Toggle tema terang/gelap otomatis</li>
+            <li><strong>Responsif Mobile:</strong> Tampilan optimal di HP, tablet, dan desktop</li>
+            <li><strong>Animasi & UI Modern:</strong> Ornamen dinamis, animasi scroll, desain premium</li>
+            <li><strong>Database Cloud:</strong> Integrasi Supabase untuk penyimpanan data artikel & harga</li>
+            <li><strong>Keamanan Admin:</strong> Sistem login dengan session management</li>
+            <li><strong>Deployment:</strong> Hosting & deploy ke Vercel (domain vercel.app)</li>
+          </ul>
+        </td>
+        <td class="right"><span class="strikethrough">Rp8.000.000</span></td>
+        <td class="right" style="font-weight:700; color:#1a3c6e;">Rp4.225.187</td>
+      </tr>
+
+      <tr>
+        <td>2</td>
+        <td>
+          <div class="item-name">Registrasi Domain — panganmerahputih.com (2 Tahun)</div>
+          <div class="item-desc">Registrasi nama domain resmi <strong>panganmerahputih.com</strong> untuk durasi 2 tahun, termasuk proteksi privasi WHOIS dan biaya ICANN.</div>
+          <ul class="item-features">
+            <li>Domain .com internasional — 2 tahun</li>
+            <li>Proteksi privasi domain WHOIS gratis</li>
+            <li>Biaya ICANN sudah termasuk</li>
+          </ul>
+        </td>
+        <td class="right"><span class="strikethrough">Rp425.625</span></td>
+        <td class="right" style="font-weight:700; color:#1a3c6e;">Rp213.213</td>
+      </tr>
+
+      <tr>
+        <td>3</td>
+        <td>
+          <div class="item-name">Web Hosting Premium — Paket Premium (12 Bulan)</div>
+          <div class="item-desc">Hosting berkualitas tinggi dengan uptime terjamin, performa cepat, dan kapasitas memadai untuk website perusahaan.</div>
+          <ul class="item-features">
+            <li>Durasi: 12 bulan</li>
+            <li>Performa tinggi & uptime terjamin</li>
+            <li>SSL Certificate gratis</li>
+          </ul>
+        </td>
+        <td class="right"><span class="strikethrough">Rp1.438.800</span></td>
+        <td class="right" style="font-weight:700; color:#1a3c6e;">Rp478.800</td>
+      </tr>
+
+      <tr>
+        <td>4</td>
+        <td>
+          <div class="item-name">Email Profesional — Paket Business Starter (12 Bulan)</div>
+          <div class="item-desc">Akun email profesional dengan domain sendiri (misal: <em>info@panganmerahputih.com</em>) untuk komunikasi bisnis yang terpercaya.</div>
+          <ul class="item-features">
+            <li>Durasi: 12 bulan</li>
+            <li>1 mailbox profesional</li>
+            <li>Domain email perusahaan sendiri</li>
+          </ul>
+        </td>
+        <td class="right"><span class="strikethrough">Rp346.800</span></td>
+        <td class="right" style="font-weight:700; color:#1a3c6e;">Rp82.800</td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <!-- NOTES -->
+  <div class="notes" style="margin-top:10px;">
+    <strong>Catatan & Ketentuan:</strong><br>
+    1. Harga penawaran berlaku selama <strong>30 hari</strong> sejak tanggal quotation ini diterbitkan.<br>
+    2. Pembayaran dilakukan secara <strong>Cash Before Delivery (100% di muka)</strong> sebelum proses setup dan go-live dilakukan.<br>
+    3. Estimasi setup & go-live: <strong>3 hari kerja</strong> setelah pembayaran diterima.<br>
+    4. Harga domain, hosting, dan email profesional yang tercantum <strong>sudah termasuk pajak (PPN)</strong>.<br>
+    5. Harga domain, hosting, dan email mengikuti harga dari penyedia layanan dan dapat berubah sesuai kurs.<br>
+    6. Layanan purna jual: <strong>30 hari garansi bug fixing</strong> setelah website live.<br>
+    7. Transfer pembayaran ke rekening:<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<strong>Bank BCA &nbsp;|&nbsp; No. Rek: 6155544248 &nbsp;|&nbsp; A/N: Owen Jacob Notonugroho</strong>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary-wrap">
+    <div>
+      <div class="summary-table">
+        <div class="summary-row striked">
+          <span class="s-lbl">Subtotal (Normal)</span>
+          <span class="s-val">Rp10.211.225</span>
+        </div>
+        <div class="summary-row discount">
+          <span class="s-lbl">Diskon Spesial</span>
+          <span class="s-val">– Rp5.211.225</span>
+        </div>
+        <div class="summary-total">
+          <span>TOTAL</span>
+          <span>Rp5.000.000</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TTD -->
+  <div class="ttd-section">
+    <div class="ttd-box">
+      <div class="ttd-title">Hormat Kami,</div>
+      <div class="ttd-place-date">Bandung, 16 Maret 2025</div>
+      <div class="ttd-line"></div>
+      <div class="ttd-name">Owen Jacob Notonugroho, S.T., M.T., M.B.A.</div>
+      <div class="ttd-role">Sales — Toreon International</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    Toreon International &nbsp;|&nbsp; Jl. Permai 33 No 34 / MC III No 200, Margahayu Permai, Bandung &nbsp;|&nbsp;
+    marketing@toreon.id &nbsp;|&nbsp; (+62) 821-2098-8201<br>
+    Dokumen ini adalah penawaran resmi dan bukan merupakan faktur. TRN/QT/2025/03/001
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- HALAMAN 2 — AFTER SALES                               -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="page page-break" style="margin-top:32px;">
+
+  <!-- KOP -->
+  <div class="kop">
+    <div class="kop-text">
+      <h1>TOREON INTERNATIONAL</h1>
+      <div class="tagline">I T &nbsp; S E R V I C E S &nbsp; &amp; &nbsp; D I G I T A L &nbsp; C O N S U L T I N G</div>
+      <div class="contact">
+        Jl. Permai 33 No 34 / MC III No 200, Margahayu Permai, Bandung &nbsp;|&nbsp;
+        Telp: (+62) 821-2098-8201 &nbsp;|&nbsp; Email: marketing@toreon.id
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:22px;">
+    <div class="section-label" style="margin:0;">Estimasi Biaya Perpanjangan Tahunan (After Sales)</div>
+    <div style="font-size:8pt; color:#999;">Ref: TRN/QT/2025/03/001</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:28px;">#</th>
+        <th>Komponen</th>
+        <th class="right" style="width:130px;">Frekuensi</th>
+        <th class="right" style="width:130px;">Est. Biaya/Tahun</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>
+          <div class="item-name">Perpanjangan Domain — panganmerahputih.com</div>
+          <div class="item-desc">Renewal nama domain .com setiap 2 tahun. Harga mengikuti kurs penyedia layanan.</div>
+        </td>
+        <td class="right">Per 2 Tahun</td>
+        <td class="right" style="font-weight:600;">~Rp419.800 <span style="font-size:8pt;font-weight:400;color:#888;">(per 2 thn)</span></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>
+          <div class="item-name">Perpanjangan Web Hosting Premium</div>
+          <div class="item-desc">Renewal paket hosting Premium 12 bulan. Harga sudah termasuk pajak.</div>
+        </td>
+        <td class="right">Per Tahun</td>
+        <td class="right" style="font-weight:600;">~Rp1.438.800</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>
+          <div class="item-name">Perpanjangan Email Profesional — Business Starter</div>
+          <div class="item-desc">Renewal 1 mailbox email profesional dengan domain perusahaan. Harga sudah termasuk pajak.</div>
+        </td>
+        <td class="right">Per Tahun</td>
+        <td class="right" style="font-weight:600;">~Rp346.800</td>
+      </tr>
+      <tr style="background:#f8f9fc;">
+        <td colspan="3" style="text-align:right; font-weight:600; padding:10px 12px; font-size:9.5pt; color:#555;">
+          Total Estimasi Perpanjangan per Tahun
+        </td>
+        <td class="right" style="font-weight:700; color:#1a3c6e; font-size:10pt;">~Rp1.785.600 <span style="font-size:7.5pt;font-weight:400;color:#888;">/ thn</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="font-size:7.5pt; color:#999; margin-top:6px;">
+    * Estimasi biaya perpanjangan bersifat indikatif dan dapat berubah mengikuti harga penyedia layanan & kurs saat perpanjangan.<br>
+    * Domain diperpanjang setiap 2 tahun, sehingga biaya tahunan efektif domain ±Rp210.000/tahun.<br>
+    * Jasa website PT PMP oleh Toreon International <strong style="color:#1a3c6e;">tidak dikenakan biaya perpanjangan tahunan</strong>.
+  </div>
+
+  <!-- FOOTER -->
+  <div class="doc-footer" style="margin-top:28px;">
+    Toreon International &nbsp;|&nbsp; Jl. Permai 33 No 34 / MC III No 200, Margahayu Permai, Bandung &nbsp;|&nbsp;
+    marketing@toreon.id &nbsp;|&nbsp; (+62) 821-2098-8201<br>
+    Dokumen ini adalah penawaran resmi dan bukan merupakan faktur. TRN/QT/2025/03/001
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- LAMPIRAN — PREVIEW WEBSITE                            -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="lampiran-page page-break">
+
+  <div class="lampiran-header">
+    <span class="lamp-badge">Lampiran</span>
+    <h2>Preview Hasil Website — PT Pangan Merah Putih</h2>
+    <span class="lamp-ref">Ref: TRN/QT/2025/03/001</span>
+  </div>
+
+  <div class="lampiran-intro">
+    Website perusahaan PT Pangan Merah Putih telah berhasil dibuat dan dapat diakses secara langsung melalui:<br>
+    <span class="site-url">https://pt-pmp-web.vercel.app</span><br><br>
+    Website terdiri dari <strong>8 halaman publik</strong> dan <strong>1 admin panel</strong> dengan fitur lengkap, responsif di semua perangkat (desktop, tablet, dan smartphone), serta tersedia dalam dua bahasa (<strong>Bahasa Indonesia</strong> dan <strong>English</strong>).
+  </div>
+
+  <!-- PAGES GRID -->
+  <div class="section-label">Halaman Publik</div>
+  <div class="pages-grid">
+
+    <div class="page-card">
+      <div class="card-screen">
+        <div class="browser-bar">
+          <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+          <div class="url-bar">pt-pmp-web.vercel.app</div>
+        </div>
+        <div class="screen-icon">🏠</div>
+        <div class="screen-label">Beranda</div>
+      </div>
+      <div class="card-info">
+        <div class="page-name">Beranda (Home)</div>
+        <div class="page-desc">Hero section, harga jagung live, berita terkini, galeri, dan CTA kontak.</div>
+      </div>
+    </div>
+
+    <div class="page-card">
+      <div class="card-screen">
+        <div class="browser-bar">
+          <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+          <div class="url-bar">pt-pmp-web.vercel.app/about.html</div>
+        </div>
+        <div class="screen-icon">🏢</div>
+        <div class="screen-label">Tentang Kami</div>
+      </div>
+      <div class="card-info">
+        <div class="page-name">Tentang Kami (About)</div>
+        <div class="page-desc">Profil perusahaan, visi & misi, statistik bisnis, video profil, dan galeri kegiatan.</div>
+      </div>
+    </div>
+
+    <div class="page-card">
+      <div class="card-screen">
+        <div class="browser-bar">
+          <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+          <div class="url-bar">pt-pmp-web.vercel.app/sustainability.html</div>
+        </div>
+        <div class="screen-icon">🌱</div>
+        <div class="screen-label">Keberlanjutan</div>
+      </div>
+      <div class="card-info">
+        <div class="page-name">Keberlanjutan (Sustainability)</div>
+        <div class="page-desc">Program keberlanjutan lingkungan, sosial, dan tata kelola (ESG) perusahaan.</div>
+      </div>
+    </div>
+
+    <div class="page-card">
+      <div class="card-screen">
+        <div class="browser-bar">
+          <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+          <div class="url-bar">pt-pmp-web.vercel.app/products.html</div>
+        </div>
+        <div class="screen-icon">🌽</div>
+        <div class="screen-label">Produk & Jasa</div>
+      </div>
+      <div class="card-info">
+        <div class="page-name">Produk & Jasa (Products)</div>
+        <div class="page-desc">Katalog produk jagung (Grade A/B/C), jasa pengolahan, dan galeri produk.</div>
+      </div>
+    </div>
+
+    <div class="page-card">
+      <div class="card-screen">
+        <div class="browser-bar">
+          <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+          <div class="url-bar">pt-pmp-web.vercel.app/community.html</div>
+        </div>
+        <div class="screen-icon">🤝</div>
+        <div class="screen-label">Komunitas</div>
+      </div>
+      <div class="card-info">
+        <div class="page-name">Komunitas (Community)</div>
+        <div class="page-desc">Program pemberdayaan petani, rantai nilai jagung (supply chain), dan dampak sosial.</div>
+      </div>
+    </div>
+
+    <div class="page-card">
+      <div class="card-screen">
+        <div class="browser-bar">
+          <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+          <div class="url-bar">pt-pmp-web.vercel.app/news.html</div>
+        </div>
+        <div class="screen-icon">📰</div>
+        <div class="screen-label">Berita</div>
+      </div>
+      <div class="card-info">
+        <div class="page-name">Berita (News)</div>
+        <div class="page-desc">Artikel berita perusahaan dengan thumbnail, kategori, filter, dan halaman detail lengkap.</div>
+      </div>
+    </div>
+
+    <div class="page-card">
+      <div class="card-screen">
+        <div class="browser-bar">
+          <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+          <div class="url-bar">pt-pmp-web.vercel.app/harga.html</div>
+        </div>
+        <div class="screen-icon">📊</div>
+        <div class="screen-label">Harga Jagung</div>
+      </div>
+      <div class="card-info">
+        <div class="page-name">Harga Jagung</div>
+        <div class="page-desc">Harga jagung Grade A/B/C real-time, diperbarui langsung oleh admin, lengkap dengan spesifikasi kualitas.</div>
+      </div>
+    </div>
+
+    <div class="page-card">
+      <div class="card-screen">
+        <div class="browser-bar">
+          <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+          <div class="url-bar">pt-pmp-web.vercel.app/admin.html</div>
+        </div>
+        <div class="screen-icon">🔐</div>
+        <div class="screen-label">Admin Panel</div>
+      </div>
+      <div class="card-info">
+        <div class="page-name">Admin Panel</div>
+        <div class="page-desc">Dashboard admin: kelola berita, harga, galeri, kontak, dan statistik pengunjung.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TECH STACK -->
+  <div class="section-label">Teknologi yang Digunakan</div>
+  <div class="features-grid" style="margin-bottom:18px;">
+    <div class="feature-row"><div class="feat-dot"></div><div><strong>Frontend:</strong> HTML5, CSS3, Vanilla JavaScript</div></div>
+    <div class="feature-row"><div class="feat-dot"></div><div><strong>Database:</strong> Supabase (PostgreSQL cloud)</div></div>
+    <div class="feature-row"><div class="feat-dot"></div><div><strong>Deployment:</strong> Vercel (CDN global)</div></div>
+    <div class="feature-row"><div class="feat-dot"></div><div><strong>Multi-Bahasa:</strong> Sistem i18n custom (ID/EN)</div></div>
+    <div class="feature-row"><div class="feat-dot"></div><div><strong>UI/UX:</strong> Responsif, Dark Mode, animasi modern</div></div>
+    <div class="feature-row"><div class="feat-dot"></div><div><strong>Keamanan:</strong> HTTPS, session-based admin login</div></div>
+  </div>
+
+  <div class="lamp-note">
+    Website dapat diakses langsung untuk ditinjau di: <strong>https://pt-pmp-web.vercel.app</strong><br>
+    Setelah domain <em>panganmerahputih.com</em> aktif, website akan dapat diakses melalui domain resmi perusahaan.
+  </div>
+
+  <!-- FOOTER LAMPIRAN -->
+  <div class="doc-footer" style="margin-top:28px;">
+    Lampiran — Quotation TRN/QT/2025/03/001 &nbsp;|&nbsp; Toreon International &nbsp;|&nbsp; marketing@toreon.id
+  </div>
+
+</div>
+
+</body>
+</html>
