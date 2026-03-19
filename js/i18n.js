@@ -46,6 +46,9 @@ const translations = {
     home_about_title: 'Solusi Rantai Pasok Jagung Nasional',
     home_about_text: 'PT Pangan Merah Putih adalah perusahaan agribisnis yang berfokus pada pengeringan, penyimpanan, dan distribusi jagung pakan. Berlokasi strategis di Bengkayang, Kalimantan Barat, kami menghubungkan petani lokal dengan industri pakan nasional.',
     home_about_text2: 'Diresmikan oleh Presiden RI Prabowo Subianto pada 5 Juni 2025, PT PMP berkomitmen mendukung program Ketahanan Pangan pemerintah dan memasok Cadangan Jagung melalui Bulog.',
+    home_about_check1: 'Diresmikan oleh Presiden RI Prabowo Subianto, 5 Juni 2025',
+    home_about_check2: 'Mendukung program Ketahanan Pangan pemerintah',
+    home_about_check3: 'Mitra strategis petani & Bulog Kalimantan Barat',
     home_about_btn: 'Selengkapnya',
 
     // Home Services
@@ -317,6 +320,9 @@ const translations = {
     home_about_title: 'National Corn Supply Chain Solution',
     home_about_text: 'PT Pangan Merah Putih is an agribusiness company focused on drying, storing, and distributing feed corn. Strategically located in Bengkayang, West Kalimantan, we connect local farmers with the national feed industry.',
     home_about_text2: 'Inaugurated by Indonesian President Prabowo Subianto on June 5, 2025, PT PMP is committed to supporting the government\'s Food Security program and supplying corn reserves through Bulog.',
+    home_about_check1: 'Inaugurated by President Prabowo Subianto, June 5, 2025',
+    home_about_check2: 'Supporting the government\'s Food Security program',
+    home_about_check3: 'Strategic partner for farmers & Bulog West Kalimantan',
     home_about_btn: 'Learn More',
 
     // Home Services
