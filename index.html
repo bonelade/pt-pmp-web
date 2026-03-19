@@ -1530,8 +1530,8 @@
           if (galleryPhotos.length > 0 && homeGalleryGrid) {
             homeGalleryGrid.innerHTML = galleryPhotos.slice(0, 8).map(function (p) {
               return '<div class="gallery-item animate-on-scroll" onclick="openLightbox(\'' + p.src.replace(/'/g, "&#39;") + '\')">' +
-                '<img src="' + p.src + '" alt="' + (p.caption_id || '') + '" loading="lazy">' +
-                (p.caption_id ? '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + p.caption_id + '</div></div>' : '') +
+                '<img src="' + p.src + '" alt="' + (localStorage.getItem('pmp_lang') === 'en' && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en || '')) + '" loading="lazy">' +
+                ((p.caption_id || p.caption_en) ? '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + (localStorage.getItem('pmp_lang') === 'en' && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en)) + '</div></div>' : '') +
                 '</div>';
             }).join('');
             if (window.initGalleryCarousel) window.initGalleryCarousel(homeGalleryGrid);
@@ -1550,7 +1550,7 @@
           var aboutPhotos = allPhotos.filter(function(p) { return p.album === 'home_about'; });
           if (aboutPhotos.length > 0) {
             var aboutImg = document.getElementById('about-section-photo');
-            if (aboutImg) { aboutImg.src = aboutPhotos[0].src; if (aboutPhotos[0].caption_id) aboutImg.alt = aboutPhotos[0].caption_id; }
+            if (aboutImg) { aboutImg.src = aboutPhotos[0].src; var _ac = aboutPhotos[0]; aboutImg.alt = (localStorage.getItem('pmp_lang') === 'en' && _ac.caption_en ? _ac.caption_en : (_ac.caption_id || _ac.caption_en || '')); }
           }
 
           // Video
