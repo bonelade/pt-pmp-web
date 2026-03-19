@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /debug.html
+
+Sitemap: https://panganmerahputih.com/sitemap.xml
