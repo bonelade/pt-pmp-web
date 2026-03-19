@@ -25,6 +25,106 @@ const SEED_ARTICLES = [
     thumbnail: ''
   },
   {
+    id: 'seed-004',
+    title_id: 'Harga Jagung Kalimantan Barat Maret 2026: Update Terbaru dari PT PMP',
+    title_en: 'West Kalimantan Corn Price March 2026: Latest Update from PT PMP',
+    body_id: '<p>PT Pangan Merah Putih (PT PMP) merilis update harga pembelian jagung pipil kering untuk bulan Maret 2026. Harga jagung Grade A saat ini berada di level kompetitif mengikuti perkembangan pasar nasional dan harga referensi dari Badan Pangan Nasional.</p><p>Jagung Grade A dengan kadar air ≤14% dan aflatoksin ≤20 ppb mendapatkan harga tertinggi. Grade B (kadar air 14–17%) dan Grade C (kadar air >17%) masing-masing mendapatkan harga penyesuaian sesuai kondisi aktual.</p><p>PT PMP mengimbau petani jagung di Bengkayang, Landak, Sambas, Singkawang, dan seluruh Kalimantan Barat untuk memastikan jagung sudah dalam kondisi pipil dan memiliki kadar air serendah mungkin sebelum menjual, agar mendapatkan harga terbaik.</p><p>Untuk informasi harga terkini dan cara menjual jagung ke PT PMP, hubungi tim kami di 0821-2722-8722 atau kunjungi halaman harga di website kami.</p>',
+    body_en: '<p>PT Pangan Merah Putih (PT PMP) releases the latest corn buying price update for March 2026. Grade A corn prices are currently at competitive levels following national market developments and reference prices from the National Food Agency.</p><p>Grade A corn with moisture content ≤14% and aflatoxin ≤20 ppb receives the highest price. Grade B (14–17% moisture) and Grade C (>17% moisture) each receive adjusted prices based on actual conditions.</p><p>PT PMP advises corn farmers in Bengkayang, Landak, Sambas, Singkawang, and all of West Kalimantan to ensure corn is shelled and has the lowest possible moisture content before selling to get the best price.</p>',
+    date: '2026-03-01',
+    category: 'market',
+    thumbnail: ''
+  },
+  {
+    id: 'seed-005',
+    title_id: 'Cara Meningkatkan Kualitas Jagung Sebelum Dijual: Panduan untuk Petani Kalimantan Barat',
+    title_en: 'How to Improve Corn Quality Before Selling: Guide for West Kalimantan Farmers',
+    body_id: '<p>Kualitas jagung yang baik adalah kunci mendapatkan harga jual tertinggi. PT Pangan Merah Putih berbagi tips praktis bagi petani jagung di Kalimantan Barat untuk memaksimalkan nilai jual panen mereka.</p><h3>1. Panen di Waktu yang Tepat</h3><p>Panen jagung sebaiknya dilakukan saat kadar air biji berada di sekitar 25–30%. Panen terlalu awal menghasilkan biji yang belum penuh, sementara panen terlambat meningkatkan risiko serangan jamur di lapangan.</p><h3>2. Jemur Sebelum Pipil (Opsional)</h3><p>Jika memungkinkan, jemur tongkol jagung selama 2–3 hari di bawah sinar matahari sebelum dipipil untuk menurunkan kadar air awal.</p><h3>3. Pipil dengan Bersih</h3><p>Pastikan proses pemipilan menghasilkan biji yang bersih, minim kerusakan mekanis, dan bebas dari sisa tongkol atau daun yang dapat menjadi sumber kontaminasi.</p><h3>4. Simpan di Tempat Kering</h3><p>Jagung pipil harus disimpan di tempat yang kering, berventilasi baik, dan terhindar dari hujan untuk mencegah naiknya kadar air kembali.</p><p>PT PMP siap menerima jagung dengan berbagai kondisi kadar air. Hubungi kami di 0821-2722-8722 untuk informasi lebih lanjut.</p>',
+    body_en: '<p>Good corn quality is the key to getting the highest selling price. PT Pangan Merah Putih shares practical tips for corn farmers in West Kalimantan to maximize the selling value of their harvest.</p><p>Key tips: harvest at the right time (25-30% moisture), optional pre-shelling sun drying, clean shelling process, and proper dry storage to prevent moisture re-absorption.</p><p>PT PMP is ready to accept corn in various moisture conditions. Contact us at 0821-2722-8722 for more information.</p>',
+    date: '2026-02-15',
+    category: 'market',
+    thumbnail: ''
+  },
+  {
+    id: 'seed-006',
+    title_id: 'PT PMP Perkuat Kemitraan dengan Petani Jagung di Kabupaten Bengkayang',
+    title_en: 'PT PMP Strengthens Partnership with Corn Farmers in Bengkayang Regency',
+    body_id: '<p>PT Pangan Merah Putih terus memperkuat jaringan kemitraan dengan petani jagung di Kabupaten Bengkayang, Kalimantan Barat. Program kemitraan ini dirancang untuk memberikan kepastian pasar bagi petani sekaligus menjamin pasokan jagung berkualitas bagi PT PMP.</p><p>Melalui skema kemitraan, petani mendapatkan keuntungan berupa harga beli yang fair dan transparan, akses langsung ke fasilitas pengeringan PT PMP, serta kemudahan dalam proses jual beli jagung tanpa perantara yang merugikan.</p><p>"Kami ingin petani jagung di Bengkayang dan seluruh Kalimantan Barat mendapatkan nilai terbaik dari kerja keras mereka. Dengan fasilitas pengeringan kami, jagung dengan kadar air tinggi pun bisa diproses menjadi produk bernilai tinggi," kata perwakilan PT PMP.</p><p>Petani yang tertarik bergabung dalam program kemitraan PT PMP dapat menghubungi tim kami langsung di 0821-2722-8722 atau mengunjungi fasilitas kami di Jl. Bukit Tinggi, Sebalo, Bengkayang.</p>',
+    body_en: '<p>PT Pangan Merah Putih continues to strengthen its partnership network with corn farmers in Bengkayang Regency, West Kalimantan. This partnership program is designed to provide market certainty for farmers while ensuring quality corn supply for PT PMP.</p><p>Through the partnership scheme, farmers benefit from fair and transparent buying prices, direct access to PT PMP drying facilities, and ease in the buying and selling process without disadvantageous intermediaries.</p>',
+    date: '2026-02-01',
+    category: 'company',
+    thumbnail: ''
+  },
+  {
+    id: 'seed-007',
+    title_id: 'Potensi Ekspor Jagung Kalimantan Barat ke Malaysia: Peluang yang Belum Dimaksimalkan',
+    title_en: 'West Kalimantan Corn Export Potential to Malaysia: Untapped Opportunity',
+    body_id: '<p>Kalimantan Barat memiliki keunggulan geografis yang sangat strategis untuk ekspor jagung ke Malaysia, khususnya negara bagian Sarawak. Kabupaten Bengkayang, sebagai salah satu daerah perbatasan, memiliki akses darat langsung ke Malaysia melalui PPLB Aruk di Kabupaten Sambas.</p><p>Keunggulan ini memberikan biaya logistik yang jauh lebih rendah dibandingkan pengiriman dari pulau Jawa. Sementara Surabaya atau Makassar harus mengandalkan jalur laut yang memakan waktu berminggu-minggu, Bengkayang dapat mengirimkan jagung ke Sarawak dalam hitungan hari.</p><p>Malaysia sebagai negara dengan industri peternakan yang berkembang pesat membutuhkan pasokan jagung pakan ternak yang stabil. PT PMP dengan kapasitas pengeringan 300 ton per hari dan standar kualitas Grade A berpotensi menjadi pemasok utama jagung ekspor dari Kalimantan Barat.</p><p>Untuk informasi kerjasama ekspor, hubungi tim PT PMP di 0821-2722-8722.</p>',
+    body_en: '<p>West Kalimantan has a very strategic geographical advantage for corn exports to Malaysia, particularly Sarawak state. Bengkayang Regency, as a border area, has direct land access to Malaysia through PPLB Aruk in Sambas Regency.</p><p>This advantage provides much lower logistics costs compared to shipments from Java. PT PMP with 300 tons/day drying capacity and Grade A quality standards has the potential to become a major corn export supplier from West Kalimantan.</p>',
+    date: '2026-01-20',
+    category: 'market',
+    thumbnail: ''
+  },
+  {
+    id: 'seed-008',
+    title_id: 'Mengenal Aflatoksin: Ancaman Tersembunyi dalam Jagung dan Cara Mencegahnya',
+    title_en: 'Understanding Aflatoxin: The Hidden Threat in Corn and How to Prevent It',
+    body_id: '<p>Aflatoksin adalah salah satu ancaman terbesar dalam rantai pasok jagung yang sering tidak disadari oleh petani dan pedagang. Racun alami ini diproduksi oleh jamur Aspergillus flavus yang tumbuh pada jagung dengan kadar air tinggi.</p><h3>Apa Bahaya Aflatoksin?</h3><p>Aflatoksin bersifat karsinogenik dan dapat menyebabkan kerusakan hati pada ternak. Jagung yang mengandung aflatoksin di atas 20 ppb akan ditolak oleh feedmill dan tidak dapat digunakan sebagai pakan ternak.</p><h3>Bagaimana Aflatoksin Terbentuk?</h3><p>Jamur penghasil aflatoksin berkembang pesat pada jagung dengan kadar air di atas 14%, terutama saat disimpan dalam kondisi lembab. Proses ini bisa terjadi hanya dalam 48–72 jam pada kondisi kadar air yang tinggi.</p><h3>Cara Mencegah Kontaminasi Aflatoksin</h3><p>Kunci utama pencegahan adalah menurunkan kadar air jagung ke di bawah 14% sesegera mungkin setelah panen. Inilah mengapa fasilitas pengeringan seperti vertical dryer PT PMP sangat penting dalam rantai pasok jagung Kalimantan Barat.</p><p>PT PMP memastikan semua jagung yang diproses memiliki kadar aflatoksin di bawah ambang batas aman melalui teknologi pengeringan modern dan pengujian kualitas yang ketat.</p>',
+    body_en: '<p>Aflatoxin is one of the biggest threats in the corn supply chain that is often unrecognized by farmers and traders. This natural toxin is produced by Aspergillus flavus fungi that grows on corn with high moisture content.</p><p>Aflatoxin is carcinogenic and can cause liver damage in livestock. Corn containing aflatoxin above 20 ppb will be rejected by feedmills. The key to prevention is lowering corn moisture to below 14% as soon as possible after harvest.</p>',
+    date: '2026-01-10',
+    category: 'sustainability',
+    thumbnail: ''
+  },
+  {
+    id: 'seed-009',
+    title_id: 'Vertical Dryer vs Pengeringan Matahari: Mengapa Teknologi Modern Lebih Unggul',
+    title_en: 'Vertical Dryer vs Sun Drying: Why Modern Technology is Superior',
+    body_id: '<p>Pengeringan jagung secara tradisional menggunakan sinar matahari masih banyak dilakukan oleh petani di Kalimantan Barat. Namun, metode ini memiliki keterbatasan signifikan yang sering merugikan petani dari sisi kualitas dan nilai jual jagung.</p><h3>Keterbatasan Pengeringan Matahari</h3><p>Kapasitas pengeringan sangat terbatas (hanya 2–5 ton per hari), sangat bergantung pada cuaca, kadar air tidak merata, dan jagung rentan terkontaminasi debu dan hewan. Pada musim hujan, proses ini praktis tidak bisa dilakukan.</p><h3>Keunggulan Vertical Dryer PT PMP</h3><p>Teknologi vertical dryer yang digunakan PT PMP mampu mengeringkan 300 ton jagung per hari dengan hasil yang konsisten dan merata. Tidak tergantung cuaca, kontrol suhu yang presisi, risiko kontaminasi minimal, dan kadar air output terjamin di bawah 14%.</p><p>Bagi petani, menjual jagung dengan kadar air tinggi ke PT PMP untuk dikeringkan adalah solusi yang lebih efisien daripada mencoba mengeringkan sendiri dengan kapasitas dan teknologi yang terbatas.</p>',
+    body_en: '<p>Traditional corn drying using sunlight is still widely practiced by farmers in West Kalimantan. However, this method has significant limitations that often harm farmers in terms of quality and selling value.</p><p>PT PMP\'s vertical dryer technology can dry 300 tons of corn per day with consistent and even results, regardless of weather, with guaranteed output moisture below 14%.</p>',
+    date: '2025-12-15',
+    category: 'sustainability',
+    thumbnail: ''
+  },
+  {
+    id: 'seed-010',
+    title_id: 'PT PMP Dukung Program Ketahanan Pangan Nasional dari Kalimantan Barat',
+    title_en: 'PT PMP Supports National Food Security Program from West Kalimantan',
+    body_id: '<p>PT Pangan Merah Putih berkomitmen penuh dalam mendukung program ketahanan pangan nasional yang digagas oleh Presiden Prabowo Subianto. Sebagai perusahaan yang berbasis di Kalimantan Barat, PT PMP memposisikan diri sebagai tulang punggung rantai pasok jagung pakan ternak di wilayah Kalimantan.</p><p>Indonesia saat ini masih mengimpor sebagian kebutuhan jagung dari luar negeri. PT PMP hadir sebagai solusi untuk mengurangi ketergantungan impor dengan memaksimalkan potensi produksi jagung lokal di Kalimantan Barat yang terus berkembang.</p><p>Dengan kapasitas pengeringan 300 ton per hari dan jaringan petani mitra yang terus berkembang di seluruh Kalimantan Barat, PT PMP siap berkontribusi nyata pada swasembada jagung nasional.</p><p>"Kami percaya bahwa Kalimantan Barat punya potensi luar biasa sebagai lumbung jagung nasional. PT PMP hadir untuk mengubah potensi itu menjadi kenyataan," ujar manajemen PT PMP.</p>',
+    body_en: '<p>PT Pangan Merah Putih is fully committed to supporting the national food security program initiated by President Prabowo Subianto. As a West Kalimantan-based company, PT PMP positions itself as the backbone of the feed corn supply chain in the Kalimantan region.</p><p>With 300 tons/day drying capacity and a growing network of partner farmers throughout West Kalimantan, PT PMP is ready to contribute meaningfully to national corn self-sufficiency.</p>',
+    date: '2025-12-01',
+    category: 'government',
+    thumbnail: ''
+  },
+  {
+    id: 'seed-011',
+    title_id: 'Standar SNI Jagung Pipil: Panduan Lengkap untuk Petani dan Pembeli',
+    title_en: 'SNI Corn Standards: Complete Guide for Farmers and Buyers',
+    body_id: '<p>Standar Nasional Indonesia (SNI) untuk jagung pipil kering menjadi acuan utama dalam perdagangan jagung di Indonesia. Memahami standar ini penting bagi petani agar dapat menghasilkan jagung yang diterima oleh industri, dan bagi pembeli agar dapat menilai kualitas jagung yang dibeli.</p><h3>Parameter Utama SNI Jagung</h3><p>SNI 01-3920-1995 mengatur beberapa parameter kunci: kadar air maksimum 14%, kandungan aflatoksin maksimum 20 ppb untuk pakan ternak, broken corn maksimum 2%, dan benda asing maksimum 1%.</p><h3>Grading di PT PMP</h3><p>PT PMP menggunakan sistem grading tiga tingkat berdasarkan SNI: Grade A (memenuhi semua parameter SNI), Grade B (sedikit di atas batas SNI untuk beberapa parameter), dan Grade C (memerlukan proses lebih lanjut).</p><p>Sistem grading yang transparan ini memastikan petani mendapatkan harga yang adil sesuai kualitas aktual jagung mereka, tanpa penilaian subjektif.</p>',
+    body_en: '<p>The Indonesian National Standard (SNI) for dried shelled corn is the main reference in corn trading in Indonesia. Key parameters include: maximum 14% moisture, maximum 20 ppb aflatoxin for animal feed, maximum 2% broken corn, and maximum 1% foreign matter.</p><p>PT PMP uses a three-tier grading system based on SNI, ensuring farmers receive fair prices based on actual corn quality.</p>',
+    date: '2025-11-20',
+    category: 'market',
+    thumbnail: ''
+  },
+  {
+    id: 'seed-012',
+    title_id: 'Jagung Kalimantan Barat: Potensi, Tantangan, dan Solusi PT PMP',
+    title_en: 'West Kalimantan Corn: Potential, Challenges, and PT PMP Solutions',
+    body_id: '<p>Kalimantan Barat memiliki potensi produksi jagung yang besar dengan luas lahan pertanian jagung mencapai 12.000 hektar dan pertumbuhan produksi 5% per tahun. Namun, potensi ini belum sepenuhnya dimanfaatkan karena beberapa tantangan yang dihadapi petani lokal.</p><h3>Tantangan Utama Petani Jagung Kalbar</h3><p>Pertama, keterbatasan fasilitas pengeringan — sebagian besar petani masih bergantung pada pengeringan matahari yang tidak efisien. Kedua, akses pasar yang terbatas menyebabkan petani sering menjual ke tengkulak dengan harga di bawah pasar. Ketiga, kualitas jagung yang tidak konsisten menyulitkan pemasaran ke industri besar.</p><h3>Solusi PT PMP</h3><p>PT PMP hadir untuk mengatasi ketiga tantangan tersebut sekaligus: menyediakan fasilitas pengeringan modern berkapasitas 300 ton/hari, menjadi akses pasar langsung ke industri pakan dan Bulog, serta membantu petani meningkatkan kualitas jagung melalui sistem grading yang transparan.</p><p>Bergabunglah bersama jaringan mitra petani PT PMP. Hubungi kami di 0821-2722-8722.</p>',
+    body_en: '<p>West Kalimantan has great corn production potential with 12,000 hectares of corn farmland and 5% annual production growth. PT PMP addresses the main challenges: limited drying facilities, restricted market access, and inconsistent corn quality — providing modern 300 ton/day drying capacity, direct market access, and transparent grading.</p>',
+    date: '2025-11-05',
+    category: 'company',
+    thumbnail: ''
+  },
+  {
+    id: 'seed-013',
+    title_id: 'Musim Panen Jagung 2025 di Kalimantan Barat: Hasil dan Proyeksi',
+    title_en: 'Corn Harvest Season 2025 in West Kalimantan: Results and Projections',
+    body_id: '<p>Musim panen jagung 2025 di Kalimantan Barat mencatat hasil yang menggembirakan. Produksi jagung di wilayah Bengkayang dan sekitarnya menunjukkan peningkatan dibandingkan tahun sebelumnya, didorong oleh cuaca yang kondusif dan semakin luasnya lahan pertanian jagung.</p><p>PT PMP aktif terlibat dalam musim panen ini dengan menyerap jagung dari petani di berbagai kabupaten di Kalimantan Barat. Kapasitas pengeringan 300 ton per hari memungkinkan PT PMP untuk merespons lonjakan pasokan jagung pada puncak musim panen.</p><p>Untuk musim panen 2026, PT PMP memproyeksikan peningkatan volume pembelian seiring dengan bertambahnya jaringan mitra petani. Petani yang belum pernah bermitra dengan PT PMP diundang untuk menghubungi tim kami dan mendapatkan penawaran harga terbaik.</p><p>Informasi lebih lanjut: 0821-2722-8722 atau kunjungi fasilitas kami di Jl. Bukit Tinggi, Sebalo, Bengkayang.</p>',
+    body_en: '<p>The 2025 corn harvest season in West Kalimantan recorded encouraging results. PT PMP was actively involved in absorbing corn from farmers across various regencies. For the 2026 harvest season, PT PMP projects increased purchase volumes with an expanding farmer partner network.</p>',
+    date: '2025-10-20',
+    category: 'market',
+    thumbnail: ''
+  },
+  {
     id: 'seed-003',
     title_id: 'Kebutuhan Jagung Kalimantan Barat Terus Meningkat, PT PMP Siap Memenuhi',
     title_en: 'West Kalimantan Corn Demand Continues to Rise, PT PMP Ready to Meet It',
