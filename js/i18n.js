@@ -38,7 +38,7 @@ const translations = {
     stat2_label: 'Kapasitas Dryer Per Hari',
     stat3_num: '1.000 Ton',
     stat3_label: 'Kapasitas Penyimpanan Gudang',
-    stat4_num: '12.000 Ha',
+    stat4_num: '12.000+ Ha',
     stat4_label: 'Lahan Jagung di Kalimantan Barat',
 
     // Home About
@@ -309,7 +309,7 @@ const translations = {
     stat2_label: 'Dryer Capacity Per Day',
     stat3_num: '1,000 Tons',
     stat3_label: 'Warehouse Storage Capacity',
-    stat4_num: '12,000 Ha',
+    stat4_num: '12,000+ Ha',
     stat4_label: 'Corn Farmland in West Kalimantan',
 
     // Home About
