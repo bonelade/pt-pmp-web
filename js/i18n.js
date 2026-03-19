@@ -50,6 +50,10 @@ const translations = {
     home_about_check2: 'Mendukung program Ketahanan Pangan pemerintah',
     home_about_check3: 'Mitra strategis petani & Bulog Kalimantan Barat',
     home_about_btn: 'Selengkapnya',
+    home_trusted_label: 'Mitra Kami',
+    home_trusted_item2: 'Pemerintah Kalbar',
+    home_trusted_item3: 'Feedmill Swasta',
+    home_trusted_item4: 'Petani Jagung',
 
     // Home Services
     home_svc_label: 'Layanan Kami',
@@ -324,6 +328,10 @@ const translations = {
     home_about_check2: 'Supporting the government\'s Food Security program',
     home_about_check3: 'Strategic partner for farmers & Bulog West Kalimantan',
     home_about_btn: 'Learn More',
+    home_trusted_label: 'Our Partners',
+    home_trusted_item2: 'West Kalimantan Government',
+    home_trusted_item3: 'Private Feedmills',
+    home_trusted_item4: 'Corn Farmers',
 
     // Home Services
     home_svc_label: 'Our Services',
