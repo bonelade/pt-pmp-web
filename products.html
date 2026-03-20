@@ -885,38 +885,48 @@
   <script src="js/gallery.js"></script>
   <script>
     (function () {
-      function renderProductsGallery() {
+      var _cachedPhotos = null;
+      function renderGallery(allPhotos) {
+        var photos = allPhotos.filter(function(p) { return p.album === 'products_facility' || p.album === 'products_corn'; });
+        if (photos.length === 0) return;
+        var section = document.getElementById('products-gallery-section');
+        var grid = document.getElementById('products-gallery-display');
+        if (section) section.style.display = 'block';
+        if (grid) {
+          var isEN = (window.getCurrentLang ? window.getCurrentLang() : localStorage.getItem('pmp_lang')) === 'en';
+          grid.innerHTML = photos.map(function(p) {
+            var cap = isEN && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en || '');
+            return '<div class="gallery-item animate-on-scroll" onclick="openLightbox(\'' + p.src.replace(/'/g, "&#39;") + '\')">' +
+              '<img src="' + p.src + '" alt="' + cap + '" loading="lazy">' +
+              (cap ? '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + cap + '</div></div>' : '') +
+              '</div>';
+          }).join('');
+          if (window.initGalleryCarousel) window.initGalleryCarousel(grid);
+        }
+        if (window.observeNewAnimations) window.observeNewAnimations();
+      }
+      function init() {
         if (!window.GalleryDB) return;
-        window.GalleryDB.loadGalleryData(function (allPhotos) {
-          var photos = allPhotos.filter(function (p) { return p.album === 'products_facility' || p.album === 'products_corn'; });
-          if (photos.length === 0) return;
-          var section = document.getElementById('products-gallery-section');
-          var grid = document.getElementById('products-gallery-display');
-          if (section) section.style.display = 'block';
-          if (grid) {
-            grid.innerHTML = photos.map(function (p) {
-              return '<div class="gallery-item animate-on-scroll" onclick="openLightbox(\'' + p.src.replace(/'/g, "&#39;") + '\')">' +
-                '<img src="' + p.src + '" alt="' + (localStorage.getItem('pmp_lang') === 'en' && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en || '')) + '" loading="lazy">' +
-                ((p.caption_id || p.caption_en) ? '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + (localStorage.getItem('pmp_lang') === 'en' && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en)) + '</div></div>' : '') +
-                '</div>';
-            }).join('');
-            if (window.initGalleryCarousel) window.initGalleryCarousel(grid);
-          }
-          if (window.observeNewAnimations) window.observeNewAnimations();
+        window.GalleryDB.loadGalleryData(function(allPhotos) {
+          _cachedPhotos = allPhotos;
+          renderGallery(allPhotos);
         });
       }
-      window.openLightbox = function (src) {
+      window.openLightbox = function(src) {
         var lb = document.getElementById('lightbox');
         var img = document.getElementById('lightbox-img');
         if (img) img.src = src;
         if (lb) lb.classList.add('open');
       };
-      window.closeLightbox = function () {
+      window.closeLightbox = function() {
         var lb = document.getElementById('lightbox');
         if (lb) lb.classList.remove('open');
       };
-      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', renderProductsGallery);
-      else renderProductsGallery();
+      window.addEventListener('langChange', function() {
+        if (_cachedPhotos) renderGallery(_cachedPhotos);
+      });
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+      else init();
     })();
   </script>
   <script>
@@ -1051,8 +1061,8 @@
         if (grid) {
           grid.innerHTML = photos.map(function (p) {
             return '<div class="gallery-item animate-on-scroll" onclick="openLightbox(\'' + p.src.replace(/'/g, "&#39;") + '\')">' +
-              '<img src="' + p.src + '" alt="' + (localStorage.getItem('pmp_lang') === 'en' && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en || '')) + '" loading="lazy">' +
-              ((p.caption_id || p.caption_en) ? '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + (localStorage.getItem('pmp_lang') === 'en' && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en)) + '</div></div>' : '') +
+              '<img src="' + p.src + '" alt="' + ((window.getCurrentLang ? window.getCurrentLang() : localStorage.getItem('pmp_lang')) === 'en' && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en || '')) + '" loading="lazy">' +
+              ((p.caption_id || p.caption_en) ? '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + ((window.getCurrentLang ? window.getCurrentLang() : localStorage.getItem('pmp_lang')) === 'en' && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en)) + '</div></div>' : '') +
               '</div>';
           }).join('');
           if (window.initGalleryCarousel) window.initGalleryCarousel(grid);

@@ -796,8 +796,8 @@
         if (grid) {
           grid.innerHTML = filtered.map(function (p) {
             return '<div class="gallery-item animate-on-scroll" onclick="openLightbox(\'' + p.src.replace(/'/g, "&#39;") + '\')">' +
-              '<img src="' + p.src + '" alt="' + (localStorage.getItem('pmp_lang') === 'en' && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en || '')) + '" loading="lazy">' +
-              ((p.caption_id || p.caption_en) ? '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + (localStorage.getItem('pmp_lang') === 'en' && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en)) + '</div></div>' : '') +
+              '<img src="' + p.src + '" alt="' + ((window.getCurrentLang ? window.getCurrentLang() : localStorage.getItem('pmp_lang')) === 'en' && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en || '')) + '" loading="lazy">' +
+              ((p.caption_id || p.caption_en) ? '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + ((window.getCurrentLang ? window.getCurrentLang() : localStorage.getItem('pmp_lang')) === 'en' && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en)) + '</div></div>' : '') +
               '</div>';
           }).join('');
           if (window.initGalleryCarousel) window.initGalleryCarousel(grid);
@@ -831,14 +831,14 @@
                 '<div style="position:relative; padding-bottom:56.25%; height:0;">' +
                 '<iframe src="https://www.youtube.com/embed/' + ytMatch[1] + '" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:16px;" allowfullscreen></iframe>' +
                 '</div>' +
-                ((v.caption_id || v.caption_en) ? '<div style="padding:12px 16px; font-size:0.88rem; font-weight:600; background:var(--color-white); color:var(--color-text);">' + (localStorage.getItem('pmp_lang') === 'en' && v.caption_en ? v.caption_en : (v.caption_id || v.caption_en)) + '</div>' : '') +
+                ((v.caption_id || v.caption_en) ? '<div style="padding:12px 16px; font-size:0.88rem; font-weight:600; background:var(--color-white); color:var(--color-text);">' + ((window.getCurrentLang ? window.getCurrentLang() : localStorage.getItem('pmp_lang')) === 'en' && v.caption_en ? v.caption_en : (v.caption_id || v.caption_en)) + '</div>' : '') +
                 '</div>';
             } else {
               html += '<div style="position:relative; border-radius:16px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.12); margin-bottom:20px;">' +
                 '<video controls playsinline style="width:100%; display:block; border-radius:16px;">' +
                 '<source src="' + src + '" type="video/mp4">' +
                 '</video>' +
-                ((v.caption_id || v.caption_en) ? '<div style="padding:12px 16px; font-size:0.88rem; font-weight:600; background:var(--color-white); color:var(--color-text);">' + (localStorage.getItem('pmp_lang') === 'en' && v.caption_en ? v.caption_en : (v.caption_id || v.caption_en)) + '</div>' : '') +
+                ((v.caption_id || v.caption_en) ? '<div style="padding:12px 16px; font-size:0.88rem; font-weight:600; background:var(--color-white); color:var(--color-text);">' + ((window.getCurrentLang ? window.getCurrentLang() : localStorage.getItem('pmp_lang')) === 'en' && v.caption_en ? v.caption_en : (v.caption_id || v.caption_en)) + '</div>' : '') +
                 '</div>';
             }
           });
@@ -855,8 +855,8 @@
         if (!track || sliderPhotos.length === 0) return;
         track.innerHTML = sliderPhotos.map(function (p, i) {
           return '<div class="about-gallery-slide' + (i === 0 ? ' active' : '') + '">' +
-            '<img src="' + p.src + '" alt="' + (localStorage.getItem('pmp_lang') === 'en' && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en || '')) + '" loading="lazy">' +
-            ((p.caption_id || p.caption_en) ? '<div class="about-gallery-caption">' + (localStorage.getItem('pmp_lang') === 'en' && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en)) + '</div>' : '') +
+            '<img src="' + p.src + '" alt="' + ((window.getCurrentLang ? window.getCurrentLang() : localStorage.getItem('pmp_lang')) === 'en' && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en || '')) + '" loading="lazy">' +
+            ((p.caption_id || p.caption_en) ? '<div class="about-gallery-caption">' + ((window.getCurrentLang ? window.getCurrentLang() : localStorage.getItem('pmp_lang')) === 'en' && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en)) + '</div>' : '') +
             '</div>';
         }).join('');
         initSlider();
@@ -889,16 +889,22 @@
         nextBtn.addEventListener('click', function () { goTo(current + 1); });
         resetTimer();
       }
+      var _cachedPhotos = null;
+      function renderAll(photos) {
+        _cachedPhotos = photos;
+        renderSlider(photos);
+        renderGallery(photos);
+        renderVideo(photos);
+        if (window.observeNewAnimations) window.observeNewAnimations();
+      }
       function init() {
         if (window.GalleryDB) {
-          window.GalleryDB.loadGalleryData(function (photos) {
-            renderSlider(photos);
-            renderGallery(photos);
-            renderVideo(photos);
-            if (window.observeNewAnimations) window.observeNewAnimations();
-          });
+          window.GalleryDB.loadGalleryData(function (photos) { renderAll(photos); });
         }
       }
+      window.addEventListener('langChange', function() {
+        if (_cachedPhotos) renderAll(_cachedPhotos);
+      });
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
       else init();
     })();

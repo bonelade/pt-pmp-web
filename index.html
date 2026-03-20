@@ -1487,6 +1487,53 @@
     window.addEventListener('langChange', function() {
       if (_cachedHdata) renderHomeHarga(_cachedHdata);
       if (_cachedArticles) renderHomeNews(_cachedArticles);
+      // Re-render gallery captions
+      if (window.GalleryDB) {
+        var lang = window.getCurrentLang ? window.getCurrentLang() : 'id';
+        var isEN = lang === 'en';
+        var allPhotos = window.GalleryDB.getGallery();
+
+        // Gallery grid captions
+        var galleryPhotos = allPhotos.filter(function(p) { return p.album === 'home_gallery'; });
+        var homeGalleryGrid = document.getElementById('home-gallery-display');
+        if (galleryPhotos.length > 0 && homeGalleryGrid) {
+          homeGalleryGrid.innerHTML = galleryPhotos.slice(0, 8).map(function(p) {
+            var cap = isEN && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en || '');
+            return '<div class="gallery-item animate-on-scroll visible" onclick="openLightbox(\'' + p.src.replace(/'/g, "&#39;") + '\')">' +
+              '<img src="' + p.src + '" alt="' + cap + '" loading="lazy">' +
+              (cap ? '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + cap + '</div></div>' : '') +
+              '</div>';
+          }).join('');
+        }
+
+        // Video captions
+        var videos = allPhotos.filter(function(p) { return p.album === 'home_video'; });
+        var videoDisplay = document.getElementById('home-video-display');
+        if (videos.length > 0 && videoDisplay) {
+          var vHtml = '';
+          videos.forEach(function(v) {
+            var src = v.src || '';
+            var cap = isEN && v.caption_en ? v.caption_en : (v.caption_id || v.caption_en || '');
+            var ytMatch = src.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]+)/);
+            if (ytMatch) {
+              vHtml += '<div style="position:relative; border-radius:16px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.12); margin-bottom:20px;">' +
+                '<div style="position:relative; padding-bottom:56.25%; height:0;">' +
+                '<iframe src="https://www.youtube.com/embed/' + ytMatch[1] + '" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:16px;" allowfullscreen></iframe>' +
+                '</div>' +
+                (cap ? '<div style="padding:12px 16px; font-size:0.88rem; font-weight:600; background:var(--color-white); color:var(--color-text);">' + cap + '</div>' : '') +
+                '</div>';
+            } else {
+              vHtml += '<div style="position:relative; border-radius:16px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.12); margin-bottom:20px;">' +
+                '<video controls playsinline style="width:100%; display:block; border-radius:16px;">' +
+                '<source src="' + src + '" type="video/mp4">' +
+                '</video>' +
+                (cap ? '<div style="padding:12px 16px; font-size:0.88rem; font-weight:600; background:var(--color-white); color:var(--color-text);">' + cap + '</div>' : '') +
+                '</div>';
+            }
+          });
+          videoDisplay.innerHTML = vHtml;
+        }
+      }
     });
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -1530,7 +1577,7 @@
           if (galleryPhotos.length > 0 && homeGalleryGrid) {
             homeGalleryGrid.innerHTML = galleryPhotos.slice(0, 8).map(function (p) {
               return '<div class="gallery-item animate-on-scroll" onclick="openLightbox(\'' + p.src.replace(/'/g, "&#39;") + '\')">' +
-                '<img src="' + p.src + '" alt="' + (localStorage.getItem('pmp_lang') === 'en' && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en || '')) + '" loading="lazy">' +
+                '<img src="' + p.src + '" alt="' + ((window.getCurrentLang ? window.getCurrentLang() : localStorage.getItem('pmp_lang')) === 'en' && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en || '')) + '" loading="lazy">' +
                 ((p.caption_id || p.caption_en) ? '<div class="gallery-item-overlay"><div class="gallery-item-caption">' + (localStorage.getItem('pmp_lang') === 'en' && p.caption_en ? p.caption_en : (p.caption_id || p.caption_en)) + '</div></div>' : '') +
                 '</div>';
             }).join('');
