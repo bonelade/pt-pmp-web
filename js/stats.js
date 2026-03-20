@@ -1,6 +1,6 @@
 // ============================
 // Visitor Statistics Tracker
-// Uses localStorage to store page views and channel clicks
+// Uses localStorage (local) + Supabase (global)
 // ============================
 (function () {
   var STATS_KEY = 'pmp_stats';
@@ -28,16 +28,28 @@
     return file;
   }
 
+  // Send page view to Supabase
+  function sendToSupabase(page) {
+    try {
+      var client = getSupabase();
+      if (!client) return;
+      client.from('page_views').insert({
+        page: page,
+        referrer: document.referrer || null,
+        user_agent: navigator.userAgent || null
+      }).then(function() {});
+    } catch (e) {}
+  }
+
   // Track page view
   function trackPageView() {
-    // Skip admin page
     var page = getPageName();
     if (page === 'admin.html') return;
 
     var stats = getStats();
     var today = getToday();
 
-    // Page stats
+    // Local stats
     if (!stats.pages[page]) {
       stats.pages[page] = { total: 0, daily: {}, last_visit: null };
     }
@@ -45,11 +57,13 @@
     stats.pages[page].daily[today] = (stats.pages[page].daily[today] || 0) + 1;
     stats.pages[page].last_visit = new Date().toISOString();
 
-    // Daily aggregate
     if (!stats.daily) stats.daily = {};
     stats.daily[today] = (stats.daily[today] || 0) + 1;
 
     saveStats(stats);
+
+    // Global stats via Supabase
+    sendToSupabase(page);
   }
 
   // Track channel click

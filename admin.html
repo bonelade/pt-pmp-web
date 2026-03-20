@@ -2315,13 +2315,8 @@
   // ============================
   // Statistics Page
   // ============================
-  function loadStatsPage() {
-    if (!window.PmpStats) return;
-    const stats = window.PmpStats.getStats();
+  async function loadStatsPage() {
     const today = new Date().toISOString().split('T')[0];
-
-    // Calculate totals
-    let totalViews = 0, todayViews = 0, totalClicks = 0, uniquePages = 0;
     const pageNames = {
       'index.html': 'Beranda',
       'about.html': 'Tentang Kami',
@@ -2330,32 +2325,73 @@
       'community.html': 'Komunitas',
       'news.html': 'Berita',
       'news-detail.html': 'Detail Berita',
-      'harga-jagung.html': 'Harga Jagung (deprecated)'
+      'harga-jagung.html': 'Harga Jagung'
     };
 
-    // Page stats
-    const pageRows = [];
-    if (stats.pages) {
-      Object.keys(stats.pages).forEach(page => {
-        const p = stats.pages[page];
-        totalViews += p.total || 0;
-        todayViews += (p.daily && p.daily[today]) || 0;
-        uniquePages++;
-        pageRows.push({
-          page: pageNames[page] || page,
-          total: p.total || 0,
-          today: (p.daily && p.daily[today]) || 0,
-          last: p.last_visit ? formatStatsDate(p.last_visit) : '—'
-        });
+    // Show loading
+    document.getElementById('stats-total-views').textContent = '...';
+    document.getElementById('stats-today-views').textContent = '...';
+    document.getElementById('stats-unique-pages').textContent = '...';
+
+    // ── Supabase global data ──
+    let supaViews = [], supaError = false;
+    try {
+      const client = getSupabase();
+      if (client) {
+        const { data, error } = await client
+          .from('page_views')
+          .select('page, visited_at')
+          .order('visited_at', { ascending: false });
+        if (!error && data) supaViews = data;
+        else supaError = true;
+      }
+    } catch(e) { supaError = true; }
+
+    // ── Local data fallback ──
+    const localStats = window.PmpStats ? window.PmpStats.getStats() : { pages: {}, clicks: {}, daily: {} };
+
+    // ── Aggregate page data ──
+    const pageMap = {};
+    supaViews.forEach(row => {
+      const pg = row.page;
+      const d = row.visited_at ? row.visited_at.split('T')[0] : '';
+      if (!pageMap[pg]) pageMap[pg] = { total: 0, today: 0, last: row.visited_at };
+      pageMap[pg].total++;
+      if (d === today) pageMap[pg].today++;
+      if (row.visited_at > pageMap[pg].last) pageMap[pg].last = row.visited_at;
+    });
+
+    // Merge local data for pages not yet in Supabase
+    if (localStats.pages) {
+      Object.keys(localStats.pages).forEach(pg => {
+        if (!pageMap[pg]) {
+          const p = localStats.pages[pg];
+          pageMap[pg] = {
+            total: p.total || 0,
+            today: (p.daily && p.daily[today]) || 0,
+            last: p.last_visit || null
+          };
+        }
       });
     }
-    pageRows.sort((a, b) => b.total - a.total);
 
-    // Click stats
+    const pageRows = Object.keys(pageMap).map(pg => ({
+      page: pageNames[pg] || pg,
+      total: pageMap[pg].total,
+      today: pageMap[pg].today,
+      last: pageMap[pg].last ? formatStatsDate(pageMap[pg].last) : '—'
+    })).sort((a, b) => b.total - a.total);
+
+    const totalViews = pageRows.reduce((s, r) => s + r.total, 0);
+    const todayViews = pageRows.reduce((s, r) => s + r.today, 0);
+    const uniquePages = pageRows.length;
+
+    // ── Click stats (local only) ──
+    let totalClicks = 0;
     const clickRows = [];
-    if (stats.clicks) {
-      Object.keys(stats.clicks).forEach(ch => {
-        const c = stats.clicks[ch];
+    if (localStats.clicks) {
+      Object.keys(localStats.clicks).forEach(ch => {
+        const c = localStats.clicks[ch];
         totalClicks += c.total || 0;
         clickRows.push({
           channel: ch,
@@ -2367,13 +2403,13 @@
     }
     clickRows.sort((a, b) => b.total - a.total);
 
-    // Update overview cards
+    // ── Update overview cards ──
     document.getElementById('stats-total-views').textContent = totalViews.toLocaleString('id-ID');
     document.getElementById('stats-today-views').textContent = todayViews.toLocaleString('id-ID');
     document.getElementById('stats-total-clicks').textContent = totalClicks.toLocaleString('id-ID');
     document.getElementById('stats-unique-pages').textContent = uniquePages;
 
-    // Page views table
+    // ── Page views table ──
     const pagesTbody = document.getElementById('stats-pages-tbody');
     if (pagesTbody) {
       if (pageRows.length === 0) {
@@ -2389,7 +2425,7 @@
       }
     }
 
-    // Clicks table
+    // ── Clicks table ──
     const clicksTbody = document.getElementById('stats-clicks-tbody');
     if (clicksTbody) {
       const channelIcons = { WhatsApp: '#25d366', Instagram: '#e1306c', Facebook: '#1877f2', Email: '#c9932a', Telepon: '#16a34a' };
@@ -2409,11 +2445,11 @@
       }
     }
 
-    // Daily chart (last 7 days)
-    renderDailyChart(stats);
+    // ── Daily chart from Supabase data ──
+    renderDailyChartFromSupabase(supaViews, localStats);
   }
 
-  function renderDailyChart(stats) {
+  function renderDailyChartFromSupabase(supaViews, localStats) {
     const chart = document.getElementById('stats-daily-chart');
     const labels = document.getElementById('stats-daily-labels');
     if (!chart || !labels) return;
@@ -2425,7 +2461,19 @@
       days.push(d.toISOString().split('T')[0]);
     }
 
-    const values = days.map(d => (stats.daily && stats.daily[d]) || 0);
+    // Count from Supabase
+    const dayCount = {};
+    supaViews.forEach(row => {
+      const d = row.visited_at ? row.visited_at.split('T')[0] : '';
+      if (days.includes(d)) dayCount[d] = (dayCount[d] || 0) + 1;
+    });
+
+    // Merge local if Supabase empty
+    if (Object.keys(dayCount).length === 0 && localStats.daily) {
+      days.forEach(d => { if (localStats.daily[d]) dayCount[d] = localStats.daily[d]; });
+    }
+
+    const values = days.map(d => dayCount[d] || 0);
     const max = Math.max(...values, 1);
 
     chart.innerHTML = values.map((v, i) => {
